@@ -1,0 +1,11 @@
+.link{    
+    font-family: Inter;
+    color: #3369F3;    
+    text-decoration: none;
+    padding: 1em 0;
+    display: block;
+}
+
+.link:hover{
+    color:#7692db;    
+}

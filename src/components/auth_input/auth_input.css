@@ -1,0 +1,25 @@
+.input-container{
+    text-align: left;
+    margin-top: 1em;
+}
+
+.input-container__label {
+    color: #999999;
+    font-size: 0.7em;
+}
+
+.input-container__input {
+    border-bottom: 1px solid #3369F3;
+    padding: 0.4em 0;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 100%;
+    font-size: 1em;
+}
+
+.input-container__input:focus{
+    outline: none;
+}
+
+
