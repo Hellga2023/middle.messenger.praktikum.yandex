@@ -16,7 +16,8 @@ export const Profile = (data)=> {
             name: data.user.name,
             isInEditMode: data.isProfileInEditMode, 
             sectionLeft: SectionLeft(),
-            avatarUrl: avatarImg
+            avatarUrl: avatarImg,
+            mainTag: data.isProfileInEditMode ? "form":"div"
         };
 
     data.user.infos.forEach(function(element, id, arr){
