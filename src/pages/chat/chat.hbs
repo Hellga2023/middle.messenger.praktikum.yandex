@@ -1,5 +1,5 @@
  <div class="leftMenu">
-  <div>
+  <div class="text-right">
     {{{link}}}
     <input type="search" class="search" placeholder="Search"/>
   </div>
@@ -9,7 +9,11 @@
       {{/each}} 
   </div>
 </div>
-  <div class="message_content">
+  <div class="chat-content">
+    <div class="chat-content__user">
+      <img src="{{selectedChat.avatarUrl}}"/>
+      <p>{{selectedChat.username}}</p>
+    </div>
     <p>Please select chat to send the message</p>    
   </div>
 </div>

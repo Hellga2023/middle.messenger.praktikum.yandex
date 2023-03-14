@@ -31,15 +31,18 @@ const data = {
         isProfileInEditMode: false,
         user: {
             name: "Olga",
-            infos: [{name:"Email", value:"hellga@yandex.ru"},
-                {name:"Login", value:"Hellga"},
-                {name:"Name", value:"Olga"},
-                {name:"Surname", value:"Kup"},
-                {name:"Nickname", value:"Hellga"},
-                {name:"Phone", value:"+7 999 111-11-11"}]
+            infos: [{label:"Email", value:"hellga@yandex.ru", name: "email"},
+                {label:"Login", value:"Hellga", name: "login"},
+                {label:"Name", value:"Olga", name: "first_name"},
+                {label:"Surname", value:"Kup", name: "second_name"},
+                {label:"Nickname", value:"Hellga", name: "display_name"},
+                {label:"Phone", value:"+7 999 111-11-11", name: "phone"}]
         }       
     },
     chatPage: {
+        selectedChat: {
+            user: "Andrey"
+        },
         chatItems: [{
             name: "Andrey",
             time: "10:59",
@@ -48,8 +51,28 @@ const data = {
                 type: "text",
                 content: "blablabla"
             },
-            avatar: "дфдфдфд"
-        } 
+            avatarUrl: "../static/chatAvatar.png"
+        },
+        {
+            name: "Andrey",
+            time: "10:59",
+            unread_messages_count: 4,
+            last_message: {
+                type: "text",
+                content: "blablabla"
+            },
+            avatarUrl: "../static/chatAvatar.png"
+        },
+        {
+            name: "Andrey",
+            time: "10:59",
+            unread_messages_count: 4,
+            last_message: {
+                type: "text",
+                content: "blablabla"
+            },
+            avatarUrl: "../static/chatAvatar.png"
+        }
         ]
     } 
 };

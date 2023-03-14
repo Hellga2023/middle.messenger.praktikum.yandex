@@ -1,6 +1,7 @@
 {{{sectionLeft}}}  
 <div class="profile-container">
-  <img src="{{avatarUrl}}">
+  <img id="profileAvatar" src="{{avatarUrl}}" onclick="document.getElementById('avatarUpload').click()">
+  <input id="avatarUpload" type="file" name="avatar" placeholder="Avatar photo" />
   <h1 class="header">{{name}}</h1>
   <div class="profile-container__info">
     {{#each infos}}
