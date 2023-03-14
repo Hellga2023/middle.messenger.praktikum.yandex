@@ -1,5 +1,13 @@
 # Sprint 1 app
 
+Description && technologies:
+
+This is a messenger app.
+
+I use Handlebars templator, node, express, parcel, git, netlify.
+
+I named css classes using BEM.
+
 My netlify website: https://zingy-vacherin-b83255.netlify.app/
 
 Command to run locally: npm run start
