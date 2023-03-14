@@ -1,7 +1,7 @@
 .leftMenu {
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #eaeaea;
+    border-right: 1px solid var(--border-grey-color);
     padding: 0 1em;
 }
 
@@ -10,7 +10,7 @@
     height: 2em;
     border-radius: 5px;
     border: none;
-    background-color: #EFEFEF;
+    background-color: var(--background-grey-color);
     text-align: center;
     margin-bottom: 2em;
 }
@@ -20,7 +20,7 @@
 }
 
 .grey-text{
-    color: #999999;
+    color: var(--text-grey-color);
 }
 
 .text-right{
@@ -28,7 +28,7 @@
 }
 
 .chat-content__user{
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 1px solid var(--border-grey-color);
     padding-bottom: 1em;
     display: flex;
     align-items: center;

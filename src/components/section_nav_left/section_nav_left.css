@@ -1,6 +1,6 @@
 .section-left{
-    background-color: #fbfbfb;
-    border-right: 1px solid #eaeaea;
+    background-color: var(--background-light-grey-color);
+    border-right: 1px solid var(--border-grey-color);
     align-items: center;
     display: flex;
     cursor: pointer;

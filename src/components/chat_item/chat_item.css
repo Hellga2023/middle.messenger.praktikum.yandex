@@ -1,12 +1,12 @@
 .chat-item{
-    border-bottom: 1px solid #EAEAEA;
+    border-bottom: 1px solid var(--border-grey-color);
     flex-direction: row;
     display: flex;
     justify-content: space-between;
 }
 
 .chat-item_first{
-    border-top: 1px solid #EAEAEA;
+    border-top: 1px solid var(--border-grey-color);
 }
 
 .chat-item__user-data{
@@ -30,7 +30,7 @@
     width: 2em;
     height: 2em;
     padding-top: 0.4em;
-    background: #3369F3;
-    color: #fff;
+    background: var(--default-blue-color);
+    color: var(--white);
     text-align: center;
 } 

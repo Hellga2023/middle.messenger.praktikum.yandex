@@ -1,7 +1,7 @@
 .button{
-    background: #3369F3;
+    background: var(--default-blue-color);
     border-radius: 8px;
-    color: #fff;
+    color: var(--white);
     width: 20em;
     padding: 1em;
     border: none;
@@ -10,6 +10,6 @@
   }
 
 .button:hover{
-    background-color: #5a84f0;
+    background-color: var(--alt-blue-color);
     cursor: pointer;
 }

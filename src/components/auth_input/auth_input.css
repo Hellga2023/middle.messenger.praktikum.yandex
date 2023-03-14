@@ -4,12 +4,12 @@
 }
 
 .input-container__label {
-    color: #999999;
+    color: var(--text-grey-color);
     font-size: 0.7em;
 }
 
 .input-container__input {
-    border-bottom: 1px solid #3369F3;
+    border-bottom: 1px solid var(--default-blue-color);
     padding: 0.4em 0;
     border-top: none;
     border-right: none;
