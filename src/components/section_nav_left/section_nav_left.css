@@ -1,0 +1,20 @@
+.section-left{
+    background-color: var(--background-light-grey-color);
+    border-right: 1px solid var(--border-grey-color);
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+}
+
+.section-left:hover{
+  background-color: #e7e0e0;
+}
+
+.section-left__button{
+    width: 56px;
+    height: 56px;
+    border: none;
+    margin: 0 3em;
+    cursor: pointer;
+    background-image: url(../../../static/arrowLeft.png);
+}
