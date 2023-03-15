@@ -27,9 +27,13 @@
     text-align: right;
 }
 
+.chat-content{
+    padding: 0 1em
+}
+
 .chat-content__user{
     border-bottom: 1px solid var(--border-grey-color);
-    padding-bottom: 1em;
+    padding-bottom: 1em 0;
     display: flex;
     align-items: center;
 }

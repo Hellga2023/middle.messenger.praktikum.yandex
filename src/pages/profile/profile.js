@@ -5,6 +5,7 @@ import {Link} from '../../components/link/link';
 import {Info} from '../../components/profile_info_line/profile_info_line';
 import {SectionLeft} from '../../components/section_nav_left/section_nav_left';
 import avatarImg from '../../../static/avatar.png';
+import {Avatar} from '../../components/avatar/avatar';
 import './profile.css';
 
 export const Profile = (data)=> {
@@ -17,6 +18,7 @@ export const Profile = (data)=> {
             isInEditMode: data.isProfileInEditMode, 
             sectionLeft: SectionLeft(),
             avatarUrl: avatarImg,
+            avatar: Avatar({avatarUrl: avatarImg}),
             tag: data.isProfileInEditMode ? "form":"div"
         };
 
