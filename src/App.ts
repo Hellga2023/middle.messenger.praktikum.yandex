@@ -1,8 +1,8 @@
 import Auth from './pages/auth/auth';
-import {Profile} from './pages/profile/profile';
+import Profile from './pages/profile/profile';
 import Main from './pages/main/main';
-import {Chat} from './pages/chat/chat';
-import {Error} from './pages/error/error';
+import Chat from './pages/chat/chat';
+import Error from './pages/error/error';
 
 
 const data = {
@@ -81,15 +81,15 @@ const data = {
  export const App = () => {
 
     switch(window.location.pathname){
-        case '/profile': return Profile(data.profilePage);
+        case '/profile': return new Profile(data.profilePage).getContent();
         case '/login': return new Auth(data.loginPage).getContent()
         case '/signup': return new Auth(data.signUpPage).getContent();
         case '/editprofile': 
             data.profilePage.isProfileInEditMode = true;
-            return Profile(data.profilePage);
-        case '/chat': return Chat(data.chatPage);
-        case '/404': return Error({code: "404"});
-        case '/500': return Error({code: "500"});
+            return new Profile(data.profilePage).getContent();
+        case '/chat': return new Chat(data.chatPage).getContent();
+        case '/404': return new Error({code: "404"}).getContent();
+        case '/500': return new Error({code: "500"}).getContent();
         default: return new Main().getContent();        
     }
  }

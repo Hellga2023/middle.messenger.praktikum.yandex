@@ -26,7 +26,7 @@ class Auth extends Block{
     }
 
     render():DocumentFragment{
-        return this.compile(auth, this.props);
+        return this.compile(auth);
     }
 }
 

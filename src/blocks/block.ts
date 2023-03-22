@@ -28,7 +28,7 @@ class Block {
      * @returns {void}
      */
     constructor(tagName:string = "div", propsAndChildren:any = {}) {
-      console.log("create block");
+      //console.log("create block");
       const eventBus = new EventBus();
       this._meta = {
         tagName,
@@ -79,10 +79,10 @@ class Block {
     }
     
 
-    compile(template, props):DocumentFragment {
-      const propsAndStubs = { ...props },
+    compile(template:string):DocumentFragment {
+      const propsAndStubs = this.props,
       hasChildren = Object.keys(this.children).length!==0;
-      console.log("has children " + hasChildren);
+      //console.log("has children " + hasChildren);
 
       if(hasChildren){
         this._generateChildrenStubs(propsAndStubs);
@@ -168,7 +168,7 @@ class Block {
       }
   
       Object.assign(this.props, nextProps);
-      console.log("setProps");
+      //console.log("setProps");
       this.eventBus().emit(Block.EVENTS.FLOW_CDU);
     };
   
@@ -188,8 +188,8 @@ class Block {
 
        // this._removeEvents(); todo
         this._element.innerHTML = ''; // удаляем предыдущее содержимое
-      console.log("block "+block);
-      console.log("el "+this._element);
+      //console.log("block "+block);
+      //console.log("el "+this._element);
       
 
       this._element.appendChild(block);
