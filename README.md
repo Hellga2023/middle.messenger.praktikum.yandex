@@ -24,6 +24,17 @@ src/components/ - all components that are used in the pages
 static/ - for fonts and images
 
 
+what is needed to be installed:
+
+sprint 1 ??
+
+parcel
+handlebars 
+
+sprint 2
+
+typescript
+eslint
 
 
 

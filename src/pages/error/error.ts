@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 import error from 'bundle-text:./error.hbs';
-import {Link} from '../../components/link/link';
+import Link from '../../components/link/link';
 import './error.css'; 
 
 export const Error = (data)=> { 
@@ -9,6 +9,6 @@ export const Error = (data)=> {
     }else if(data.code==500){
         data.message = "We are fixing the problem";
     }
-    data.link = Link({text:"Back to chats", url: "/chat"})
+    data.link = new Link({text:"Back to chats", url: "/chat"})
     return Handlebars.compile(error)(data); 
 };

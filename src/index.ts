@@ -1,5 +1,5 @@
 import "./style.css";
-import {App} from './App.js';
+import {App} from './App';
 
 const root = document.querySelector('#content');
-root.innerHTML = App();
+root.appendChild(App());

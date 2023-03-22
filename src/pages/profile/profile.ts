@@ -1,7 +1,8 @@
 import Handlebars from 'handlebars';
 import profile from 'bundle-text:./profile.hbs';
-import {Button} from '../../components/button/button';
-import {Link} from '../../components/link/link';
+//import {Button} from '../../components/button/button';
+import Button from '../../components/button/button';
+import Link from '../../components/link/link';
 import {Info} from '../../components/profile_info_line/profile_info_line';
 import {SectionLeft} from '../../components/section_nav_left/section_nav_left';
 import avatarImg from '../../../static/avatar.png';
@@ -31,12 +32,12 @@ export const Profile = (data)=> {
     params.infos =infoTemplates;
     
     if(data.isProfileInEditMode){        
-        params.btn = Button({text:"Save"});
+        params.btn = new Button({text:"Save"});
         params.class_ = "";
     }else{
-        links.push(Link({text:"Edit profile", url: "/editprofile", class_: underlinedClass}));
-        links.push(Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
-        links.push(Link({text:"Return"}));
+        links.push(new Link({text:"Edit profile", url: "/editprofile", class_: underlinedClass}));
+        links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
+        links.push(new Link({text:"Return"}));
         params.links = links;
         params.class_ = "text_left";
     }
