@@ -3,6 +3,7 @@ import Profile from './pages/profile/profile';
 import Main from './pages/main/main';
 import Chat from './pages/chat/chat';
 import Error from './pages/error/error';
+import Block from './block/block';
 
 
 const data = {
@@ -29,7 +30,7 @@ const data = {
             ]
     },
     profilePage : {
-        isProfileInEditMode: false,
+        editMode: false,
         user: {
             name: "Olga",
             infos: [{label:"Email", value:"hellga@yandex.ru", name: "email"},
@@ -78,18 +79,18 @@ const data = {
     } 
 };
 
- export const App = () => {
-
+ export const App = ():Block<any> => { //todo make common layout interface
+   
     switch(window.location.pathname){
-        case '/profile': return new Profile(data.profilePage).getContent();
-        case '/login': return new Auth(data.loginPage).getContent()
-        case '/signup': return new Auth(data.signUpPage).getContent();
+        case '/profile': return new Profile(data.profilePage);
+        case '/login': return new Auth(data.loginPage);
+        case '/signup': return new Auth(data.signUpPage);
         case '/editprofile': 
-            data.profilePage.isProfileInEditMode = true;
-            return new Profile(data.profilePage).getContent();
-        case '/chat': return new Chat(data.chatPage).getContent();
-        case '/404': return new Error({code: "404"}).getContent();
-        case '/500': return new Error({code: "500"}).getContent();
-        default: return new Main().getContent();        
+            data.profilePage.editMode = true;
+            return new Profile(data.profilePage);
+        case '/chat': return new Chat(data.chatPage);
+        case '/404': return new Error({code: "404"});
+        case '/500': return new Error({code: "500"});
+        default: return new Main();        
     }
  }

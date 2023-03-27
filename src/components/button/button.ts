@@ -1,9 +1,14 @@
 import button from './button.tmpl';
-import './button.css';
-import Block from '../../blocks/block';
+import './button.scss';
+import Block from '../../block/block';
 
-class Button extends Block {
-    constructor(props) {
+interface IButtonProps{
+    type:string;
+    text:string;
+}
+
+class Button extends Block<IButtonProps> {
+    constructor(props:IButtonProps) {
         props.type = props.type||"submit";
         super('div', props);
     }
@@ -11,7 +16,6 @@ class Button extends Block {
     public render(): DocumentFragment{
        return this.compile(button);
     }
-
 }
 
 export default Button;

@@ -1,9 +1,14 @@
 import section from './section_nav_left.tmpl';
-import './section_nav_left.css';
-import Block from '../../blocks/block';
+import './section_nav_left.scss';
+import Block from '../../block/block';
 
-class SectionLeft extends Block {
+interface ISectionProps{
+    
+}
+
+class SectionLeft extends Block<ISectionProps> {
     constructor(props) {
+        props.class = "section-left";
         super('div', props);
     }
 

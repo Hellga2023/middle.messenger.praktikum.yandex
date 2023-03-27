@@ -14,8 +14,9 @@
     "devDependencies": {
         "@anikin/parcel-transformer-handlebars": "^1.0.9",
         "@parcel/transformer-inline-string": "^2.8.3",
-        "@typescript-eslint/eslint-plugin": "^5.55.0",
-        "@typescript-eslint/parser": "^5.55.0",
+        "@parcel/transformer-sass": "^2.8.3",
+        "@typescript-eslint/eslint-plugin": "^5.56.0",
+        "@typescript-eslint/parser": "^5.56.0",
         "concurrently": "^7.6.0",
         "engine-version": "^1.0.2",
         "eslint": "^8.36.0",

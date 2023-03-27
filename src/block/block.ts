@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import EventBus from "./eventbus"; 
 import {v4 as makeUUID} from 'uuid';
 
-class Block {
+class Block<T> {
 
     static EVENTS = {
       INIT: "init",
@@ -11,24 +11,17 @@ class Block {
       FLOW_RENDER: "flow:render"
     };
   
-    private _element:HTMLElement = null;
+    private _element:DocumentFragment|null = null;
     private _meta : {
       tagName: string, 
       propsEndChildren: any //todo
-      } = null;
-    private _id:string = null; //todo check? 
+      }|null = null;
+    private _id:string|null = null; //todo check? 
     children: any = null;//todo
-    eventBus: Function = null;
+    eventBus: Function|null = null;
     props: any = null;
   
-    /** JSDoc
-     * @param {string} tagName
-     * @param {Object} props
-     *
-     * @returns {void}
-     */
     constructor(tagName:string = "div", propsAndChildren:any = {}) {
-      //console.log("create block");
       const eventBus = new EventBus();
       this._meta = {
         tagName,
@@ -40,7 +33,7 @@ class Block {
 
       this.children = children;
       
-      this.props = props;//this._makePropsProxy(props);//props;
+      this.props = this._makePropsProxy(props);//props;
 
       //const withInternalID = props.withInternalID; todo
   
@@ -52,12 +45,10 @@ class Block {
     }
   
     private _registerEvents(eventBus:EventBus) {
-      eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-      //eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-      //eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+      eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
       eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-      //eventBus.on(Block.EVENTS.BLUR, this._validate.bind(this));
-      //eventBus.on(Block.EVENTS.FOCUS, this._validate.bind(this));
+      eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+      //eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));      
       this.registerEvents();
     }
 
@@ -82,7 +73,6 @@ class Block {
     compile(template:string):DocumentFragment {
       const propsAndStubs = this.props,
       hasChildren = Object.keys(this.children).length!==0;
-      //console.log("has children " + hasChildren);
 
       if(hasChildren){
         this._generateChildrenStubs(propsAndStubs);
@@ -90,10 +80,13 @@ class Block {
       
       const fragment = this._createDocumentElement('template');
       fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
+      
+
       if(hasChildren){
         this._replaceStubWithChildren(fragment);
       }
-      return fragment.content;    //todo?
+
+      return fragment.content;
   }
 
   private _generateChildrenStubs(propsAndStubs){
@@ -133,22 +126,41 @@ class Block {
         this._element = this._createDocumentElement(tagName);
       }      
     }
-  
-    init() {
+
+    private _init(){
       this._createResources();  
-      //console.log("init");
+      if(this.props.class){this._element.classList.add(this.props.class);}
+      this.init();
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   
+    init() {}/*
+      this._createResources();  
+      this._element.classList.add(this.props.class);
+
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    }*/
+  
     private _componentDidMount() : void {
       this.componentDidMount();
+      
+      
+      Object.values(this.children).forEach(child => {
+        console.log(child);
+        console.log(child.componentDidMount);
+          child.dispatchComponentDidMount();
+      });/**/
     }
   
-    componentDidMount() {}
+    componentDidMount() {  
+      console.log("mounted");
+      console.log("this");
+     }
   
-      dispatchComponentDidMount() {
-          this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-      }
+    public dispatchComponentDidMount() {
+      this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+      //dispatch children?
+    }
   
     private _componentDidUpdate(oldProps, newProps) {
       const response = this.componentDidUpdate(oldProps, newProps);
@@ -168,8 +180,8 @@ class Block {
       }
   
       Object.assign(this.props, nextProps);
-      //console.log("setProps");
-      this.eventBus().emit(Block.EVENTS.FLOW_CDU);
+      
+      //this.eventBus().emit(Block.EVENTS.FLOW_CDU);
     };
   
     get element() {
@@ -177,8 +189,8 @@ class Block {
     }
   
     _render(): void {
-      //console.log("this"+this.render);
-      const block = this.render();
+      
+      const block:DocumentFragment = this.render();
       // //should be document fragment
       // Этот небезопасный метод для упрощения логики
       // Используйте шаблонизатор из npm или напишите свой безопасный
@@ -186,24 +198,35 @@ class Block {
       // либо сразу в DOM-элементы возвращать из compile DOM-ноду
     
 
-       // this._removeEvents(); todo
-        this._element.innerHTML = ''; // удаляем предыдущее содержимое
-      //console.log("block "+block);
-      //console.log("el "+this._element);
+       this._removeEvents(); 
+        //this._element = block;  
+       //this._element.setAttribute('data-id', this._id);
+
+      this._element.innerHTML = ''; // удаляем предыдущее содержимое
       
 
       this._element.appendChild(block);
 
-      //this._addEvents();
+      this._addEvents();
     }
   
     protected render():DocumentFragment { return null;}//todo
 
-    _validate(){
-        this._validate();
+    _addEvents() {
+      const {events = {}} = this.props;
+  
+      Object.keys(events).forEach(eventName => {
+        this._element.addEventListener(eventName, events[eventName].bind(this));//.bind(this)
+      });
     }
-    
-    validate(){}
+
+    _removeEvents(){
+      const {events = {}} = this.props;
+  
+      Object.keys(events).forEach(eventName => {
+        this._element.removeEventListener(eventName, events[eventName]);
+      });      
+    }
 
     getContent() {
       return this.element;
@@ -232,7 +255,7 @@ class Block {
           
           // Запускаем обновление компоненты
           // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
-          self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+          //self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
           return true;
         },
         deleteProperty():boolean {

@@ -1,9 +1,15 @@
 import auth_input from './auth_input.tmpl';
-import Block from '../../blocks/block';
-import './auth_input.css';
+import Block from '../../block/block';
+import './auth_input.scss';
 
-class Auth_Input extends Block {
-    constructor(props) {
+interface IInputProps{
+    type:string;
+    label:string;
+    name:string;
+}
+
+class Auth_Input extends Block<IInputProps> {
+    constructor(props:IInputProps) {
         if(!props.type) { props.type ="text";}
         super('div', props);
     }

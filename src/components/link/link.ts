@@ -1,9 +1,15 @@
 import link from './link.tmpl';
-import './link.css';
-import Block from '../../blocks/block';
+import './link.scss';
+import Block from '../../block/block';
 
-class Link extends Block {
-    constructor(props) {
+interface ILinkProps{
+    class_?:string|null;
+    url:string|null;//todo?
+    text:string;
+}
+
+class Link extends Block<ILinkProps> {
+    constructor(props:ILinkProps) {
         super('div', props);
     }
 

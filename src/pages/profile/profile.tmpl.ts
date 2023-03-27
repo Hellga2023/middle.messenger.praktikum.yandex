@@ -1,7 +1,13 @@
 const profile = `
 {{{sectionLeft}}}  
 <main>
-<{{tag}} class="profile-container">
+{{{profileForm}}}
+</main>
+`; 
+
+export default profile;
+
+/**<{{tag}} class="profile-container">
   {{{avatar}}}
   <h1 class="header">{{name}}</h1>
   <div class="profile-container__info">
@@ -18,8 +24,4 @@ const profile = `
       {{/each}}
     {{/if}}
   </div>
-</{{tag}}>
-</main>
-`; 
-
-export default profile;
+</{{tag}}> */

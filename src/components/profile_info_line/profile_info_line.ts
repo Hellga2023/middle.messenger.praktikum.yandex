@@ -1,14 +1,18 @@
 import info_line from './profile_info_line.tmpl';
-import './profile_info_line.css';
-import Block from '../../blocks/block';
+import './profile_info_line.scss';
+import Block from '../../block/block';
 
-/*export const Info = ({name, value, isDisabled, class_, label}) => {
-    const hasValue = value!='undefined';
-    return Handlebars.compile(info_line)({ name, hasValue, value, isDisabled, class_, label })
-};*/
+interface IProfileInfoLineProps {
+    name: string;
+    label:string;
+    value:string;
+    isDisabled:boolean;
+    hasValue:boolean;
+    class_: string;
+}
 
-class Info extends Block {
-    constructor(props) {
+class Info extends Block<IProfileInfoLineProps> {
+    constructor(props:IProfileInfoLineProps) {
         props.hasValue = props.value!='undefined';
         super('div', props);
     }

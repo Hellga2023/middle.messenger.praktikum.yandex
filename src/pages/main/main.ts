@@ -1,16 +1,15 @@
 import main from './main.tmpl';
-import Block from '../../blocks/block';
+import Block from '../../block/block';
 
-/*export const Main = ()=> { 
-    return Handlebars.compile(main)(); 
-};*/
+interface IMainProps{}
 
-class Main extends Block{ 
+
+class Main extends Block<IMainProps>{ 
     constructor (){
         super('div', {});
     }
     render():DocumentFragment{
-        return this.compile(main, this.props);
+        return this.compile(main);
     }
 }
 export default Main;

@@ -1,13 +1,14 @@
 import chatItem from './chat_item.tmpl';
-import './chat_item.css';
-import Block from '../../blocks/block';
+import './chat_item.scss';
+import Block from '../../block/block';
 
-/*export const ChatItem = (data) => {    
-    return Handlebars.compile(chatItem)(data); 
-}*/
+interface IChatItemProps{
+    type:string;
+    text:string;
+}
 
-class ChatItem extends Block {
-    constructor(props) {
+class ChatItem extends Block<IChatItemProps> {
+    constructor(props:IChatItemProps) {
         super('div', props);
     }
 
