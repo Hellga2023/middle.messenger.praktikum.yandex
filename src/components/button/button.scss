@@ -1,0 +1,15 @@
+.button{
+    background: var(--default-blue-color);
+    border-radius: 8px;
+    color: var(--white);
+    width: 20em;
+    padding: 1em;
+    border: none;
+    font-family: Inter; 
+    font-size: 1em;
+  }
+
+.button:hover{
+    background-color: var(--alt-blue-color);
+    cursor: pointer;
+}
