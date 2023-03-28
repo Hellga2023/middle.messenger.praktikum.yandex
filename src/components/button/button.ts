@@ -5,6 +5,7 @@ import Block from '../../block/block';
 interface IButtonProps{
     type?:string;
     text:string;
+    events?: object; //todo?
 }
 
 class Button extends Block<IButtonProps> {

@@ -11,7 +11,7 @@ import Validation from '../../utils/validation';
 interface IProfileFormProps{ //todo all props here
     user: IUser;
     editMode: boolean;   
-    infos: any[]; 
+    infos: any[]; //todo create interface
 }
 
 interface IUser{
@@ -31,7 +31,6 @@ class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
 
         let infoTemplates=new Array<Info>, 
-        links = new Array<Link>,
         underlinedClass = "underlined",        
         params = {
             name: data.user.name,
@@ -45,7 +44,6 @@ class ProfileForm extends Block<IProfileFormProps> {
         };
 
         data.infos.forEach(function(element, id, arr){
-            console.log(element);
             element.isDisabled = !data.editMode;
             element.class_ = arr.length-1 == id ? "" : underlinedClass;
             let validateFn = Validation.chooseMethod(element.name);
@@ -53,17 +51,16 @@ class ProfileForm extends Block<IProfileFormProps> {
                 focusin: (event:Event) => {
                     let element = event.target as HTMLInputElement;
                     let isValid = validateFn(element.value);                    
-                    event.target!.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
                 },
                 focusout: (event:Event) => {
                     let element = event.target as HTMLInputElement;
                     let isValid = validateFn(element.value);                    
-                    event.target!.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
                 }
             }
             
             }));
-            console.log(infoTemplates[id]);
         });
     
         params.userinfos =infoTemplates;
@@ -82,7 +79,6 @@ class ProfileForm extends Block<IProfileFormProps> {
             params.class_ = "text_left";
         }   
 
-
         super(data.editMode ? "form":"div", params);
     }
 
@@ -90,7 +86,12 @@ class ProfileForm extends Block<IProfileFormProps> {
 
         if(this.props.editMode){
             this.children.btn = new Button({
-                text:"Save"
+                text:"Save",
+                events: {
+                    click: function(event:Event){
+                        console.log(this.children.infos[0].value);
+                    }
+                }
             });
         }else{
             let links = new Array<Link>,
@@ -100,6 +101,31 @@ class ProfileForm extends Block<IProfileFormProps> {
             links.push(new Link({text:"Return"}));
             this.children.links = links;
         }
+
+        /*let infoTemplates = new Array<Info>,
+        underlinedClass = "underlined";
+
+        this.props.infos.forEach(function(element:any, id:number, arr:any){ //todo remove any
+            element.isDisabled = !this.props.editMode;
+            element.class_ = arr.length-1 == id ? "" : underlinedClass;
+            let validateFn = Validation.chooseMethod(element.name);
+            infoTemplates.push(new Info({...element, events:{
+                focusin: (event:Event) => {
+                    let element = event.target as HTMLInputElement;
+                    let isValid = validateFn(element.value);                    
+                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                },
+                focusout: (event:Event) => {
+                    let element = event.target as HTMLInputElement;
+                    let isValid = validateFn(element.value);                    
+                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                }
+            }
+            
+            }));
+        });
+
+        this.children.userinfos = infoTemplates;*/
     }
 
     public render(): DocumentFragment{

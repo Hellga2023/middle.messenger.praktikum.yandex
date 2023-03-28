@@ -1,32 +1,55 @@
+interface IValidationResult {
+    errorMessage:string,
+    isValid:boolean
+}
+
 const Validation = {
 
     ERROR_CLASS : "error",
 
-    validateLogin(value:string):boolean{
+    validateLogin(value:string):IValidationResult{
         const regex = /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/;
-        return regex.test(value);
+        return {
+            errorMessage: "Invalid login",
+            isValid: regex.test(value)
+        };
     },
 
-    validateName(value:string):boolean{
+    validateName(value:string):IValidationResult{
         const regex = /^[A-Z]{1}[A-za-z-]*$/;
-        return regex.test(value);
+        return {
+            errorMessage: "Invalid name",
+            isValid: regex.test(value)
+        };
     },
 
-    validatePassword(value:string):boolean{
+    validatePassword(value:string):IValidationResult{
         const regex = /^(?=.*\d)(?=.*[A-Z]).{8,40}$/;
-        return regex.test(value);
+        return {
+            errorMessage: "Invalid password",
+            isValid: regex.test(value)
+        };
     },
 
-    validateEmail(value:string):boolean{
+    validateEmail(value:string):IValidationResult{
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        return regex.test(value);
+        return {
+            errorMessage: "Invalid email",
+            isValid: regex.test(value)
+        };
     },
-    validatePhone(value:string):boolean{
+    validatePhone(value:string):IValidationResult{
         const regex = /^((\+[0-9])|([0-9])){10,15}$/;
-        return regex.test(value);
+        return {
+            errorMessage: "Invalid phone",
+            isValid: regex.test(value)
+        };
     },
-    validateMessage(value:string):boolean{
-        return value.length !== 0;
+    validateMessage(value:string):IValidationResult{
+        return {
+            errorMessage: "Invalid message",
+            isValid: value.length !== 0
+        };
     },
     validateForm(form:HTMLFormElement):boolean{
         console.log("validation started");
@@ -56,7 +79,7 @@ const Validation = {
         return isFormValid;
     },
     chooseMethod(name:string):Function{
-        let validateFn:(value:string)=>boolean;
+        let validateFn:(value:string)=>IValidationResult;
         switch(name){
             case "first_name": //todo move to obj
             case "second_name":

@@ -7,29 +7,36 @@ import Block from '../../block/block';
 import Validation from '../../utils/validation';
 
 interface IAuthProps{
-    
+    inputs:any,
+    isLoginMode: boolean,
+    btn:any,
+    link:any
 }
 
 class Auth extends Block<IAuthProps>{
 
-    constructor(data) {
+    constructor(data:IAuthProps) {
         let params, 
         inputs:Array<Auth_Input> = new Array<Auth_Input>;
     
-        data.inputs.forEach(element => {
+        data.inputs.forEach((element:any) => {
 
             let validateFn = Validation.chooseMethod(element.name);
             
             inputs.push(new Auth_Input({...element, events:{
-                focusout: event => {
-                    let element = event.target;
-                    let isValid = validateFn(element.value);                    
-                    event.target.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                focusout: (event:Event) => {
+                    const element = event.target as HTMLInputElement,
+                          result = validateFn(element.value);    
+                    element.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
+                    const infoComponent = this.children.inputs.find((el:any) => { return el.props.name === element.name; });
+                    infoComponent.setProps({errorMessage: result.errorMessage});                    
                 },
-                focusin: event => {
-                    let element = event.target;
-                    let isValid = validateFn(element.value);                    
-                    event.target.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);              
+                focusin: (event:Event) => {
+                    const element = event.target as HTMLInputElement,
+                          result = validateFn(element.value);    
+                    element.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
+                    const infoComponent = this.children.inputs.find((el:any) => { return el.props.name === element.name; });
+                    infoComponent.setProps({errorMessage: result.errorMessage});                        
                 }
             }}));
             });
@@ -41,7 +48,7 @@ class Auth extends Block<IAuthProps>{
                 inputs: inputs,
                 class: "auth-form",
                 events: {
-                    submit: function(event) {
+                    submit: function(event:Event) {
                         event.preventDefault();                        
                         Validation.validateForm(this.element);                     
                     }}
@@ -51,7 +58,8 @@ class Auth extends Block<IAuthProps>{
     }
 
     init() {
-        
+        //this.children.btn = new Button(this.props.btn);
+        //this.children.link = new Link(this.props.link);
         /*
         this.children.inputs = inputs;
         */

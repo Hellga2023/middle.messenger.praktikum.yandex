@@ -8,6 +8,11 @@
     font-size: 0.7em;
 }
 
+.input-container__errorlabel {
+    color: var(--default-red-color);
+    font-size: 0.7em;
+}
+
 .input-container__input {
     border-bottom: 1px solid var(--default-blue-color);
     padding: 0.4em 0;

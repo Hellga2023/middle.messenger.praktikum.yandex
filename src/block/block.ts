@@ -11,7 +11,7 @@ class Block<T> {
       FLOW_RENDER: "flow:render"
     };
   
-    private _element?:DocumentFragment;
+    private _element?:HTMLElement;
     private _meta? : {
       tagName: string, 
       propsEndChildren: any //todo
@@ -29,9 +29,17 @@ class Block<T> {
       };
       this._id = makeUUID();
       
-      const { children, props } = this._getChildren(propsAndChildren);
-
-      this.children = children;
+      let props,
+      children;
+      if(typeof this.children == "undefined"){
+        let temp = this._getChildren(propsAndChildren);
+        children = temp.children;
+        props = temp.props;
+        this.children = children;
+      }
+      else{
+         props = propsAndChildren;
+      }
       
       this.props = this._makePropsProxy(props);//props;
 
@@ -41,6 +49,7 @@ class Block<T> {
       
   
      this._registerEvents(eventBus);
+     console.log("init will emit");
       eventBus.emit(Block.EVENTS.INIT);
     }
   
@@ -59,7 +68,7 @@ class Block<T> {
         const props = {};
 
         Object.entries(propsAndChildren as object).forEach(([key, value]) => {       
-          if (value instanceof Block || value instanceof Array<Block>) {
+          if (value instanceof Block || value instanceof Array<Block>) { //todo if array of blocks
 
                 children[key] = value;
           } else {
@@ -68,7 +77,7 @@ class Block<T> {
         });
 
         return { children, props };
-    }
+    }/**/
     
 
     compile(template:string):DocumentFragment {
@@ -129,9 +138,11 @@ class Block<T> {
     }
 
     private _init(){
+      console.log("init started");
       this._createResources();  
       if(this.props.class){this._element.classList.add(this.props.class);}
       this.init();
+      console.log("init will emit");
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   
@@ -163,6 +174,7 @@ class Block<T> {
     }
   
     private _componentDidUpdate(oldProps, newProps) {
+      console.log("update started");
       const response = this.componentDidUpdate(oldProps, newProps);
       if (!response) {
         return;
