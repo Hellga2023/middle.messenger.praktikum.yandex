@@ -31,14 +31,14 @@ const data = {
     },
     profilePage : {
         editMode: false,
-        user: {
-            name: "Olga",
-            infos: [{label:"Email", value:"hellga@yandex.ru", name: "email"},
+        infos: [{label:"Email", value:"hellga@yandex.ru", name: "email"},
                 {label:"Login", value:"Hellga", name: "login"},
                 {label:"Name", value:"Olga", name: "first_name"},
                 {label:"Surname", value:"Kup", name: "second_name"},
                 {label:"Nickname", value:"Hellga", name: "display_name"},
-                {label:"Phone", value:"+7 999 111-11-11", name: "phone"}]
+                {label:"Phone", value:"+7 999 111-11-11", name: "phone"}],
+        user: {
+            name: "Olga"
         }       
     },
     chatPage: {

@@ -10,12 +10,13 @@ import Validation from '../../utils/validation';
 
 interface IProfileFormProps{ //todo all props here
     user: IUser;
-    editMode: boolean;    
+    editMode: boolean;   
+    infos: any[]; 
 }
 
 interface IUser{
     name: string;
-    infos: any[];
+    //infos: any[];
     avatarUrl: any;
     avatar: Avatar;
 }
@@ -39,24 +40,25 @@ class ProfileForm extends Block<IProfileFormProps> {
             class_: "",            
             links: new Array<Link>,
             avatar: new Avatar({avatarUrl: avatarImg, alt: "avatar"}),
-            avatarUrl: avatarImg
+            avatarUrl: avatarImg,
+            infos: data.infos
         };
 
-        data.user.infos.forEach(function(element, id, arr){
+        data.infos.forEach(function(element, id, arr){
             console.log(element);
             element.isDisabled = !data.editMode;
             element.class_ = arr.length-1 == id ? "" : underlinedClass;
             let validateFn = Validation.chooseMethod(element.name);
             infoTemplates.push(new Info({...element, events:{
-                focusin: event => {
-                    let element = event.target;
+                focusin: (event:Event) => {
+                    let element = event.target as HTMLInputElement;
                     let isValid = validateFn(element.value);                    
-                    event.target.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                    event.target!.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
                 },
-                focusout: event => {
-                    let element = event.target;
+                focusout: (event:Event) => {
+                    let element = event.target as HTMLInputElement;
                     let isValid = validateFn(element.value);                    
-                    event.target.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
+                    event.target!.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
                 }
             }
             
@@ -68,28 +70,36 @@ class ProfileForm extends Block<IProfileFormProps> {
                 
     
         if(data.editMode){        
-            params.btn = new Button({
-                text:"Save"
-            });
             params.class_ = "";
             params.events = {
-                submit: function(event) {
-                    event.preventDefault();  
-                    //console.log(this.children.infos[0].props.name);  
-                    //console.log(this.children.infos[0].props.value);                      
+                submit: function(event:Event) {
+                    event.preventDefault();                    
                     Validation.validateForm(this.element);                     
                 }
             };
         }else{
-            links.push(new Link({text:"Edit profile", url: "/editprofile", class_: underlinedClass}));
-            links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
-            links.push(new Link({text:"Return"}));
-            params.links = links;
+
             params.class_ = "text_left";
         }   
 
 
         super(data.editMode ? "form":"div", params);
+    }
+
+    public init(): void {
+
+        if(this.props.editMode){
+            this.children.btn = new Button({
+                text:"Save"
+            });
+        }else{
+            let links = new Array<Link>,
+            underlinedClass = "underlined";
+            links.push(new Link({text:"Edit profile", url: "/editprofile", class_: underlinedClass}));
+            links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
+            links.push(new Link({text:"Return"}));
+            this.children.links = links;
+        }
     }
 
     public render(): DocumentFragment{

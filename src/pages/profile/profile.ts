@@ -10,7 +10,7 @@ interface IProfileProps {
 
 class Profile extends Block<IProfileProps>{
 
-    constructor(data) {
+    constructor(data:IProfileProps) {
 
         let params = {
             sectionLeft: new SectionLeft({}),//todo

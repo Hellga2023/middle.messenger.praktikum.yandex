@@ -11,17 +11,17 @@ class Block<T> {
       FLOW_RENDER: "flow:render"
     };
   
-    private _element:DocumentFragment|null = null;
-    private _meta : {
+    private _element?:DocumentFragment;
+    private _meta? : {
       tagName: string, 
       propsEndChildren: any //todo
-      }|null = null;
-    private _id:string|null = null; //todo check? 
-    children: any = null;//todo
-    eventBus: Function|null = null;
-    props: any = null;
+      };
+    private _id?:string; //todo check? 
+    children?: any;//todo
+    eventBus: Function;
+    props: any;
   
-    constructor(tagName:string = "div", propsAndChildren:any = {}) {
+    constructor(tagName:string = "div", propsAndChildren:T) {
       const eventBus = new EventBus();
       this._meta = {
         tagName,
@@ -48,18 +48,19 @@ class Block<T> {
       eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
       eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
       eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-      //eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));      
+      eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));      
       this.registerEvents();
     }
 
     protected registerEvents(){}
 
-    private _getChildren(propsAndChildren){
+    private _getChildren(propsAndChildren:T){
       const children = {};
         const props = {};
 
-        Object.entries(propsAndChildren).forEach(([key, value]) => {
+        Object.entries(propsAndChildren as object).forEach(([key, value]) => {       
           if (value instanceof Block || value instanceof Array<Block>) {
+
                 children[key] = value;
           } else {
                 props[key] = value;
@@ -145,16 +146,15 @@ class Block<T> {
       this.componentDidMount();
       
       
-      Object.values(this.children).forEach(child => {
-        console.log(child);
-        console.log(child.componentDidMount);
-          child.dispatchComponentDidMount();
+      Object.values(this.children).forEach((child:any) => { //todo
+        if(typeof child.dispatchComponentDidMount == "function"){
+
+          child.dispatchComponentDidMount();}
       });/**/
     }
   
     componentDidMount() {  
       console.log("mounted");
-      console.log("this");
      }
   
     public dispatchComponentDidMount() {
@@ -181,7 +181,7 @@ class Block<T> {
   
       Object.assign(this.props, nextProps);
       
-      //this.eventBus().emit(Block.EVENTS.FLOW_CDU);
+      this.eventBus().emit(Block.EVENTS.FLOW_CDU);
     };
   
     get element() {

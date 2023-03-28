@@ -3,8 +3,8 @@ import './link.scss';
 import Block from '../../block/block';
 
 interface ILinkProps{
-    class_?:string|null;
-    url:string|null;//todo?
+    class_?:string;
+    url?:string;//todo?
     text:string;
 }
 

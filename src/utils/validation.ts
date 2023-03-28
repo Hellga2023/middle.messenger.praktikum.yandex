@@ -3,7 +3,7 @@ const Validation = {
     ERROR_CLASS : "error",
 
     validateLogin(value:string):boolean{
-        const regex = /[a-zA-Z]+[\w-]{2,19}/;//todo not only numbers! /[a-zA-Z]+[a-zA-Z0-9_-]*/
+        const regex = /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/;
         return regex.test(value);
     },
 
@@ -13,7 +13,7 @@ const Validation = {
     },
 
     validatePassword(value:string):boolean{
-        const regex = /^[A-za-z]{8,40}$/;//todo 1 big letter and number
+        const regex = /^(?=.*\d)(?=.*[A-Z]).{8,40}$/;
         return regex.test(value);
     },
 
@@ -22,7 +22,7 @@ const Validation = {
         return regex.test(value);
     },
     validatePhone(value:string):boolean{
-        const regex = /^\+?[0-9]{10,15}$/;//todo 1 big letter and number
+        const regex = /^((\+[0-9])|([0-9])){10,15}$/;
         return regex.test(value);
     },
     validateMessage(value:string):boolean{
@@ -34,7 +34,7 @@ const Validation = {
         let validateFn:Function, 
         isValid:boolean = true, 
         isFormValid:boolean = true,
-        data = {};
+        data:any = {};
 
         for (const [key, value] of formData) {
 
@@ -56,7 +56,7 @@ const Validation = {
         return isFormValid;
     },
     chooseMethod(name:string):Function{
-        let validateFn;
+        let validateFn:(value:string)=>boolean;
         switch(name){
             case "first_name": //todo move to obj
             case "second_name":
@@ -76,6 +76,7 @@ const Validation = {
                 validateFn = Validation.validatePhone;
                 break;
         }
+        
         return validateFn;
     }
 } 

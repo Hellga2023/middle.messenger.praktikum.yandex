@@ -3,7 +3,7 @@ import './button.scss';
 import Block from '../../block/block';
 
 interface IButtonProps{
-    type:string;
+    type?:string;
     text:string;
 }
 
