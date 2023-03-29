@@ -1,5 +1,5 @@
 const profileForm = `   {{{avatar}}}
-                        <h1 class="header">{{name}}</h1>
+                        <h1 class="header">{{username}}</h1>
                         <div class="profile-container__info">
                             {{#each userinfos}}
                                 {{{this}}}

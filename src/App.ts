@@ -8,7 +8,7 @@ import Block from './block/block';
 
 const data = {
     loginPage: {
-        isLoginMode: true,
+        isLogin: true,
         inputs: [
             {label: "Email", type: "text", name: "login"}, 
             {label: "Password", type: "password", name: "password"}
@@ -17,16 +17,16 @@ const data = {
         link:{text:"No account yet?", url: "/signup"}
     },
     signUpPage:{
-        isLoginMode: false,
+        isLogin: false,
         btn:{text: "Sign up"}, 
             link: {text:"Login", url: "/login"},
             inputs: [
-                {label: "Email", type: "text", name: "email" }, 
-                {label: "Login", type: "text", name: "login"}, 
-                {label: "Name", type: "text", name: "first_name"}, 
-                {label: "Surname", type: "text", name: "second_name"}, 
-                {label: "Phone", type: "text", name: "phone"}, 
-                {label: "Password", type: "password", name: "password"},
+                {label: "Email", type: "text", name: "email", error: "Invalid email" }, 
+                {label: "Login", type: "text", name: "login", error: "Invalid login"}, 
+                {label: "Name", type: "text", name: "first_name", error: "Invalid name"}, 
+                {label: "Surname", type: "text", name: "second_name", error: "Invalid surname"}, 
+                {label: "Phone", type: "text", name: "phone", error: "Invalid phone"}, 
+                {label: "Password", type: "password", name: "password", error: "Invalid password"},
             ]
     },
     profilePage : {
@@ -37,9 +37,7 @@ const data = {
                 {label:"Surname", value:"Kup", name: "second_name"},
                 {label:"Nickname", value:"Hellga", name: "display_name"},
                 {label:"Phone", value:"+7 999 111-11-11", name: "phone"}],
-        user: {
-            name: "Olga"
-        }       
+        username: "Olga"            
     },
     chatPage: {
         selectedChat: {

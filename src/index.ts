@@ -3,6 +3,6 @@ import {App} from './App';
 import Block from './block/block';
 
 const root = document.querySelector('#content');
-let block:Block = App();
-root.appendChild(block.getContent());
+let block:Block<any> = App();
+root!.appendChild(block.getContent() as Node);
 block.dispatchComponentDidMount();//todo move somewhere?

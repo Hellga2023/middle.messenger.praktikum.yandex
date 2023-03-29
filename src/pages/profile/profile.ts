@@ -1,11 +1,13 @@
 import profile from './profile.tmpl';
 import Block from '../../block/block';
 import SectionLeft from '../../components/section_nav_left/section_nav_left';
-import ProfileForm from '../../components/profile_form/profile_form';
-import './profile.scss';
+import ProfileForm from '../../components/profile_form/profileForm';
+
 
 interface IProfileProps {
-
+    username: string;
+    editMode: boolean;   
+    infos: any[]; //todo create interface
 }
 
 class Profile extends Block<IProfileProps>{
@@ -19,8 +21,6 @@ class Profile extends Block<IProfileProps>{
         };
 
         super('div', params);
-        //console.log(this.children.infos);
-        //this.children.btn = new Button({text:"Save"}); todo init
     }
 
     render():DocumentFragment{
