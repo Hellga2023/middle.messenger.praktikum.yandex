@@ -9,7 +9,7 @@ class Block<T> {
       FLOW_CDM: "flow:component-did-mount",
       FLOW_CDU: "flow:component-did-update",
       FLOW_RENDER: "flow:render"
-    };
+    } as const;
   
     private _element?:HTMLElement;
     private _meta? : {
@@ -17,8 +17,8 @@ class Block<T> {
       propsEndChildren: any //todo
       };
     private _id?:string; //todo check? 
-    children?: any;//todo
-    eventBus: Function;
+    public children?: any;//todo
+    private eventBus: Function;
     props: any;
   
     constructor(tagName:string = "div", propsAndChildren:T) {
@@ -49,8 +49,7 @@ class Block<T> {
       
   
      this._registerEvents(eventBus);
-     console.log("init will emit");
-      eventBus.emit(Block.EVENTS.INIT);
+     eventBus.emit(Block.EVENTS.INIT);
     }
   
     private _registerEvents(eventBus:EventBus) {
@@ -77,7 +76,7 @@ class Block<T> {
         });
 
         return { children, props };
-    }/**/
+    }
     
 
     compile(template:string):DocumentFragment {
@@ -88,7 +87,7 @@ class Block<T> {
         this._generateChildrenStubs(propsAndStubs);
       }
       
-      const fragment = this._createDocumentElement('template');
+      const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
       fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
       
 
@@ -113,12 +112,12 @@ class Block<T> {
     });
   }
 
-  private _replaceStubWithChildren(fragment){
+  private _replaceStubWithChildren(fragment:HTMLTemplateElement){
     Object.values(this.children).forEach(child => {
       if(child instanceof Block){
         const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
         if(stub){ stub.replaceWith(child.getContent());}
-      }else if(child instanceof Array<Block>){  
+      }else if(Array.isArray(child)){  
         child.forEach(element => {
           const stub = fragment.content.querySelector(`[data-id="${element._id}"]`);
           if(stub){ stub.replaceWith(element.getContent());}
@@ -129,39 +128,27 @@ class Block<T> {
   }
   
     private _createResources() : void {
-      const { tagName } = this._meta;
-      if(this._meta.element){
-        this._element = this._meta.element;
-      }else{
-        this._element = this._createDocumentElement(tagName);
-      }      
+      const { tagName } = this._meta!;
+      this._element = this._createDocumentElement(tagName);           
     }
 
     private _init(){
-      console.log("init started");
       this._createResources();  
-      if(this.props.class){this._element.classList.add(this.props.class);}
+      if(this.props.class){this._element!.classList.add(this.props.class);}
       this.init();
-      console.log("init will emit");
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   
-    init() {}/*
-      this._createResources();  
-      this._element.classList.add(this.props.class);
-
-      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-    }*/
+    init() {}
   
     private _componentDidMount() : void {
-      this.componentDidMount();
-      
+      this.componentDidMount();      
       
       Object.values(this.children).forEach((child:any) => { //todo
         if(typeof child.dispatchComponentDidMount == "function"){
 
           child.dispatchComponentDidMount();}
-      });/**/
+      });
     }
   
     componentDidMount() {  
@@ -173,8 +160,7 @@ class Block<T> {
       //dispatch children?
     }
   
-    private _componentDidUpdate(oldProps, newProps) {
-      console.log("update started");
+    private _componentDidUpdate(oldProps:any, newProps:any) {
       const response = this.componentDidUpdate(oldProps, newProps);
       if (!response) {
         return;
@@ -186,6 +172,38 @@ class Block<T> {
       return true;
     }
   
+    get element() {
+      return this._element;
+    }
+  
+    _render(): void {    
+      this._element!.innerHTML = '';  
+      const block:DocumentFragment = this.render(); 
+      this._removeEvents();      
+      this._element!.appendChild(block);
+      this._addEvents();
+    }
+  
+    protected render():DocumentFragment { return null;}//todo
+
+    _addEvents() {
+      const {events = {}} = this.props;  
+      Object.keys(events).forEach(eventName => {
+        this._element!.addEventListener(eventName, events[eventName]);//.bind(this)
+      });
+    }
+
+    _removeEvents(){
+      const {events = {}} = this.props;  
+      Object.keys(events).forEach(eventName => {
+        this._element!.removeEventListener(eventName, events[eventName]);
+      });      
+    }
+
+    getContent() {
+      return this.element;
+    }
+
     setProps = nextProps => {
       if (!nextProps) {
         return;
@@ -194,63 +212,9 @@ class Block<T> {
       Object.assign(this.props, nextProps);
       
       this.eventBus().emit(Block.EVENTS.FLOW_CDU);
-    };
-  
-    get element() {
-      return this._element;
-    }
-  
-    _render(): void {
-      
-      const block:DocumentFragment = this.render();
-      // //should be document fragment
-      // Этот небезопасный метод для упрощения логики
-      // Используйте шаблонизатор из npm или напишите свой безопасный
-      // Нужно не в строку компилировать (или делать это правильно),
-      // либо сразу в DOM-элементы возвращать из compile DOM-ноду
-    
-
-       this._removeEvents(); 
-        //this._element = block;  
-       //this._element.setAttribute('data-id', this._id);
-
-      this._element.innerHTML = ''; // удаляем предыдущее содержимое
-      
-
-      this._element.appendChild(block);
-
-      this._addEvents();
-    }
-  
-    protected render():DocumentFragment { return null;}//todo
-
-    _addEvents() {
-      const {events = {}} = this.props;
-  
-      Object.keys(events).forEach(eventName => {
-        this._element.addEventListener(eventName, events[eventName].bind(this));//.bind(this)
-      });
     }
 
-    _removeEvents(){
-      const {events = {}} = this.props;
-  
-      Object.keys(events).forEach(eventName => {
-        this._element.removeEventListener(eventName, events[eventName]);
-      });      
-    }
-
-    getContent() {
-      return this.element;
-    }
-
-    _checkAccess(prop){
-        //if (prop.indexOf('_') === 0) {
-        //    throw new Error('Access denied');
-        //}
-    }
-  
-    _makePropsProxy(props) {
+    _makePropsProxy(props:T) {
       
         const self = this;
   
@@ -269,10 +233,6 @@ class Block<T> {
           // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
           //self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
           return true;
-        },
-        deleteProperty():boolean {
-          return false;//todo
-          //throw new Error("Access denied");
         }
       });
     }
@@ -282,16 +242,16 @@ class Block<T> {
 
       //fragment.content.firstElementChild
       const element = document.createElement(tagName);
-      element.setAttribute('data-id', this._id);
+      element.setAttribute('data-id', this._id!);
       return element;
     }
   
     show() {
-      this.getContent().style.display = "block";
+      this.getContent()!.style.display = "block";
     }
   
     hide() {
-      this.getContent().style.display = "none";
+      this.getContent()!.style.display = "none";
     }
   }
 

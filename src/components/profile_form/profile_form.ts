@@ -9,87 +9,56 @@ import Block from '../../block/block';
 import Validation from '../../utils/validation';
 
 interface IProfileFormProps{ //todo all props here
-    user: IUser;
+    username: string;
+    avatarImg?: any;
+    avatar?: Avatar;
     editMode: boolean;   
     infos: any[]; //todo create interface
-}
-
-interface IUser{
-    name: string;
-    //infos: any[];
-    avatarUrl: any;
-    avatar: Avatar;
+    class?:string;
+    class_:string;
+    userinfos?:any;
+    events?:any;
 }
 
 interface IInfoProps{
     name: string;
     label: string;
     value: string;
+    userinfos?:any;
+    
 }
 
 class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
 
         let infoTemplates=new Array<Info>, 
-        underlinedClass = "underlined",        
-        params = {
-            name: data.user.name,
-            editMode: data.editMode, 
-            class: "profile-container",
-            class_: "",            
-            links: new Array<Link>,
-            avatar: new Avatar({avatarUrl: avatarImg, alt: "avatar"}),
-            avatarUrl: avatarImg,
-            infos: data.infos
-        };
+        underlinedClass = "underlined";
 
         data.infos.forEach(function(element, id, arr){
             element.isDisabled = !data.editMode;
             element.class_ = arr.length-1 == id ? "" : underlinedClass;
-            let validateFn = Validation.chooseMethod(element.name);
-            infoTemplates.push(new Info({...element, events:{
-                focusin: (event:Event) => {
-                    let element = event.target as HTMLInputElement;
-                    let isValid = validateFn(element.value);                    
-                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
-                },
-                focusout: (event:Event) => {
-                    let element = event.target as HTMLInputElement;
-                    let isValid = validateFn(element.value);                    
-                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
-                }
-            }
-            
-            }));
+            infoTemplates.push(new Info(element));
         });
-    
-        params.userinfos =infoTemplates;
-                
-    
-        if(data.editMode){        
-            params.class_ = "";
-            params.events = {
-                submit: function(event:Event) {
-                    event.preventDefault();                    
-                    Validation.validateForm(this.element);                     
-                }
-            };
-        }else{
-
-            params.class_ = "text_left";
-        }   
-
-        super(data.editMode ? "form":"div", params);
+        data.class = "profile-container";    
+        data.userinfos =infoTemplates;
+        data.avatarImg = avatarImg;
+        data.class_ = data.editMode? "" :"text_left";   
+        data.events = {submit:function(event:Event){
+            event.preventDefault();
+            Validation.validateForm(event.target as HTMLFormElement);
+        }}     
+        super(data.editMode ? "form":"div", data);
     }
 
     public init(): void {
 
+        this.children.avatar= new Avatar({avatarUrl: this.props.avatarImg, alt: "avatar"});
         if(this.props.editMode){
             this.children.btn = new Button({
                 text:"Save",
                 events: {
                     click: function(event:Event){
-                        console.log(this.children.infos[0].value);
+                        console.log(this.children);                       
                     }
                 }
             });
@@ -101,31 +70,12 @@ class ProfileForm extends Block<IProfileFormProps> {
             links.push(new Link({text:"Return"}));
             this.children.links = links;
         }
+    }
 
-        /*let infoTemplates = new Array<Info>,
-        underlinedClass = "underlined";
-
-        this.props.infos.forEach(function(element:any, id:number, arr:any){ //todo remove any
-            element.isDisabled = !this.props.editMode;
-            element.class_ = arr.length-1 == id ? "" : underlinedClass;
-            let validateFn = Validation.chooseMethod(element.name);
-            infoTemplates.push(new Info({...element, events:{
-                focusin: (event:Event) => {
-                    let element = event.target as HTMLInputElement;
-                    let isValid = validateFn(element.value);                    
-                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
-                },
-                focusout: (event:Event) => {
-                    let element = event.target as HTMLInputElement;
-                    let isValid = validateFn(element.value);                    
-                    element.classList[isValid?"remove":"add"](Validation.ERROR_CLASS);
-                }
-            }
-            
-            }));
-        });
-
-        this.children.userinfos = infoTemplates;*/
+    validateInput(input:Block<any>):void{
+        let result = Validation.validateInput(input.props.name,input.props.value);
+        input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
+        input.setProps({errorMessage: result.errorMessage});
     }
 
     public render(): DocumentFragment{

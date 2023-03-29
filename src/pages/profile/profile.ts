@@ -5,7 +5,6 @@ import ProfileForm from '../../components/profile_form/profile_form';
 import './profile.scss';
 
 interface IProfileProps {
-
 }
 
 class Profile extends Block<IProfileProps>{
@@ -19,8 +18,6 @@ class Profile extends Block<IProfileProps>{
         };
 
         super('div', params);
-        //console.log(this.children.infos);
-        //this.children.btn = new Button({text:"Save"}); todo init
     }
 
     render():DocumentFragment{
