@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import EventBus from "./eventbus"; 
 import {v4 as makeUUID} from 'uuid';
 
-class Block<T> {
+abstract class Block<T extends Record<string,any>> {
 
     static EVENTS = {
       INIT: "init",
@@ -19,7 +19,7 @@ class Block<T> {
     private _id?:string; //todo check? 
     public children?: any;//todo
     private eventBus: Function;
-    props: any;
+    props: T;
   
     constructor(tagName:string = "div", propsAndChildren:T) {
       const eventBus = new EventBus();

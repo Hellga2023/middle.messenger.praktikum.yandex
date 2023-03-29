@@ -13,19 +13,19 @@ interface IProfileInfoLineProps {
     hasValue:boolean;
     class_: string;
     class?:string;
+    type?: string;
 }
 
 class Info extends Block<IProfileInfoLineProps> {
     constructor(props:IProfileInfoLineProps) {
         props.hasValue = props.value!='undefined';
+        props.class= "info-line__input";
         super('div', props);
     }
 
     public init(): void {
         this.children.errorLabel = new Label({});
-        this.children.input = new Input({...this.props, 
-            class: "info-line__input", 
-            events:{
+        this.children.input = new Input({...this.props, events:{
                 blur: (event:Event) => {                    
                     const element = event.target as HTMLInputElement;
                     this.validateInput(element);                 
@@ -34,6 +34,7 @@ class Info extends Block<IProfileInfoLineProps> {
                     const element = event.target as HTMLInputElement;
                     this.validateInput(element);     
                 }
+
         }});
     }
 

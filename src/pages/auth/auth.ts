@@ -25,10 +25,11 @@ class Auth extends Block<IAuthProps>{
             });
         data.class = "auth-form";
         data.inputs = inputs;
-        data.events = {submit:function(event:Event){
-            event.preventDefault();
-            Validation.validateForm(event.target as HTMLFormElement);
-        }}
+        data.events = {
+            submit:function(event:Event){
+                event.preventDefault();
+                Validation.validateForm(event.target as HTMLFormElement);
+            }};
         super('form', data);
     }
 

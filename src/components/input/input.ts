@@ -1,10 +1,11 @@
 import Block from "../../block/block";
 
 interface IInputProps{
-    class: string;
-    type: string;
+    class?: string;
+    type?: string;
     name:string;
     events?: any;
+    value?:string;
 }
 
 class Input extends Block<IInputProps>{

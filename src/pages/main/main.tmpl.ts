@@ -1,12 +1,28 @@
 const main = `
 <nav>
-    <a href="/profile">profile</a>
-    <a href="/editprofile"/>editprofile</a>
-    <a href="/login"/>login</a>
-    <a href="/signup"/>signup</a>
-    <a href="/chat"/>chat</a>
-    <a href="/500"/>500</a>
-    <a href="/404"/>404</a>
+    <ul>
+        <li>
+            <a href="/profile">profile</a>
+        </li>
+        <li>
+            <a href="/editprofile"/>editprofile</a>
+        </li>
+        <li>
+            <a href="/login"/>login</a>
+        </li>
+        <li>
+            <a href="/signup"/>signup</a>
+        </li>
+        <li>
+            <a href="/chat"/>chat</a>
+        </li>
+        <li>
+            <a href="/500"/>500</a>
+        </li>
+        <li>
+            <a href="/404"/>404</a>
+        </li>
+    </ul>
 </nav>`; 
 
 export default main;
