@@ -7,6 +7,10 @@ const Validation = {
 
     ERROR_CLASS : "error",
 
+    /*VALIDATION_TYPES: { /todo?
+
+    } as const,*/
+
     validateLogin(value:string):IValidationResult{
         const regex = /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/,
         isValid = regex.test(value);

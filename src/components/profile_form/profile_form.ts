@@ -43,9 +43,14 @@ class ProfileForm extends Block<IProfileFormProps> {
         data.userinfos =infoTemplates;
         data.avatarImg = avatarImg;
         data.class_ = data.editMode? "" :"text_left";   
-        data.events = {submit:function(event:Event){
+        data.events = {
+            submit:(event:Event)=>{
             event.preventDefault();
-            Validation.validateForm(event.target as HTMLFormElement);
+            let data = {};
+            this.children.userinfos.forEach(input => {
+                this.validateInput(input, data);                
+            });
+            console.log(data); 
         }}     
         super(data.editMode ? "form":"div", data);
     }
@@ -54,14 +59,7 @@ class ProfileForm extends Block<IProfileFormProps> {
 
         this.children.avatar= new Avatar({avatarUrl: this.props.avatarImg, alt: "avatar"});
         if(this.props.editMode){
-            this.children.btn = new Button({
-                text:"Save",
-                events: {
-                    click: function(event:Event){
-                        console.log(this.children);                       
-                    }
-                }
-            });
+            this.children.btn = new Button({ text:"Save" });
         }else{
             let links = new Array<Link>,
             underlinedClass = "underlined";
@@ -72,10 +70,14 @@ class ProfileForm extends Block<IProfileFormProps> {
         }
     }
 
-    validateInput(input:Block<any>):void{
-        let result = Validation.validateInput(input.props.name,input.props.value);
+    validateInput(inputGroup:Block<any>, data:object):void{
+        const input = inputGroup.children.input,
+              name = inputGroup.props.name,
+              value = (input.element! as HTMLInputElement).value;
+        data[name] = value;
+        let result = Validation.validateInput(name,value);
         input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        input.setProps({errorMessage: result.errorMessage});
+        inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     }
 
     public render(): DocumentFragment{

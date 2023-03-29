@@ -26,27 +26,19 @@ class Auth extends Block<IAuthProps>{
         data.class = "auth-form";
         data.inputs = inputs;
         data.events = {
-            submit:function(event:Event){
+            submit: (event:Event) => {
                 event.preventDefault();
-                Validation.validateForm(event.target as HTMLFormElement);
+                let data = {};
+                this.children.inputs.forEach(input => {
+                    this.validateInput(input, data);                
+                });
+                console.log(data); 
             }};
         super('form', data);
     }
 
     init() {
-        console.log("page init");
-        console.log(this.children);
-        console.log(this.props);
-        this.children.btn = new Button({...this.props.btn, events:{
-            click: function(event:Event){
-                console.log("click");
-                console.log(this.children);
-
-                /*this.children.inputs.forEach((input:any) => {
-                    this.validateInput(input);
-                });   */
-            }
-        }});
+        this.children.btn = new Button(this.props.btn);
         this.children.link = new Link(this.props.link);
     }
 
@@ -54,10 +46,14 @@ class Auth extends Block<IAuthProps>{
         return this.compile(auth);
     }
 
-    validateInput(input:Block<any>):void{
-        let result = Validation.validateInput(input.props.name,input.props.value);
+    validateInput(inputGroup:Block<any>, data:object):void{
+        const input = inputGroup.children.input,
+              name = inputGroup.props.name,
+              value = (input.element! as HTMLInputElement).value;
+        data[name] = value;
+        let result = Validation.validateInput(name,value);
         input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        input.setProps({errorMessage: result.errorMessage});
+        inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     }
 
 }

@@ -14,7 +14,7 @@ class Input extends Block<IInputProps>{
     }
 
     public init(): void {
-        this.element?.setAttribute("type", this.props.type);
+        this.element?.setAttribute("type", this.props.type!);
         this.element?.setAttribute("name", this.props.name);
         if(this.props.value){
             (this.element as HTMLInputElement).value = this.props.value;
