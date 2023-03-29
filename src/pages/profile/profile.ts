@@ -1,10 +1,13 @@
 import profile from './profile.tmpl';
 import Block from '../../block/block';
 import SectionLeft from '../../components/section_nav_left/section_nav_left';
-import ProfileForm from '../../components/profile_form/profile_form';
-import './profile.scss';
+import ProfileForm from '../../components/profile_form/profileForm';
+
 
 interface IProfileProps {
+    username: string;
+    editMode: boolean;   
+    infos: any[]; //todo create interface
 }
 
 class Profile extends Block<IProfileProps>{

@@ -1,12 +1,12 @@
-import profileForm from './profile_form.tmpl';
-import Button from '../../components/button/button';
-import Link from '../../components/link/link';
-import Info from '../../components/profile_info_line/profile_info_line';
-import Avatar from '../../components/avatar/avatar';
+import profileForm from './profileForm.tmpl';
+import Button from '../button/button';
+import Link from '../link/link';
+import Info from '../profile_info_line/profile_info_line';
+import Avatar from '../avatar/avatar';
 import avatarImg from '../../../static/avatar.png';
-import './profile_form.scss';
 import Block from '../../block/block';
 import Validation from '../../utils/validation';
+import './profileForm.scss';
 
 interface IProfileFormProps{ //todo all props here
     username: string;
@@ -15,7 +15,7 @@ interface IProfileFormProps{ //todo all props here
     editMode: boolean;   
     infos: any[]; //todo create interface
     class?:string;
-    class_:string;
+    class_?:string;
     userinfos?:any;
     events?:any;
 }

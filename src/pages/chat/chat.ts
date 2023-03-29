@@ -24,7 +24,7 @@ class Chat extends Block<IChatProps> {
         });
         data.link = new Link({text:"Profile >", url: "/profile", class_: "grey-text"});
         data.class = "content";
-        super('div', data);
+        super('main', data);
     }
     render():DocumentFragment{
         return this.compile(chat);
