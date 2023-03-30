@@ -1,7 +1,7 @@
 import auth from './auth.tmpl';
 import Button from '../../components/button/button';
 import Link from '../../components/link/link';
-import AuthInput from '../../components/auth_input/auth_input';
+import AuthInput from '../../components/auth_input/authInput';
 import './auth.scss';
 import Block from '../../block/block';
 import Validation from '../../utils/validation';

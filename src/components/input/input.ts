@@ -1,10 +1,8 @@
-import Block from "../../block/block";
+import Block, {IProps} from "../../block/block";
 
-interface IInputProps{
-    class?: string;
+export interface IInputProps extends IProps{
     type?: string;
-    name:string;
-    events?: any;
+    name?:string; //todo?
     value?:string;
 }
 
@@ -15,7 +13,7 @@ class Input extends Block<IInputProps>{
 
     public init(): void {
         this.element?.setAttribute("type", this.props.type!);
-        this.element?.setAttribute("name", this.props.name);
+        this.element?.setAttribute("name", this.props.name!);
         if(this.props.value){
             (this.element as HTMLInputElement).value = this.props.value;
         }       
