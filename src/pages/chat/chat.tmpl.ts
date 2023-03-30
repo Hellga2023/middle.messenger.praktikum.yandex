@@ -4,16 +4,12 @@ const chat = `  <div class="leftMenu">
                         <input type="search" class="search" placeholder="Search"/>
                     </div>
                     <div>
-                        {{#each chat_items}}
+                        {{#each chats}}
                             {{{this}}}
                         {{/each}} 
                     </div>
                 </div>
                 <div class="chat-content">
-                    <div class="chat-content__user">
-                        <img alt="user avatar" src="{{selectedChat.avatarUrl}}"/>
-                        <p>{{selectedChat.username}}</p>
-                    </div>
-                    <p>Please select chat to send the message</p>    
+                    {{{selectedChat}}}    
                 </div>`;
 export default chat;

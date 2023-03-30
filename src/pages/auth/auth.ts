@@ -1,7 +1,7 @@
 import auth from './auth.tmpl';
 import Button from '../../components/button/button';
 import Link from '../../components/link/link';
-import AuthInput from '../../components/auth_input/authInput';
+import AuthInput from '../../components/authInput/authInput';
 import './auth.scss';
 import Block from '../../block/block';
 import Validation from '../../utils/validation';
@@ -24,7 +24,7 @@ class Auth extends Block<IAuthProps>{
             submit: (event:Event) => {
                 event.preventDefault();
                 let data = {};
-                this.children.inputs.forEach(input => { Validation.validateInputInForm(input, data); });
+                this.children.inputs.forEach((input:AuthInput) => { Validation.validateInputInForm(input, data); });
                 console.log(data); 
             }};
         super('form', data);

@@ -1,37 +1,47 @@
-import Handlebars from 'handlebars';
 import chat from './chat.tmpl';
-import ChatItem from '../../components/chat_item/chat_item';
+import ChatItem from '../../components/chatItem/chatItem';
+import SelectedChat from '../../components/selectedChat/selectedChat';
 import Link from '../../components/link/link';
 import './chat.scss'; 
-import avatarImg from '../../../static/chatAvatar.png';
-import Block from '../../block/block';
+import Block, {IProps} from '../../block/block';
 
-interface IChatProps{
-    chatItems:any; //todo
+interface IChatProps extends IProps{
+    chats:any[]; //todo
+    selectedUsername?:string;
+    selectedUserAvatar?:string;
+    selectedChatId?:number;
 }
 
 class Chat extends Block<IChatProps> {
-    constructor(data) {
-        data.selectedChat = {
-            username: data.selectedChat.user,
-            avatarUrl: avatarImg
-        };
-        
+    constructor(data:IChatProps) {
+        const selectedChat = data.chats.find((chat:any) =>{ return chat.id == data.selectedChatId});
+        data.selectedUsername = selectedChat.name;
+        data.selectedUserAvatar = selectedChat.avatarUrl;        
         data.class = "content";
         super('main', data);
     }
 
     init():void{
         this.children.link = new Link({text:"Profile >", url: "/profile", class_: "grey-text"});
-        let chatItems = new Array<ChatItem>();
+        let chats = new Array<ChatItem>();
 
-        this.props.chatItems.forEach(function(element : any, id:number){ //todo any?
+        this.props.chats.forEach((element : any, id:number)=>{ //todo any?
             if(id==0){ element.class_ = "chat-item_first" }; 
-            element.avatarUrl = avatarImg;    
-            chatItems.push(new ChatItem(element));
+            let events = {
+                click: (event:Event) => {
+                    const selectedChatId = (event.target as HTMLElement).dataset.id;
+                    const currentChat = this.children.chats.find((chat:any) =>{ return chat.props.id == selectedChatId});
+                    this.children.selectedChat.setProps({username : currentChat.props.name});
+                    this.children.selectedChat.setProps({avatarUrl : currentChat.props.avatarUrl});
+                }
+            };  
+            chats.push(new ChatItem({...element, events}));
         });
-        this.children.chat_items = chatItems;
-    }
+        this.children.chats = chats;
+        this.children.selectedChat = new SelectedChat({
+            username:this.props.selectedUsername, 
+            avatarUrl:this.props.selectedUserAvatar});
+    } 
 
     render():DocumentFragment{
         return this.compile(chat);
