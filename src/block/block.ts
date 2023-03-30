@@ -21,28 +21,16 @@ abstract class Block<T extends Record<string,any>> {
     private eventBus: Function;
     props: T;
   
-    constructor(tagName:string = "div", propsAndChildren:T) {
+    constructor(tagName:string = "div", props:T) {
       const eventBus = new EventBus();
       this._meta = {
         tagName,
-        propsAndChildren
+        props
       };
       this._id = makeUUID();
+      this.children = {};
       
-      let props,
-      children;
-      if(typeof this.children == "undefined"){
-        let temp = this._getChildren(propsAndChildren);
-        children = temp.children;
-        props = temp.props;
-        this.children = children;
-      }
-      else{
-         props = propsAndChildren;
-      }
-      
-      this.props = this._makePropsProxy(props);//props;
-
+      this.props = this._makePropsProxy(props);
       //const withInternalID = props.withInternalID; todo
   
       this.eventBus = () => eventBus;
@@ -61,23 +49,6 @@ abstract class Block<T extends Record<string,any>> {
     }
 
     protected registerEvents(){}
-
-    private _getChildren(propsAndChildren:T){
-      const children = {};
-        const props = {};
-
-        Object.entries(propsAndChildren as object).forEach(([key, value]) => {       
-          if (value instanceof Block || (Array.isArray(value) && value.every((val) => val instanceof Block))) { //todo if array of blocks
-
-                children[key] = value;
-          } else {
-                props[key] = value;
-          }
-        });
-
-        return { children, props };
-    }
-    
 
     compile(template:string):DocumentFragment {
       const propsAndStubs = this.props,

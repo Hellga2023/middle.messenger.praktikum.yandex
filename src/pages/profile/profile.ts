@@ -8,19 +8,20 @@ interface IProfileProps {
     username: string;
     editMode: boolean;   
     infos: any[]; //todo create interface
+    class?:string;
 }
 
 class Profile extends Block<IProfileProps>{
 
-    constructor(data:IProfileProps) {
+    constructor(data:IProfileProps) {       
 
-        let params = {
-            sectionLeft: new SectionLeft({}),//todo
-            profileForm: new ProfileForm(data),
-            class : "content"
-        };
+        data.class = "content";
+        super('div', data);
+    }
 
-        super('div', params);
+    init(): void {
+        this.children.sectionLeft = new SectionLeft({});//todo params?
+        this.children.profileForm = new ProfileForm(this.props);
     }
 
     render():DocumentFragment{
