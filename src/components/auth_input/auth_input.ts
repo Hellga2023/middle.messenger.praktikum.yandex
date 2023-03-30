@@ -18,31 +18,23 @@ class AuthInput extends Block<IInputProps> {
         super('div', props);
     }
     public init(): void {
-        console.log("input init");
-        console.log(this.children);
         this.children.errorLabel = new Label({});
         this.children.input = new Input({...this.props, 
             class : "input-container__input",
             events:{
             blur: (event:Event) => {   
                 const element = event.target as HTMLInputElement;
-                this.validateInput(element);               
+                Validation.validateInput(element, this.children.errorLabel);               
             },
             focus: (event:Event) => {
                 const element = event.target as HTMLInputElement;
-                this.validateInput(element);    
+                Validation.validateInput(element, this.children.errorLabel);    
             }
         }});
     }
 
     public render(): DocumentFragment{        
         return this.compile(auth_input);
-    }
-
-    public validateInput(element:HTMLInputElement):void{
-        const result = Validation.validateInput(element.name, element.value);
-        element.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        this.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     }
 
 }

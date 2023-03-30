@@ -1,8 +1,8 @@
-import info_line from './profile_info_line.tmpl';
-import './profile_info_line.scss';
+import info_line from './profileInfoLine.tmpl';
+import './profileInfoLine.scss';
 import Block from '../../block/block';
-import Input from '../../components/input/input';
-import Label from '../../components/label/label';
+import Input from '../input/input';
+import Label from '../label/label';
 import Validation from '../../utils/validation';
 
 interface IProfileInfoLineProps {
@@ -28,11 +28,11 @@ class Info extends Block<IProfileInfoLineProps> {
         this.children.input = new Input({...this.props, events:{
                 blur: (event:Event) => {                    
                     const element = event.target as HTMLInputElement;
-                    this.validateInput(element);                 
+                    Validation.validateInput(element, this.children.errorLabel);                
                 },
                 focus: (event:Event) => {
                     const element = event.target as HTMLInputElement;
-                    this.validateInput(element);     
+                    Validation.validateInput(element, this.children.errorLabel);   
                 }
 
         }});
@@ -40,12 +40,6 @@ class Info extends Block<IProfileInfoLineProps> {
 
     public render(): DocumentFragment{
        return this.compile(info_line);
-    }
-
-    private validateInput(element:HTMLInputElement):void{
-        const result = Validation.validateInput(element.name, element.value);
-        element.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        this.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     }
 }
 

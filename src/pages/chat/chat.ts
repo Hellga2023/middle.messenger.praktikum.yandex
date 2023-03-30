@@ -22,10 +22,15 @@ class Chat extends Block<IChatProps> {
             element.avatarUrl = avatarImg;    
             data.chat_items.push(new ChatItem(element));
         });
-        data.link = new Link({text:"Profile >", url: "/profile", class_: "grey-text"});
+        //data.link = new Link({text:"Profile >", url: "/profile", class_: "grey-text"});
         data.class = "content";
         super('main', data);
     }
+
+    init():void{
+        this.children.link = new Link({text:"Profile >", url: "/profile", class_: "grey-text"});
+    }
+
     render():DocumentFragment{
         return this.compile(chat);
     }

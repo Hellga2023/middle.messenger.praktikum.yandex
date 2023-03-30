@@ -67,7 +67,7 @@ abstract class Block<T extends Record<string,any>> {
         const props = {};
 
         Object.entries(propsAndChildren as object).forEach(([key, value]) => {       
-          if (value instanceof Block || value instanceof Array<Block>) { //todo if array of blocks
+          if (value instanceof Block || (Array.isArray(value) && value.every((val) => val instanceof Block))) { //todo if array of blocks
 
                 children[key] = value;
           } else {
@@ -103,7 +103,7 @@ abstract class Block<T extends Record<string,any>> {
       if(child instanceof Block){
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`
       }
-      else if(child instanceof Array<Block>){  
+      else if(Array.isArray(child)){  
         propsAndStubs[key] = [];  
         child.forEach(element => {
           propsAndStubs[key].push(`<div data-id="${element._id}"></div>`); 
@@ -116,7 +116,7 @@ abstract class Block<T extends Record<string,any>> {
     Object.values(this.children).forEach(child => {
       if(child instanceof Block){
         const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
-        if(stub){ stub.replaceWith(child.getContent());}
+        if(stub){ stub.replaceWith(child.getContent()!);}
       }else if(Array.isArray(child)){  
         child.forEach(element => {
           const stub = fragment.content.querySelector(`[data-id="${element._id}"]`);

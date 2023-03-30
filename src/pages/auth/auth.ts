@@ -18,44 +18,29 @@ interface IAuthProps{
 class Auth extends Block<IAuthProps>{
 
     constructor(data:IAuthProps) {
-        let params,
-            inputs:Array<AuthInput> = new Array<AuthInput>;
-    
-        data.inputs.forEach((element:any) => { inputs.push(new AuthInput(element));
-            });
+
         data.class = "auth-form";
-        data.inputs = inputs;
         data.events = {
             submit: (event:Event) => {
                 event.preventDefault();
                 let data = {};
-                this.children.inputs.forEach(input => {
-                    this.validateInput(input, data);                
-                });
+                this.children.inputs.forEach(input => { Validation.validateInputInForm(input, data); });
                 console.log(data); 
             }};
         super('form', data);
     }
 
     init() {
+        let inputs:Array<AuthInput> = new Array<AuthInput>;
+        this.props.inputs.forEach((element:any) => { inputs.push(new AuthInput(element)); });
         this.children.btn = new Button(this.props.btn);
         this.children.link = new Link(this.props.link);
+        this.children.inputs = inputs;
     }
 
     render():DocumentFragment{
         return this.compile(auth);
     }
-
-    validateInput(inputGroup:Block<any>, data:object):void{
-        const input = inputGroup.children.input,
-              name = inputGroup.props.name,
-              value = (input.element! as HTMLInputElement).value;
-        data[name] = value;
-        let result = Validation.validateInput(name,value);
-        input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
-    }
-
 }
 
 export default Auth;
