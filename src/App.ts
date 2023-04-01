@@ -4,7 +4,7 @@ import Main from './pages/main/main';
 import Chat from './pages/chat/chat';
 import Error from './pages/error/error';
 import Block from './block/block';
-
+import avatarImg from '../static/chatAvatar.png';
 
 const data = {
     loginPage: {
@@ -40,10 +40,9 @@ const data = {
         username: "Olga"            
     },
     chatPage: {
-        selectedChat: {
-            user: "Andrey"
-        },
-        chatItems: [{
+        selectedChatId: 1,
+        chats: [{
+            id: 1,
             name: "Andrey",
             time: "10:59",
             unread_messages_count: 4,
@@ -51,27 +50,80 @@ const data = {
                 type: "text",
                 content: "blablabla"
             },
-            avatarUrl: "../static/chatAvatar.png"
+            avatarUrl: avatarImg,
+            messages: [
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                }
+            ]
         },
         {
-            name: "Andrey",
+            id: 2,
+            name: "Sergey",
             time: "10:59",
             unread_messages_count: 4,
             last_message: {
                 type: "text",
                 content: "blablabla"
             },
-            avatarUrl: "../static/chatAvatar.png"
+            avatarUrl: avatarImg,
+            messages: [
+                {   time: "19:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                }
+            ]
         },
         {
-            name: "Andrey",
+            id: 3,
+            name: "Vlad",
             time: "10:59",
             unread_messages_count: 4,
             last_message: {
                 type: "text",
                 content: "blablabla"
             },
-            avatarUrl: "../static/chatAvatar.png"
+            avatarUrl: avatarImg,
+            messages: [
+                {   time: "20:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                }
+            ]
         }
         ]
     } 

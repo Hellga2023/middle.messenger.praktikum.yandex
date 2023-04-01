@@ -12,8 +12,11 @@ class Error extends Block<IErrorProps> {
         }else if(data.code==500){
             data.message = "We are fixing the problem";
         }
-        data.link = new Link({text:"Back to chats", url: "/chat"})
+        
         super('div', data);
+    }
+    init(): void {
+        this.children.link = new Link({text:"Back to chats", url: "/chat"})
     }
     render():DocumentFragment{
         return this.compile(error);

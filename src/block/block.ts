@@ -2,7 +2,12 @@ import Handlebars from 'handlebars';
 import EventBus from "./eventbus"; 
 import {v4 as makeUUID} from 'uuid';
 
-abstract class Block<T extends Record<string,any>> {
+export interface IProps extends Record<string,unknown> {
+  class?:string;
+  events?:any; //todo?
+}
+
+abstract class Block<IProps> {
 
     static EVENTS = {
       INIT: "init",
@@ -14,38 +19,27 @@ abstract class Block<T extends Record<string,any>> {
     private _element?:HTMLElement;
     private _meta? : {
       tagName: string, 
-      propsEndChildren: any //todo
+      props: IProps //todo
       };
-    private _id?:string; //todo check? 
+    private _id?:string; //todo check?    
+    private _eventBus: Function;
+
     public children?: any;//todo
-    private eventBus: Function;
-    props: T;
+    public props: IProps;
   
-    constructor(tagName:string = "div", propsAndChildren:T) {
+    constructor(tagName:string = "div", props:IProps) {
       const eventBus = new EventBus();
       this._meta = {
         tagName,
-        propsAndChildren
+        props
       };
       this._id = makeUUID();
+      this.children = {};
       
-      let props,
-      children;
-      if(typeof this.children == "undefined"){
-        let temp = this._getChildren(propsAndChildren);
-        children = temp.children;
-        props = temp.props;
-        this.children = children;
-      }
-      else{
-         props = propsAndChildren;
-      }
-      
-      this.props = this._makePropsProxy(props);//props;
-
+      this.props = this._makePropsProxy(props) as IProps;
       //const withInternalID = props.withInternalID; todo
   
-      this.eventBus = () => eventBus;
+      this._eventBus = () => eventBus;
       
   
      this._registerEvents(eventBus);
@@ -61,23 +55,6 @@ abstract class Block<T extends Record<string,any>> {
     }
 
     protected registerEvents(){}
-
-    private _getChildren(propsAndChildren:T){
-      const children = {};
-        const props = {};
-
-        Object.entries(propsAndChildren as object).forEach(([key, value]) => {       
-          if (value instanceof Block || value instanceof Array<Block>) { //todo if array of blocks
-
-                children[key] = value;
-          } else {
-                props[key] = value;
-          }
-        });
-
-        return { children, props };
-    }
-    
 
     compile(template:string):DocumentFragment {
       const propsAndStubs = this.props,
@@ -103,7 +80,7 @@ abstract class Block<T extends Record<string,any>> {
       if(child instanceof Block){
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`
       }
-      else if(child instanceof Array<Block>){  
+      else if(Array.isArray(child)){  
         propsAndStubs[key] = [];  
         child.forEach(element => {
           propsAndStubs[key].push(`<div data-id="${element._id}"></div>`); 
@@ -116,7 +93,7 @@ abstract class Block<T extends Record<string,any>> {
     Object.values(this.children).forEach(child => {
       if(child instanceof Block){
         const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
-        if(stub){ stub.replaceWith(child.getContent());}
+        if(stub){ stub.replaceWith(child.getContent()!);}
       }else if(Array.isArray(child)){  
         child.forEach(element => {
           const stub = fragment.content.querySelector(`[data-id="${element._id}"]`);
@@ -136,7 +113,7 @@ abstract class Block<T extends Record<string,any>> {
       this._createResources();  
       if(this.props.class){this._element!.classList.add(this.props.class);}
       this.init();
-      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+      this._eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   
     init() {}
@@ -156,7 +133,7 @@ abstract class Block<T extends Record<string,any>> {
      }
   
     public dispatchComponentDidMount() {
-      this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+      this._eventBus().emit(Block.EVENTS.FLOW_CDM);
       //dispatch children?
     }
   
@@ -204,34 +181,32 @@ abstract class Block<T extends Record<string,any>> {
       return this.element;
     }
 
-    setProps = nextProps => {
+    setProps = (nextProps:IProps) => {
       if (!nextProps) {
         return;
       }
   
-      Object.assign(this.props, nextProps);
+      Object.assign(this.props as object, nextProps);
       
-      this.eventBus().emit(Block.EVENTS.FLOW_CDU);
+      this._eventBus().emit(Block.EVENTS.FLOW_CDU);
     }
 
-    _makePropsProxy(props:T) {
+    _makePropsProxy(props:IProps){
       
         const self = this;
   
       return new Proxy(props, {
         get(target, prop) {
-          //_checkAccess(prop);
           const value = target[prop];
           return typeof value === "function" ? value.bind(target) : value;
         },
         set(target, prop, value) {
-          //_checkAccess(prop);
           const oldTarget = {...target};
           target[prop] = value;
           
           // Запускаем обновление компоненты
           // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
-          //self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+          //self._eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
           return true;
         }
       });

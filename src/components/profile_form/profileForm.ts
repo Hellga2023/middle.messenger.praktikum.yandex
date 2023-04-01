@@ -1,7 +1,7 @@
 import profileForm from './profileForm.tmpl';
 import Button from '../button/button';
 import Link from '../link/link';
-import Info from '../profile_info_line/profile_info_line';
+import Info from '../profileInfoLine/profileInfoLine';
 import Avatar from '../avatar/avatar';
 import avatarImg from '../../../static/avatar.png';
 import Block from '../../block/block';
@@ -15,42 +15,21 @@ interface IProfileFormProps{ //todo all props here
     editMode: boolean;   
     infos: any[]; //todo create interface
     class?:string;
-    class_?:string;
-    userinfos?:any;
+    class_?:string;    
     events?:any;
 }
-
-interface IInfoProps{
-    name: string;
-    label: string;
-    value: string;
-    userinfos?:any;
-    
-}
-
 class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
 
-        let infoTemplates=new Array<Info>, 
-        underlinedClass = "underlined";
-
-        data.infos.forEach(function(element, id, arr){
-            element.isDisabled = !data.editMode;
-            element.class_ = arr.length-1 == id ? "" : underlinedClass;
-            infoTemplates.push(new Info(element));
-        });
         data.class = "profile-container";    
-        data.userinfos =infoTemplates;
         data.avatarImg = avatarImg;
         data.class_ = data.editMode? "" :"text_left";   
         data.events = {
             submit:(event:Event)=>{
-            event.preventDefault();
-            let data = {};
-            this.children.userinfos.forEach(input => {
-                this.validateInput(input, data);                
-            });
-            console.log(data); 
+                event.preventDefault();
+                let data = {};
+                this.children.userinfos.forEach(input => { Validation.validateInputInForm(input, data); });
+                console.log(data); 
         }}     
         super(data.editMode ? "form":"div", data);
     }
@@ -68,16 +47,15 @@ class ProfileForm extends Block<IProfileFormProps> {
             links.push(new Link({text:"Return"}));
             this.children.links = links;
         }
-    }
 
-    validateInput(inputGroup:Block<any>, data:object):void{
-        const input = inputGroup.children.input,
-              name = inputGroup.props.name,
-              value = (input.element! as HTMLInputElement).value;
-        data[name] = value;
-        let result = Validation.validateInput(name,value);
-        input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
+        let infoTemplates=new Array<Info>, 
+        underlinedClass = "underlined";
+        this.props.infos.forEach((element, id, arr)=>{
+            element.isDisabled = !this.props.editMode;
+            element.class_ = arr.length-1 == id ? "" : underlinedClass;
+            infoTemplates.push(new Info(element));
+        });
+        this.children.userinfos = infoTemplates;
     }
 
     public render(): DocumentFragment{

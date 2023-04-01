@@ -1,3 +1,6 @@
+import Block from "../block/block";
+import Label from "../components/label/label";
+
 interface IValidationResult {
     errorMessage:string,
     isValid:boolean
@@ -62,7 +65,7 @@ const Validation = {
             isValid: value.length !== 0
         };
     },
-    validateInput(name: string, value:string):IValidationResult{
+    _validateInput(name: string, value:string):IValidationResult{
         const validateFn = this.chooseMethod(name);
 
         if(typeof validateFn == "undefined"){ //todo handle this case
@@ -78,23 +81,23 @@ const Validation = {
             errorMessage: result.errorMessage
         };
     },
-    validateForm(form:HTMLFormElement):boolean{ //todo remove method
-        let formData = new FormData(form),
-            isFormValid:boolean = true,
-            data:any = {};
-        for (const [key, value] of formData) {
-            data[key] = value;
-            let result = this.validateInput(key,value);   
-                if(!result.isValid){
-                    isFormValid = false;
-                }
-                form.elements[key].classList[result.isValid?"remove":"add"](this.ERROR_CLASS); 
-                //todo get сhildren.inputs to show error message   
-        }
-        console.log(data);  
-        console.log(isFormValid);    
-        return isFormValid;
+    validateInput(element:HTMLInputElement, errorLabel:Label):void{
+        const result = this._validateInput(element.name, element.value);
+        element.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
+        errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     },
+
+    validateInputInForm(inputGroup:Block<any>, data:object):void{
+            const input = inputGroup.children.input,
+                  name = inputGroup.props.name,
+                  value = (input.element! as HTMLInputElement).value;
+            data[name] = value;
+            let result = Validation._validateInput(name,value);
+            input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
+            inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
+
+    },
+
     chooseMethod(name:string):Function{
         let validateFn:(value:string)=>IValidationResult;
         switch(name){
