@@ -16,7 +16,8 @@ class Chat extends Block<IChatProps> {
     constructor(data:IChatProps) {
         const selectedChat = data.chats.find((chat:any) =>{ return chat.id == data.selectedChatId});
         data.selectedUsername = selectedChat.name;
-        data.selectedUserAvatar = selectedChat.avatarUrl;        
+        data.selectedUserAvatar = selectedChat.avatarUrl;     
+        data.selectedChatMessages = selectedChat.messages;
         data.class = "content";
         super('main', data);
     }
@@ -40,7 +41,9 @@ class Chat extends Block<IChatProps> {
         this.children.chats = chats;
         this.children.selectedChat = new SelectedChat({
             username:this.props.selectedUsername, 
-            avatarUrl:this.props.selectedUserAvatar});
+            avatarUrl:this.props.selectedUserAvatar,
+            messages: this.props.selectedChatMessages as Array<any>
+        });
     } 
 
     render():DocumentFragment{

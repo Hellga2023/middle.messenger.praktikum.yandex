@@ -4,6 +4,7 @@ export interface IInputProps extends IProps{
     type?: string;
     name?:string; //todo?
     value?:string;
+    placeholder?:string;
 }
 
 class Input extends Block<IInputProps>{
@@ -14,6 +15,7 @@ class Input extends Block<IInputProps>{
     public init(): void {
         this.element?.setAttribute("type", this.props.type!);
         this.element?.setAttribute("name", this.props.name!);
+        this.props.placeholder && this.element?.setAttribute("placeholder", this.props.placeholder);
         if(this.props.value){
             (this.element as HTMLInputElement).value = this.props.value;
         }       

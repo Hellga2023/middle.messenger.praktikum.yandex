@@ -29,8 +29,13 @@
     border-radius: 50%;
     width: 2em;
     height: 2em;
-    padding-top: 0.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--default-blue-color);
     color: var(--white);
-    text-align: center;
 } 
+
+.message-preview__user{
+    font-weight: bold;
+}

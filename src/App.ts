@@ -50,7 +50,24 @@ const data = {
                 type: "text",
                 content: "blablabla"
             },
-            avatarUrl: avatarImg
+            avatarUrl: avatarImg,
+            messages: [
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                }
+            ]
         },
         {
             id: 2,
@@ -61,7 +78,24 @@ const data = {
                 type: "text",
                 content: "blablabla"
             },
-            avatarUrl: avatarImg
+            avatarUrl: avatarImg,
+            messages: [
+                {   time: "19:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                }
+            ]
         },
         {
             id: 3,
@@ -72,7 +106,24 @@ const data = {
                 type: "text",
                 content: "blablabla"
             },
-            avatarUrl: avatarImg
+            avatarUrl: avatarImg,
+            messages: [
+                {   time: "20:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                },
+                {   time: "18:07",
+                    text: "dbfjsfbs dfsdhfsnf djhsdhfsnfs vjsdhfshflnsd sdjfbksjhfsdf"
+                }
+            ]
         }
         ]
     } 

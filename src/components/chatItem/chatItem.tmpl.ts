@@ -2,7 +2,7 @@ const chatItem = `<div class="chat-item {{{class_}}}" data-id="{{{id}}}">
                     <div class="chat-item__user-data">
                         <img alt="user avatar" src="{{{avatarUrl}}}"/>
                         <div class="chat-item__user-data__message-preview">
-                            <p>{{{name}}}</p>
+                            <p class="message-preview__user">{{{name}}}</p>
                             <p>{{{last_message.type}}}</p>
                             <p>{{{last_message.content}}}</p>
                         </div>         
