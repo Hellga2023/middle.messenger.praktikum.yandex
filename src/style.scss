@@ -1,0 +1,46 @@
+:root {
+    --text-black-color: #1E1E1E;
+    --text-grey-color: #999;
+    --default-blue-color: #3369f3;
+    --alt-blue-color: #5a84f0;
+    --border-grey-color: #eaeaea;
+    --background-grey-color: #EFEFEF;
+    --background-light-grey-color:#fbfbfb;
+    --box-shadow-color: rgba(0 0 0/ 14%);
+    --white: #fff;
+    --default-red-color: #FF2F2F;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url("../static/Inter-VariableFont_slnt,wght.ttf");
+} 
+
+.content{
+    display: flex;
+    justify-content: center;
+    font-family: Inter, sans-serif;  
+    color: var(--black-text-color);
+}    
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.header{
+    font-size: 1.5em;
+    font-weight: normal;
+    text-align: center;
+}
+
+.error{
+    color: var(--default-red-color);
+}
+
+.underlined{
+    border-bottom: 1px solid var(--border-grey-color);
+}
+
+.text_left{
+    text-align: left;
+}
