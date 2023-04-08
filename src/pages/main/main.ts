@@ -6,7 +6,7 @@ interface IMainProps{}
 
 class Main extends Block<IMainProps>{ 
     constructor (){
-        super('div', {});
+        super({});
     }
     render():DocumentFragment{
         return this.compile(main);

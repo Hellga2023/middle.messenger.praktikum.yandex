@@ -1,8 +1,8 @@
 import link from './link.tmpl';
 import './link.scss';
-import Block from '../../block/block';
+import Block, { IProps } from '../../block/block';
 
-interface ILinkProps{
+interface ILinkProps extends IProps{
     class_?:string;
     url?:string;//todo?
     text:string;
@@ -10,7 +10,7 @@ interface ILinkProps{
 
 class Link extends Block<ILinkProps> {
     constructor(props:ILinkProps) {
-        super('div', props);
+        super(props);
     }
 
     public render(): DocumentFragment{

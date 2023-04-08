@@ -8,7 +8,7 @@ interface IButtonProps extends IProps{
 
 class Button extends Block<IButtonProps> {
     constructor(props:IButtonProps) {
-        super('button', props);
+        super(props, 'button');
     }
 
     init(): void {

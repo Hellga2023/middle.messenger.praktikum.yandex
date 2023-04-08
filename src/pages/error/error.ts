@@ -13,7 +13,7 @@ class Error extends Block<IErrorProps> {
             data.message = "We are fixing the problem";
         }
         
-        super('div', data);
+        super(data);
     }
     init(): void {
         this.children.link = new Link({text:"Back to chats", url: "/chat"})

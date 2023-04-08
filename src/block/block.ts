@@ -27,7 +27,7 @@ abstract class Block<IProps> {
     public children?: any;//todo
     public props: IProps;
   
-    constructor(tagName:string = "div", props:IProps) {
+    constructor(props:IProps, tagName:string = "div") {
       const eventBus = new EventBus();
       this._meta = {
         tagName,
@@ -187,7 +187,6 @@ abstract class Block<IProps> {
       }
   
       Object.assign(this.props as object, nextProps);
-      
       this._eventBus().emit(Block.EVENTS.FLOW_CDU);
     }
 

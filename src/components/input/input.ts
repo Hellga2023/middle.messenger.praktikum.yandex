@@ -9,7 +9,7 @@ export interface IInputProps extends IProps{
 
 class Input extends Block<IInputProps>{
     constructor(props:IInputProps){
-        super("input", props);
+        super(props, "input");
     }
 
     public init(): void {

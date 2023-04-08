@@ -20,7 +20,7 @@ class Info extends Block<IProfileInfoLineProps> {
     constructor(props:IProfileInfoLineProps) {
         props.hasValue = props.value!='undefined';
         props.class= "info-line__input";
-        super('div', props);
+        super(props);
     }
 
     public init(): void {

@@ -1,12 +1,13 @@
 .chat-item{
-    border-bottom: 1px solid var(--border-grey-color);
+    border-top: 1px solid var(--border-grey-color);
     flex-direction: row;
     display: flex;
     justify-content: space-between;
+    padding: 0 1em;
 }
 
-.chat-item_first{
-    border-top: 1px solid var(--border-grey-color);
+.chat-item_selected{
+    background-color: var(--background-light-blue-color); 
 }
 
 .chat-item__user-data{

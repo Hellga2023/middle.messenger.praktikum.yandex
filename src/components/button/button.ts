@@ -11,7 +11,7 @@ const button =`<button type="{{type}}" class="button">{{text}}</button>`;
 class Button extends Block<IButtonProps> {
     constructor(props:IButtonProps) {
         props.type = props.type||"submit";
-        super('div', props);
+        super(props);
     }
 
     public render(): DocumentFragment{

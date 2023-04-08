@@ -1,7 +1,7 @@
 import Block from "../block/block";
 import Label from "../components/label/label";
 
-interface IValidationResult {
+export interface IValidationResult {
     errorMessage:string,
     isValid:boolean
 }
@@ -87,7 +87,7 @@ const Validation = {
         errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     },
 
-    validateInputInForm(inputGroup:Block<any>, data:object):void{
+    /*validateInputInForm(inputGroup:Block<any>, data:object):boolean{
             const input = inputGroup.children.input,
                   name = inputGroup.props.name,
                   value = (input.element! as HTMLInputElement).value;
@@ -95,7 +95,11 @@ const Validation = {
             let result = Validation._validateInput(name,value);
             input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
             inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
+            return result.isValid;
+    },*/
 
+    validateInputInForm(name:string, value:string):IValidationResult{
+        return Validation._validateInput(name,value);
     },
 
     chooseMethod(name:string):Function{

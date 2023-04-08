@@ -8,7 +8,7 @@ interface ILabelProps{
 class Input extends Block<ILabelProps>{
     constructor(props:ILabelProps){
         props.class = "input-container__errorlabel";
-        super("label", props);
+        super(props,"label");
     }
 
     public init(): void {

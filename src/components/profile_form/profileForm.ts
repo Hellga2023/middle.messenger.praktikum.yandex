@@ -4,19 +4,27 @@ import Link from '../link/link';
 import Info from '../profileInfoLine/profileInfoLine';
 import Avatar from '../avatar/avatar';
 import avatarImg from '../../../static/avatar.png';
-import Block from '../../block/block';
+import Block, { IProps } from '../../block/block';
 import Validation from '../../utils/validation';
 import './profileForm.scss';
+import { store, withStore } from '../../modules/store';
+import { Routes } from '../../routing/router';
 
-interface IProfileFormProps{ //todo all props here
+interface IProfileFormProps extends IProps{ //todo all props here
     username: string;
     avatarImg?: any;
     avatar?: Avatar;
     editMode: boolean;   
     infos: any[]; //todo create interface
-    class?:string;
-    class_?:string;    
-    events?:any;
+    class_?:string;
+    /*id: number;
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  password: string;
+  phone: string;*/
+  
 }
 class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
@@ -31,7 +39,9 @@ class ProfileForm extends Block<IProfileFormProps> {
                 this.children.userinfos.forEach(input => { Validation.validateInputInForm(input, data); });
                 console.log(data); 
         }}     
-        super(data.editMode ? "form":"div", data);
+        super(data, data.editMode ? "form":"div");
+        console.log("this.props");
+        console.log(this.props);
     }
 
     public init(): void {
@@ -42,11 +52,22 @@ class ProfileForm extends Block<IProfileFormProps> {
         }else{
             let links = new Array<Link>,
             underlinedClass = "underlined";
-            links.push(new Link({text:"Edit profile", url: "/editprofile", class_: underlinedClass}));
+            links.push(new Link({text:"Edit profile", url: Routes.Profile, class_: underlinedClass, events: {click: ()=>{ /* set state editMode */}}}));
             links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
             links.push(new Link({text:"Return"}));
             this.children.links = links;
         }
+
+
+        /*let props = {editMode: false,
+            infos: [{label:"Email", value:this.props.email, name: "email"},
+                    {label:"Login", value:"Hellga", name: "login"},
+                    {label:"Name", value:"Olga", name: "first_name"},
+                    {label:"Surname", value:"Kup", name: "second_name"},
+                    {label:"Nickname", value:"Hellga", name: "display_name"},
+                    {label:"Phone", value:"+7 999 111-11-11", name: "phone"}],
+            username: "Olga" };  */
+
 
         let infoTemplates=new Array<Info>, 
         underlinedClass = "underlined";
@@ -56,6 +77,12 @@ class ProfileForm extends Block<IProfileFormProps> {
             infoTemplates.push(new Info(element));
         });
         this.children.userinfos = infoTemplates;
+
+        /*console.log("name from state");
+        console.log(store.getState());
+        console.log(store.getState().profile);
+        console.log("name from props");
+        console.log(this.props)*/
     }
 
     public render(): DocumentFragment{
@@ -63,5 +90,8 @@ class ProfileForm extends Block<IProfileFormProps> {
     }
 
 }
+
+//const withUser = withStore((state) => ({ ...state.profile.user }));
+//const ProfileForm = withUser(ProfileFormPage);
 
 export default ProfileForm;

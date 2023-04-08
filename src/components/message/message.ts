@@ -9,7 +9,7 @@ const message =`{{text}}<p>{{time}}</p>`;
 
 class Message extends Block<IMessageProps>{
     constructor(props:IMessageProps){
-        super("div", props);
+        super(props);
     }
 
     public init(): void {

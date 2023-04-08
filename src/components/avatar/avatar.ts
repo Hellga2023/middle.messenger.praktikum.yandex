@@ -13,7 +13,7 @@ interface IAvatarProps{
 
 class Avatar extends Block<IAvatarProps> {
     constructor(props:IAvatarProps) {
-        super('div', props);
+        super(props);
     }
 
     public render(): DocumentFragment{        

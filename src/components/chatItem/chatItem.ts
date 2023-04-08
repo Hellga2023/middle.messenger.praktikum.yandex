@@ -8,7 +8,7 @@ import Block,{IProps} from '../../block/block';
 }*/
 class ChatItem extends Block<IProps> {
     constructor(props:IProps) {
-        super('div', props);
+        super(props);
     }
 
     public render(): DocumentFragment{

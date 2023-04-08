@@ -12,7 +12,7 @@ interface IInputGroupProps extends IInputProps{
 class AuthInput extends Block<IInputGroupProps> {
     constructor(props:IInputGroupProps) {
         if(!props.type) { props.type ="text";}
-        super('div', props);
+        super(props);
     }
     public init(): void {
         this.children.errorLabel = new Label({});

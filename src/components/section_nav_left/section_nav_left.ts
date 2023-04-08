@@ -9,7 +9,7 @@ interface ISectionProps{
 class SectionLeft extends Block<ISectionProps> {
     constructor(props) {
         props.class = "section-left";
-        super('div', props);
+        super(props);
     }
 
     public render(): DocumentFragment{

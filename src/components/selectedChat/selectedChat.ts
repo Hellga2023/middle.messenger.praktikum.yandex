@@ -17,7 +17,7 @@ interface ISelectedChatProps extends IProps{
 class SelectedChat extends Block<ISelectedChatProps> {
     constructor(props:ISelectedChatProps) {
         props.date = "March 30";
-        super('div', props);
+        super(props);
     }
 
     init(): void {
