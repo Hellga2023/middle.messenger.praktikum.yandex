@@ -36,7 +36,7 @@ class ValidatableInput extends Block<IValidatableInputProps> {
         return this.compile(validatableInput)
     }
 
-    public validate(){
+    public validate():void{
         let element = this.children.input.element as HTMLInputElement;
         this.setError(Validation.validateInput(element.name, element.value)); 
     }
@@ -50,7 +50,7 @@ class ValidatableInput extends Block<IValidatableInputProps> {
         return result.isValid;
     }
 
-    public setError(result:IValidationResult){
+    public setError(result:IValidationResult):void{
         this.children.input.element.classList[result.isValid?"remove":"add"]("error");
         this.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
     }

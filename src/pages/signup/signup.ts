@@ -61,7 +61,7 @@ class SignupPage extends Block<ISignupProps>{
                 errorLabelClass: "input-container__errorlabel",
                 inputProps: {
                     name:info.name,
-                    type: info.text,
+                    type: info.type,
                     class:  "input-container__input"
                 }
             } as IValidatableInputProps;

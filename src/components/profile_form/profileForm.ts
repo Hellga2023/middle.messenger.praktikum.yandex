@@ -40,23 +40,17 @@ class ProfileForm extends Block<IProfileFormProps> {
         store.on(StoreEvents.Updated, () => { 
             try{
                 const state = store.getState().profile;
-                    console.log("setting");
                     this.setProps({
                         isLoading : state.isLoading,
                         editMode : state.editMode,
                         username: state.user!.first_name,
                         footerClass : state.editMode ? "" :"text_left"
                     })
-                    console.log("editmode " + state.editMode);
                     this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
                         let input = validatableInput.children.input,
                             name = input.props.name,
                             val = state.user![name];
-                            console.log("group " + validatableInput.props.isDisabled);
-                            console.log("input " + input.props.isDisabled);
-                            //remove disabled attr!!!
-
-                        input.setProps({value: val, isDisabled: state.editMode });                  
+                        input.setProps({value: val, isDisabled: !state.editMode });                  
                     });
                 
             }catch(err){
@@ -116,8 +110,6 @@ class ProfileForm extends Block<IProfileFormProps> {
                     let isValid = input.validateInForm(data);
                     if(!isValid) { isFormValid = false;}
                 });
-                console.log(data); 
-                console.log(isFormValid);
                 if(isFormValid){
                     // user controller post user data
                 }
@@ -127,7 +119,6 @@ class ProfileForm extends Block<IProfileFormProps> {
     public render(): DocumentFragment{
        return this.compile(profileForm);
     }
-
 }
 
 /*todo withStore???*/
