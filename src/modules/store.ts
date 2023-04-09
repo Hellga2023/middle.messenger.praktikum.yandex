@@ -47,7 +47,7 @@ class Store extends EventBus{
   
   public set(path: string, value: unknown) {
     set(this.state, path, value);
-    console.log("before event");
+    //console.log("before event");
     this.emit(StoreEvents.Updated);
   };
 } 
@@ -63,7 +63,7 @@ export const withStore = (mapStateToProps: (state: State) => any) => {
         super({ ...props, ...mappedState });
   
         store.on(StoreEvents.Updated, () => {
-          console.log("event here");
+          //console.log("event here");
           const newMappedState = mapStateToProps(store.getState());          
           this.setProps(newMappedState);
         });

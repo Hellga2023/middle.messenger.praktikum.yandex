@@ -35,8 +35,9 @@ class LoginPage extends Block<IAuthProps>{
         this.children.btn = new Button({text: "Login"});
         this.children.link = new Link({text:"No account yet?", url: Routes.Signup});
         this.children.inputs = inputs;
-        this.children.btn1 = new Button({text: "Logout", events:{
+        this.children.logout = new Link({text: "Logout", events:{
             click: (event:Event)=>{
+                event.preventDefault();
                 AuthController.logout();
             }
             }});
@@ -71,8 +72,8 @@ class LoginPage extends Block<IAuthProps>{
     }
 }
 
-const withSignup = withStore((state) => ({ ...state.login }));
+const withLogin = withStore((state) => ({ ...state.login }));
 
-const Login = withSignup(LoginPage);
+const Login = withLogin(LoginPage);
 
 export default Login;

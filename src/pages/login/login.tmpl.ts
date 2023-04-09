@@ -14,7 +14,7 @@ const auth = `
         </div>
     <div class="auth-form__buttons">
         {{{btn}}}
-        {{{btn1}}}
+        {{{logout}}}
         {{{link}}}
     </div>
     {{/if}}

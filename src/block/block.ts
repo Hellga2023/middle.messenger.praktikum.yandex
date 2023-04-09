@@ -1,6 +1,7 @@
 import Handlebars from 'handlebars';
 import EventBus from "./eventbus"; 
 import {v4 as makeUUID} from 'uuid';
+import Info from '../components/profileInfoLine/profileInfoLine';
 
 export interface IProps extends Record<string,unknown> {
   class?:string;

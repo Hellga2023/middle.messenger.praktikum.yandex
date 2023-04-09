@@ -15,23 +15,23 @@ export class HTTP {
                 this.endpoint = `${HTTP.API_URL}${endpoint}`;
         }
 
-    public get<Response> (path: string, options = {}):Promise<Response> {             
-            return this.request<Response>(this.endpoint + path, {...options, method: METHODS.GET}, options.timeout);
+    public get (path: string, options = {}) {             
+            return this.request(this.endpoint + path, {...options, method: METHODS.GET}, options.timeout);
     };
 
-    public post<Response = void>(path: string, options = {}) {
+    public post(path: string, options = {}) {
             return this.request(this.endpoint + path, {...options, method: METHODS.POST}, options.timeout);
     };
 
-    public put<Response = void> (path: string, options = {}) {
+    public put (path: string, options = {}) {
             return this.request(this.endpoint + path, {...options, method: METHODS.PUT}, options.timeout);
     };
 
-    public delete<Response> (path: string, options = {}) { 
+    public delete (path: string, options = {}) { 
             return this.request(this.endpoint + path, {...options, method: METHODS.DELETE}, options.timeout);
     };
 
-    public request<Response>(url:string, options = {}, timeout = 5000):Promise<Response> {
+    public request(url:string, options = {}, timeout = 5000) {
             const {headers = {}, method, data, withCredentials} = options;
 
             console.log(headers);

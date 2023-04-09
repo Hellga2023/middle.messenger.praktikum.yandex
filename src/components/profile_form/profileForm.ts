@@ -7,7 +7,7 @@ import avatarImg from '../../../static/avatar.png';
 import Block, { IProps } from '../../block/block';
 import Validation from '../../utils/validation';
 import './profileForm.scss';
-import { store, withStore } from '../../modules/store';
+import { store, StoreEvents, withStore } from '../../modules/store';
 import { Routes } from '../../routing/router';
 
 interface IProfileFormProps extends IProps{ //todo all props here
@@ -17,13 +17,13 @@ interface IProfileFormProps extends IProps{ //todo all props here
     editMode: boolean;   
     infos: any[]; //todo create interface
     class_?:string;
-    /*id: number;
+    id: number;
   first_name: string;
   second_name: string;
   login: string;
   email: string;
   password: string;
-  phone: string;*/
+  phone: string;
   
 }
 class ProfileForm extends Block<IProfileFormProps> {
@@ -40,8 +40,32 @@ class ProfileForm extends Block<IProfileFormProps> {
                 console.log(data); 
         }}     
         super(data, data.editMode ? "form":"div");
-        console.log("this.props");
-        console.log(this.props);
+
+        store.on(StoreEvents.Updated, () => { 
+            try{
+                const mappedState = store.getState().profile.user;
+                if(mappedState!=null){
+                    //const newProps = {...this.props, ...mappedState};
+                    //this.setProps(newProps); 
+
+                    this.children.userinfos.forEach(
+                    (inputGroup:Info) => { 
+                        let input = inputGroup.children.input,
+                            name = input.props.name,
+                            val = mappedState[name];
+                        input.setProps({value: val});                    
+                    }
+                );
+                //newProps.username = mappedState.first_name;
+                //this.setProps(newProps)
+                }
+                
+            }catch(err){
+                console.log(err);
+            }
+            
+        });
+
     }
 
     public init(): void {

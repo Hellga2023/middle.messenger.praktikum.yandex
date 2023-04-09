@@ -15,25 +15,18 @@ class AuthController {
     public async login(data: LoginFormModel) {
         try {
             store.set("login.isLoading",true);
-            console.log(data);
-            let result = await this._api.signin(data); 
-            console.log("sign");
-            //await this.getUser();
-            
-            
-            if(result == "OK"){
-                console.log("result");
-                console.log(result);
-                //let userId = result.id;
-                store.set("login.isLoading",false);
-                router.go(Routes.Profile)
-            }
-            else if(result.reason){
-                console.log(1);
-                console.log(result.reason);
-                store.set("login.isLoading",false);
-                store.set('login.validationError', result.reason);
-            }             
+            await this._api.signin(data)
+                .then((response)=>{
+                    let data = (response as XMLHttpRequest).responseText;
+                    if(data==="OK"){
+                        store.set("login.isLoading",false);
+                        router.go(Routes.Profile)
+                    }else{
+                        const error = JSON.parse(data);
+                        store.set("login.isLoading",false);
+                        store.set("login.validationError", error.reason);
+                    }
+                });  
         } catch (error) {
             console.log(error);
         }
@@ -59,17 +52,20 @@ class AuthController {
     }
 
     public async logout() {
-        this._api.logout();
+        this._api.logout()
+       .then(() => {
+            store.set('profile.user', null);
+            router.go(Routes.Login);
+        })
+      .catch(console.log);        
     }
 
     public async getUser() {
         try{
-        console.log("get user");
         store.set('profile.isLoading', true);
-        console.log("loading");
-        await this._api.getUser().then(
-            (user : User)=>{                
-            //const user = JSON.parse(response.responseText);
+        //console.log("loading");
+        await this._api.getUser().then( (response) => {
+            const user = JSON.parse((response as XMLHttpRequest).responseText);
             console.log("user fetched");
             console.log(user);
             store.set('profile.user', user);
@@ -82,7 +78,7 @@ class AuthController {
         console.log("getUser ended");
 
         }catch(err){
-console.log(err);
+            console.log(err);
         }        
 
     }
