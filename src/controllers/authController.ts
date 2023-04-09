@@ -1,8 +1,7 @@
 import AuthAPI from "../api/authApi";
 import {store} from "../modules/store";
 import router, { Routes } from "../routing/router";
-import { LoginFormModel, SignUpFormModel, User } from "../types/models";
-import Validation, { IValidationResult } from "../utils/validation";
+import { LoginFormModel, SignUpFormModel } from "../types/models";
 
 class AuthController {
 
@@ -37,8 +36,6 @@ class AuthController {
             store.set("signup.isLoading",true);
             let result = await this._api.signup(data); 
             if(result.reason){
-                console.log(1);
-                console.log(result.reason);
                 store.set("signup.isLoading",false);
                 store.set('signup.validationError', result.reason);
             }else{
@@ -63,7 +60,6 @@ class AuthController {
     public async getUser() {
         try{
         store.set('profile.isLoading', true);
-        //console.log("loading");
         await this._api.getUser().then( (response) => {
             const user = JSON.parse((response as XMLHttpRequest).responseText);
             console.log("user fetched");
@@ -74,8 +70,7 @@ class AuthController {
         .catch((err)=>{
             store.set('profile.hasError', true);
             console.log(err);
-        });
-        console.log("getUser ended");
+        });        
 
         }catch(err){
             console.log(err);

@@ -1,15 +1,19 @@
 import section from './section_nav_left.tmpl';
 import './section_nav_left.scss';
-import Block from '../../block/block';
+import Block, { IProps } from '../../block/block';
 
-interface ISectionProps{
-    
-}
-
-class SectionLeft extends Block<ISectionProps> {
-    constructor(props) {
+class SectionLeft extends Block<IProps> {
+    constructor(props:IProps) {
         props.class = "section-left";
         super(props);
+    }
+
+    init(): void {
+        this.props.events = {
+            click: ()=>{
+                history.back();
+            }            
+        };
     }
 
     public render(): DocumentFragment{

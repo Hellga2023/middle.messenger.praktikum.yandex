@@ -1,4 +1,4 @@
-import { LoginFormModel, SignUpFormModel, User } from "../types/models";
+import { LoginFormModel, SignUpFormModel } from "../types/models";
 import { BaseAPI } from "./baseApi";
 
 class AuthAPI extends BaseAPI {

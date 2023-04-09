@@ -7,6 +7,7 @@ const profileForm = `  {{#if isLoading}}
                             {{#each userinfos}}
                                 {{{this}}}
                             {{/each}}
+                            {{userSavingMessage}}
                         </div>
                         <div class="{{footerClass}}">
                             {{#if editMode}} 
@@ -15,7 +16,7 @@ const profileForm = `  {{#if isLoading}}
                                 {{#each links}}
                                     {{{this}}}
                                 {{/each}}
-                            {{/if}}
+                            {{/if}}                            
                         </div>
                         
                         {{/if}}`;

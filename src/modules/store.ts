@@ -1,6 +1,6 @@
 import Block, { IProps } from "../block/block";
 import EventBus from "../block/eventbus";
-import { User } from "../types/models";
+import { UserWithAvatarModel } from "../types/models";
 import {set} from "../utils/helpers";
 
 export enum StoreEvents {
@@ -18,8 +18,9 @@ type State = {
     },
     profile:{
       isLoading: boolean;
-      user: null | User;
+      user: null | UserWithAvatarModel;
       editMode: boolean;
+      userSavingMessage: string;
     }
 }
   
@@ -35,6 +36,7 @@ const initialState: State = {
     profile:{
       editMode: false,
       isLoading: true,
+      userSavingMessage: "",
       user: null
     }
     

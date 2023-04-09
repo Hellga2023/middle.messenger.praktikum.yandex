@@ -3,7 +3,6 @@ import Profile from './pages/profile/profile';
 import Main from './pages/main/main';
 import Chat from './pages/chat/chat';
 import Error from './pages/error/error';
-import Block from './block/block';
 import avatarImg from '../static/chatAvatar.png';
 import router, { Routes } from './routing/router';
 import Signup from './pages/signup/signup';

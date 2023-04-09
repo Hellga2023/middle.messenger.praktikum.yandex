@@ -9,8 +9,11 @@ import './profileForm.scss';
 import { store, StoreEvents, withStore } from '../../modules/store';
 import { Routes } from '../../routing/router';
 import userController from '../../controllers/userController';
+import AuthController from '../../controllers/authController';
+import { UserModel } from '../../types/models';
 
-interface IProfileFormProps extends IProps{ //todo all props here
+interface IProfileFormProps extends IProps{ 
+    //todo check if all of that we need
     editMode: boolean;   
     isLoading: boolean;
     /* calculated props */
@@ -24,6 +27,7 @@ interface IProfileFormProps extends IProps{ //todo all props here
     email?: string;
     password?: string;
     phone?: string;
+    userSavingMessage?:string;
     /* children */
     infos?: ValidatableInput[];
     avatar?: Avatar;
@@ -44,6 +48,7 @@ class ProfileForm extends Block<IProfileFormProps> {
                         isLoading : state.isLoading,
                         editMode : state.editMode,
                         username: state.user!.first_name,
+                        userSavingMessage: state.userSavingMessage,
                         footerClass : state.editMode ? "" :"text_left"
                     })
                     this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
@@ -59,7 +64,7 @@ class ProfileForm extends Block<IProfileFormProps> {
         });
     }
 
-    public init(): void {
+    public init(): void { //todo move to render!!!
 
         let links = new Array<Link>,
                 underlinedClass = "underlined",
@@ -79,7 +84,10 @@ class ProfileForm extends Block<IProfileFormProps> {
                                     userController.setEditMode(true);
                                 }}}));
         links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
-        links.push(new Link({text:"Return"}));
+        links.push(new Link({text: "Logout", events:{ click: (event:Event)=>{
+                event.preventDefault();
+                AuthController.logout();
+            }}}));
 
         infos.forEach((info, id, arr)=>{
             let props = {
@@ -111,6 +119,8 @@ class ProfileForm extends Block<IProfileFormProps> {
                     if(!isValid) { isFormValid = false;}
                 });
                 if(isFormValid){
+                    console.log(data);
+                    userController.saveUser(data as UserModel);
                     // user controller post user data
                 }
         }}
