@@ -1,11 +1,14 @@
-const profileForm = `   {{{avatar}}}
+const profileForm = `  {{#if isLoading}} 
+                            Loading...
+                        {{else}}
+                            {{{avatar}}}
                         <h1 class="header">{{username}}{{first_name}}</h1>
                         <div class="profile-container__info">
                             {{#each userinfos}}
                                 {{{this}}}
                             {{/each}}
                         </div>
-                        <div class="{{class_}}">
+                        <div class="{{footerClass}}">
                             {{#if editMode}} 
                                 {{{btn}}} 
                             {{else}}
@@ -13,5 +16,7 @@ const profileForm = `   {{{avatar}}}
                                     {{{this}}}
                                 {{/each}}
                             {{/if}}
-                        </div>`;
+                        </div>
+                        
+                        {{/if}}`;
 export default profileForm;

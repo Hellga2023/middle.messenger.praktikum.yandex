@@ -1,18 +1,9 @@
-import Block from "../block/block";
-import Label from "../components/label/label";
-
 export interface IValidationResult {
     errorMessage:string,
     isValid:boolean
 }
 
 const Validation = {
-
-    ERROR_CLASS : "error",
-
-    /*VALIDATION_TYPES: { /todo?
-
-    } as const,*/
 
     validateLogin(value:string):IValidationResult{
         const regex = /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/,
@@ -65,7 +56,7 @@ const Validation = {
             isValid: value.length !== 0
         };
     },
-    _validateInput(name: string, value:string):IValidationResult{
+    validateInput(name: string, value:string):IValidationResult{
         const validateFn = this.chooseMethod(name);
 
         if(typeof validateFn == "undefined"){ //todo handle this case
@@ -80,26 +71,6 @@ const Validation = {
             isValid: result.isValid,
             errorMessage: result.errorMessage
         };
-    },
-    validateInput(element:HTMLInputElement, errorLabel:Label):void{
-        const result = this._validateInput(element.name, element.value);
-        element.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-        errorLabel.setProps({text: result.isValid? "":result.errorMessage});
-    },
-
-    /*validateInputInForm(inputGroup:Block<any>, data:object):boolean{
-            const input = inputGroup.children.input,
-                  name = inputGroup.props.name,
-                  value = (input.element! as HTMLInputElement).value;
-            data[name] = value;
-            let result = Validation._validateInput(name,value);
-            input.element!.classList[result.isValid?"remove":"add"](Validation.ERROR_CLASS);
-            inputGroup.children.errorLabel.setProps({text: result.isValid? "":result.errorMessage});
-            return result.isValid;
-    },*/
-
-    validateInputInForm(name:string, value:string):IValidationResult{
-        return Validation._validateInput(name,value);
     },
 
     chooseMethod(name:string):Function{

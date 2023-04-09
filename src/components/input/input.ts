@@ -2,9 +2,10 @@ import Block, {IProps} from "../../block/block";
 
 export interface IInputProps extends IProps{
     type?: string;
-    name?:string; //todo?
+    name:string; //todo?
     value?:string;
     placeholder?:string;
+    isDisabled: boolean;
 }
 
 class Input extends Block<IInputProps>{
@@ -13,8 +14,9 @@ class Input extends Block<IInputProps>{
     }
 
     public init(): void {
-        this.element?.setAttribute("type", this.props.type!);
-        this.element?.setAttribute("name", this.props.name!);
+        this.element?.setAttribute("type", this.props.type || "text");
+        this.element?.setAttribute("name", this.props.name);
+        if(this.props.isDisabled) {this.element?.setAttribute("disabled", "disabled")};
         this.props.placeholder && this.element?.setAttribute("placeholder", this.props.placeholder);
               
     }

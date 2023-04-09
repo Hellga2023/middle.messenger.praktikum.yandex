@@ -12,3 +12,38 @@
 #avatarUpload{
     display:none;
 }
+
+$padding: 1em 0;
+.info-line {
+    display: flex;
+    align-items: center;
+    /*gap: 2em;*/
+    justify-content: space-between;
+    font-size: 1em;
+} 
+
+.info-line__label {    
+    width: 50%;
+    margin-bottom: 0;
+    text-align: left;
+    padding: $padding;
+}
+
+.info-line__input {
+    border: none;
+    padding: $padding;
+    display: block;
+    text-align: right;
+    width: 100%;
+    color: var(--text-grey-color);
+    background-color: transparent;
+    font-size: 1em;
+}
+
+.info-line__input:focus{
+    outline: none;
+}
+
+.info-line__input.error{
+    color: var(--default-red-color);
+}

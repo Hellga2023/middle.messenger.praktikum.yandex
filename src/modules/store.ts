@@ -19,6 +19,7 @@ type State = {
     profile:{
       isLoading: boolean;
       user: null | User;
+      editMode: boolean;
     }
 }
   
@@ -32,9 +33,11 @@ const initialState: State = {
       validationError: ""
     },
     profile:{
+      editMode: false,
       isLoading: true,
       user: null
     }
+    
 };
 
 class Store extends EventBus{

@@ -1,112 +1,127 @@
 import profileForm from './profileForm.tmpl';
 import Button from '../button/button';
 import Link from '../link/link';
-import Info from '../profileInfoLine/profileInfoLine';
+import ValidatableInput, { IValidatableInputProps } from '../validatableInput/validatableInput';
 import Avatar from '../avatar/avatar';
 import avatarImg from '../../../static/avatar.png';
 import Block, { IProps } from '../../block/block';
-import Validation from '../../utils/validation';
 import './profileForm.scss';
 import { store, StoreEvents, withStore } from '../../modules/store';
 import { Routes } from '../../routing/router';
+import userController from '../../controllers/userController';
 
 interface IProfileFormProps extends IProps{ //todo all props here
-    username: string;
-    avatarImg?: any;
-    avatar?: Avatar;
     editMode: boolean;   
-    infos: any[]; //todo create interface
-    class_?:string;
-    id: number;
-  first_name: string;
-  second_name: string;
-  login: string;
-  email: string;
-  password: string;
-  phone: string;
-  
+    isLoading: boolean;
+    /* calculated props */
+    footerClass?:string;
+    username?: string;    
+    avatarImg?: any;
+    id?: number;
+    first_name?: string;
+    second_name?: string;
+    login?: string;
+    email?: string;
+    password?: string;
+    phone?: string;
+    /* children */
+    infos?: ValidatableInput[];
+    avatar?: Avatar;
 }
+
 class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
 
         data.class = "profile-container";    
         data.avatarImg = avatarImg;
-        data.class_ = data.editMode? "" :"text_left";   
-        data.events = {
-            submit:(event:Event)=>{
-                event.preventDefault();
-                let data = {};
-                this.children.userinfos.forEach(input => { Validation.validateInputInForm(input, data); });
-                console.log(data); 
-        }}     
-        super(data, data.editMode ? "form":"div");
+        data.footerClass = data.editMode? "" :"text_left";   //move where?
+        super(data, "form");
 
         store.on(StoreEvents.Updated, () => { 
             try{
-                const mappedState = store.getState().profile.user;
-                if(mappedState!=null){
-                    //const newProps = {...this.props, ...mappedState};
-                    //this.setProps(newProps); 
-
-                    this.children.userinfos.forEach(
-                    (inputGroup:Info) => { 
-                        let input = inputGroup.children.input,
+                const state = store.getState().profile;
+                    console.log("setting");
+                    this.setProps({
+                        isLoading : state.isLoading,
+                        editMode : state.editMode,
+                        username: state.user!.first_name,
+                        footerClass : state.editMode ? "" :"text_left"
+                    })
+                    console.log("editmode " + state.editMode);
+                    this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
+                        let input = validatableInput.children.input,
                             name = input.props.name,
-                            val = mappedState[name];
-                        input.setProps({value: val});                    
-                    }
-                );
-                //newProps.username = mappedState.first_name;
-                //this.setProps(newProps)
-                }
+                            val = state.user![name];
+                            console.log("group " + validatableInput.props.isDisabled);
+                            console.log("input " + input.props.isDisabled);
+                            //remove disabled attr!!!
+
+                        input.setProps({value: val, isDisabled: state.editMode });                  
+                    });
                 
             }catch(err){
                 console.log(err);
-            }
-            
+            }            
         });
-
     }
 
     public init(): void {
 
-        this.children.avatar= new Avatar({avatarUrl: this.props.avatarImg, alt: "avatar"});
-        if(this.props.editMode){
-            this.children.btn = new Button({ text:"Save" });
-        }else{
-            let links = new Array<Link>,
-            underlinedClass = "underlined";
-            links.push(new Link({text:"Edit profile", url: Routes.Profile, class_: underlinedClass, events: {click: ()=>{ /* set state editMode */}}}));
-            links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
-            links.push(new Link({text:"Return"}));
-            this.children.links = links;
-        }
+        let links = new Array<Link>,
+                underlinedClass = "underlined",
+                infoTemplates=new Array<ValidatableInput>,
+                infos = [{label:"Email", name: "email"},
+                        {label:"Login", name: "login"},
+                        {label:"Name", name: "first_name"},
+                        {label:"Surname", name: "second_name"},
+                        {label:"Nickname", name: "display_name"},
+                        {label:"Phone", name: "phone"}] ;  
 
+        links.push(new Link({text:"Edit profile", 
+                                url: Routes.Profile, 
+                                class_: underlinedClass, 
+                                events: {click: (event:Event)=>{ 
+                                    event.preventDefault();
+                                    userController.setEditMode(true);
+                                }}}));
+        links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
+        links.push(new Link({text:"Return"}));
 
-        /*let props = {editMode: false,
-            infos: [{label:"Email", value:this.props.email, name: "email"},
-                    {label:"Login", value:"Hellga", name: "login"},
-                    {label:"Name", value:"Olga", name: "first_name"},
-                    {label:"Surname", value:"Kup", name: "second_name"},
-                    {label:"Nickname", value:"Hellga", name: "display_name"},
-                    {label:"Phone", value:"+7 999 111-11-11", name: "phone"}],
-            username: "Olga" };  */
+        infos.forEach((info, id, arr)=>{
+            let props = {
+                labelText: info.label,
+                labelClass: "info-line__label",
+                divClasses: ["info-line", arr.length-1 == id ? "" : underlinedClass],
+                inputProps: {
+                    name:info.name,
+                    isDisabled: !this.props.editMode,
+                    class:  "info-line__input"
+                }
+            } as IValidatableInputProps;
 
-
-        let infoTemplates=new Array<Info>, 
-        underlinedClass = "underlined";
-        this.props.infos.forEach((element, id, arr)=>{
-            element.isDisabled = !this.props.editMode;
-            element.class_ = arr.length-1 == id ? "" : underlinedClass;
-            infoTemplates.push(new Info(element));
+            infoTemplates.push(new ValidatableInput(props));
         });
+
+        this.children.links = links;
+        this.children.avatar= new Avatar({avatarUrl: this.props.avatarImg, alt: "avatar"});
+        this.children.btn = new Button({ text:"Save"});
         this.children.userinfos = infoTemplates;
 
-        /*console.log("name from state");
-        console.log(store.getState());
-        console.log(store.getState().profile);
-        console.log("name from props");
-        console.log(this.props)*/
+        this.props.events = {
+            submit:(event:Event)=>{
+                event.preventDefault();
+                let data = {},
+                    isFormValid = true;
+                this.children.userinfos.forEach((input:ValidatableInput) => { 
+                    let isValid = input.validateInForm(data);
+                    if(!isValid) { isFormValid = false;}
+                });
+                console.log(data); 
+                console.log(isFormValid);
+                if(isFormValid){
+                    // user controller post user data
+                }
+        }}
     }
 
     public render(): DocumentFragment{
@@ -115,7 +130,6 @@ class ProfileForm extends Block<IProfileFormProps> {
 
 }
 
-//const withUser = withStore((state) => ({ ...state.profile.user }));
-//const ProfileForm = withUser(ProfileFormPage);
+/*todo withStore???*/
 
 export default ProfileForm;

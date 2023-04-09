@@ -5,7 +5,7 @@ interface ILabelProps{
     text?:string;
 }
 
-class Input extends Block<ILabelProps>{
+class Label extends Block<ILabelProps>{
     constructor(props:ILabelProps){
         props.class = "input-container__errorlabel";
         super(props,"label");
@@ -22,4 +22,4 @@ class Input extends Block<ILabelProps>{
 
 }
 
-export default Input;
+export default Label;
