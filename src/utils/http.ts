@@ -16,28 +16,25 @@ export class HTTP {
         }
 
     public get (path: string, options = {}) {             
-            return this.request(this.endpoint + path, {...options, method: METHODS.GET}, options.timeout);
+            return this.request(this.endpoint + path, {...options, method: METHODS.GET});
     };
 
     public post(path: string, options = {}) {
-            return this.request(this.endpoint + path, {...options, method: METHODS.POST}, options.timeout);
+            return this.request(this.endpoint + path, {...options, method: METHODS.POST});
     };
 
     public put (path: string, options = {}) {
-            return this.request(this.endpoint + path, {...options, method: METHODS.PUT}, options.timeout);
+            return this.request(this.endpoint + path, {...options, method: METHODS.PUT});
     };
 
     public delete (path: string, options = {}) { 
-            return this.request(this.endpoint + path, {...options, method: METHODS.DELETE}, options.timeout);
+            return this.request(this.endpoint + path, {...options, method: METHODS.DELETE});
     };
 
     public request(url:string, options = {}, timeout = 5000) {
-            const {headers = {}, method, data, withCredentials} = options;
+            const {headers = {}, method, data} = options;
 
-            console.log(headers);
-            console.log(withCredentials);
-
-            return new Promise(function(resolve, reject) {
+           return new Promise(function(resolve, reject) {
                         if (!method) {
                             reject('No method');
                             return;
@@ -47,7 +44,7 @@ export class HTTP {
                         const isGet = method === METHODS.GET;
 
                         xhr.open( method, url,);
-                        xhr.withCredentials = withCredentials;
+                        xhr.withCredentials = true;
 
                         Object.keys(headers).forEach(key => {
                             xhr.setRequestHeader(key, headers[key]);

@@ -1,16 +1,16 @@
 import profileForm from './profileForm.tmpl';
-import Button from '../button/button';
-import Link from '../link/link';
-import ValidatableInput, { IValidatableInputProps } from '../validatableInput/validatableInput';
+import Button from '../../commonComponents/button/button';
+import Link from '../../commonComponents/link/link';
+import ValidatableInput, { IValidatableInputProps } from '../../commonComponents/validatableInput/validatableInput';
 import Avatar from '../avatar/avatar';
-import avatarImg from '../../../static/avatar.png';
+import avatarImg from '../../../../static/avatar.png';
 import Block, { IProps } from '../../block/block';
 import './profileForm.scss';
-import { store, StoreEvents, withStore } from '../../modules/store';
-import { Routes } from '../../routing/router';
-import userController from '../../controllers/userController';
-import AuthController from '../../controllers/authController';
-import { UserModel } from '../../types/models';
+import { store, StoreEvents, withStore } from '../../../modules/store';
+import { Routes } from '../../../routing/router';
+import userController from '../../../controllers/userController';
+import AuthController from '../../../controllers/authController';
+import { UserModel } from '../../../models/models';
 
 interface IProfileFormProps extends IProps{ 
     //todo check if all of that we need
@@ -47,7 +47,7 @@ class ProfileForm extends Block<IProfileFormProps> {
                     this.setProps({
                         isLoading : state.isLoading,
                         editMode : state.editMode,
-                        username: state.user!.first_name,
+                        username: state.user?.first_name,
                         userSavingMessage: state.userSavingMessage,
                         footerClass : state.editMode ? "" :"text_left"
                     })

@@ -1,13 +1,8 @@
 import { store } from "../modules/store";
-import { UserModel } from "../types/models";
-import UserAPI from "../api/userApi";
+import { UserModel } from "../models/models";
+import UserAPI from "../api/userAPI";
 
 class UserController {
-    /*public getUser() {
-      UserAPI.getUser()
-               .then(data => store.set('user.data', data);
-    }*/
-
     private _api : UserAPI;
 
     constructor(){
@@ -21,20 +16,20 @@ class UserController {
     public async saveUser(user:UserModel){
       store.set("profile.isLoading",true);
       await this._api.profile(user)
-                .then((data)=>{    
-                    let response = data as XMLHttpRequest;           
-                    if(response.status===200){
-                        const user = JSON.parse(response.responseText);
-                        console.log(user);
+                .then((response)=>{   
+                    let xhr = response as XMLHttpRequest;
+                    let data = JSON.parse(xhr.responseText)
+                    if(xhr.status===200){
                         store.set("profile.isLoading",false);
-                        store.set("profile.user", user);
+                        store.set("profile.user", data);
                         store.set("profile.userSavingMessage", "User data saved successfully");
                     }else{
-                        console.log("saving user5");
-                        const error = JSON.parse(response.responseText);
                         store.set("profile.isLoading",false);
-                        store.set("profile.userSavingMessage", error.reason);
+                        store.set("profile.userSavingMessage", data.reason);
                     }
+                })
+                .catch(err => {
+                  console.log(err);
                 });  
 
     }

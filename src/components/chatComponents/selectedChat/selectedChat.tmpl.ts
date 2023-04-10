@@ -16,4 +16,3 @@ const selectedChat = `  <div class="chat-content__user">
                 </div>   
                 `;
 export default selectedChat;
-/*<p>Please select chat to send the message</p> */

@@ -1,4 +1,4 @@
-import { HTTP } from "../modules/http";
+import { HTTP } from "../utils/http";
 
 export class BaseAPI {
 
@@ -7,6 +7,8 @@ export class BaseAPI {
     constructor(endpoint:string){
         this.http = new HTTP(endpoint);
     }
+
+    /* do we need this??? */
 
     create() { throw new Error('Not implemented'); }
 

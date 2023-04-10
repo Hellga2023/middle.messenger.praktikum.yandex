@@ -1,4 +1,4 @@
-import Block, { IProps } from "../block/block";
+import Block, { IProps } from "../components/block/block";
 import Route from "./route";
 
 export const enum Routes {
@@ -77,3 +77,18 @@ class Router {
 }
 
 export default new Router("#content");
+
+/* todo where it is used?? */
+export function withRouter(Component: typeof Block<any>){
+  type Props = typeof Component extends typeof Block<infer P> ? P : any;
+
+  return class WithRouter extends Component {
+      constructor(props: Props & PropsWithRouter) {
+        super({ ...props, router: Router });
+      }
+    }
+  }
+  
+export interface PropsWithRouter {
+    router: typeof Router;
+}

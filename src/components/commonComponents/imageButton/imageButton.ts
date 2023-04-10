@@ -6,7 +6,7 @@ interface IButtonProps extends IProps{
     type?:string;
 }
 
-class Button extends Block<IButtonProps> {
+class ImageButton extends Block<IButtonProps> {
     constructor(props:IButtonProps) {
         super(props, 'button');
     }
@@ -20,4 +20,4 @@ class Button extends Block<IButtonProps> {
     }
 }
 
-export default Button;
+export default ImageButton;

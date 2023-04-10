@@ -73,7 +73,7 @@ const Validation = {
         };
     },
 
-    chooseMethod(name:string):Function{
+    chooseMethod(name:string):Function|undefined{
         let validateFn:(value:string)=>IValidationResult;
         switch(name){
             case "first_name": //todo move to obj
@@ -98,6 +98,7 @@ const Validation = {
         if(typeof validateFn! == "undefined"){
             //throw new Error("No validation function found for " + name);
             console.log("No validation function found for " + name);
+            return undefined;
         }
         
         return validateFn;

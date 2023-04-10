@@ -1,4 +1,3 @@
-import Handlebars from 'handlebars';
 import avatar from './avatar.tmpl';
 import './avatar.scss';
 import Block from '../../block/block';

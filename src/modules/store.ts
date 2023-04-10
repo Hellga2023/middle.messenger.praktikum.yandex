@@ -1,13 +1,13 @@
-import Block, { IProps } from "../block/block";
-import EventBus from "../block/eventbus";
-import { UserWithAvatarModel } from "../types/models";
+import Block, { IProps } from "../components/block/block";
+import EventBus from "../utils/eventbus";
+import { UserWithAvatarModel } from "../models/models";
 import {set} from "../utils/helpers";
 
 export enum StoreEvents {
     Updated = 'updated',
   }
 
-type State = {
+export type State = {
     signup:{
       isLoading: boolean;
       validationError: string;
@@ -21,6 +21,11 @@ type State = {
       user: null | UserWithAvatarModel;
       editMode: boolean;
       userSavingMessage: string;
+    },
+    chat:{
+      userID: number|null;
+      error: string;
+      currentChatID: number|null;
     }
 }
   
@@ -38,6 +43,11 @@ const initialState: State = {
       isLoading: true,
       userSavingMessage: "",
       user: null
+    },
+    chat:{
+      userID: null,
+      error: "",
+      currentChatID: null
     }
     
 };

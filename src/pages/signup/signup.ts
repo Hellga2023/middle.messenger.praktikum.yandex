@@ -1,12 +1,12 @@
 import './signup.scss';
 import signup from './signup.tmpl';
-import Button from '../../components/button/button';
-import Link from '../../components/link/link';
-import Block, { IProps } from '../../block/block';
+import Button from '../../components/commonComponents/button/button';
+import Link from '../../components/commonComponents/link/link';
+import Block, { IProps } from '../../components/block/block';
 import AuthController from '../../controllers/authController';
-import { SignUpFormModel } from '../../types/models';
+import { SignUpFormModel } from '../../models/models';
 import { withStore } from '../../modules/store';
-import ValidatableInput, { IValidatableInputProps } from '../../components/validatableInput/validatableInput';
+import ValidatableInput, { IValidatableInputProps } from '../../components/commonComponents/validatableInput/validatableInput';
 
 interface ISignupProps extends IProps{
     /* calculated props */

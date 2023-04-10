@@ -1,13 +1,13 @@
 import login from './login.tmpl';
-import Button from '../../components/button/button';
-import Link from '../../components/link/link';
+import Button from '../../components/commonComponents/button/button';
+import Link from '../../components/commonComponents/link/link';
 import './login.scss';
-import Block, { IProps } from '../../block/block';
+import Block, { IProps } from '../../components/block/block';
 import AuthController from '../../controllers/authController';
-import { LoginFormModel } from '../../types/models';
+import { LoginFormModel } from '../../models/models';
 import { withStore } from '../../modules/store';
 import { Routes } from '../../routing/router';
-import ValidatableInput, { IValidatableInputProps } from '../../components/validatableInput/validatableInput';
+import ValidatableInput, { IValidatableInputProps } from '../../components/commonComponents/validatableInput/validatableInput';
 
 interface ILoginProps extends IProps{
     /* children */

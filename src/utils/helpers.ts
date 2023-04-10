@@ -2,7 +2,9 @@ export type Indexed<T = any> = {
     [key in string]: T;
   };
   
-
+  export function isEqual():boolean{
+    return true;
+  }
 
   export function merge(lhs: Indexed, rhs: Indexed): Indexed {
 

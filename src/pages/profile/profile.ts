@@ -1,7 +1,7 @@
 import profile from './profile.tmpl';
-import Block, { IProps } from '../../block/block';
+import Block, { IProps } from '../../components/block/block';
 import SectionLeft from '../../components/section_nav_left/section_nav_left';
-import ProfileForm from '../../components/profile_form/profileForm';
+import ProfileForm from '../../components/profileComponents/profile_form/profileForm';
 import authController from '../../controllers/authController';
 
 class Profile extends Block<IProps>{

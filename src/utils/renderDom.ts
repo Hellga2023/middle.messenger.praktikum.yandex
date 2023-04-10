@@ -1,4 +1,4 @@
-import Block, { IProps } from "../block/block";
+import Block, { IProps } from "../components/block/block";
 
 export const renderBlock = function (query:string, block:Block<IProps>) {
     const root = document.querySelector(query);

@@ -1,5 +1,5 @@
 import Block, { IProps } from "../../block/block";
-import Validation, { IValidationResult } from "../../utils/validation";
+import Validation, { IValidationResult } from "../../../utils/validation";
 import Input, { IInputProps } from "../input/input";
 import Label from "../label/label";
 import validatableInput from "./validatableInput.tmpl";

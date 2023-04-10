@@ -10,6 +10,18 @@ const chat = `  <div class="leftMenu">
                     </div>
                 </div>
                 <div class="chat-content">
-                    {{{selectedChat}}}    
+                    {{#if isLoading}} 
+                        Loading...
+                    {{else}}
+                        {{#if selectedChatId}} 
+                            {{{selectedChat}}}
+                        {{else}}
+                            create chat
+                            {{{chatTitle}}}
+                            {{{createChatBtn}}}
+                            {{error}}                                                  
+                        {{/if}}
+                    {{/if}}
+                        
                 </div>`;
 export default chat;

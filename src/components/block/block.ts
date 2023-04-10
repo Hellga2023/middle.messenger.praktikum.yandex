@@ -1,11 +1,10 @@
 import Handlebars from 'handlebars';
-import EventBus from "./eventbus"; 
+import EventBus from "../../utils/eventbus"; 
 import {v4 as makeUUID} from 'uuid';
-import Info from '../components/profileInfoLine/profileInfoLine';
 
 export interface IProps extends Record<string,unknown> {
   class?:string;
-  events?:any; //todo?
+  events?:any;
 }
 
 abstract class Block<IProps> {
@@ -147,6 +146,7 @@ abstract class Block<IProps> {
     }
   
     componentDidUpdate(oldProps, newProps) {
+      //calculate if really updated? to prevent rerender 
       return true;
     }
   
@@ -154,15 +154,15 @@ abstract class Block<IProps> {
       return this._element;
     }
   
-    _render(): void {    
+    _render(): void {   
       this._element!.innerHTML = '';  
       const block:DocumentFragment = this.render(); 
-      this._removeEvents();      
+      this._removeEvents(); 
       this._element!.appendChild(block);
       this._addEvents();
     }
   
-    protected render():DocumentFragment { return null;}//todo
+    protected render():DocumentFragment { throw new Error('Not implemented'); }
 
     _addEvents() {
       const {events = {}} = this.props;  
@@ -186,7 +186,6 @@ abstract class Block<IProps> {
       if (!nextProps) {
         return;
       }
-  
       Object.assign(this.props as object, nextProps);
       this._eventBus().emit(Block.EVENTS.FLOW_CDU);
     }

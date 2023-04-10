@@ -1,7 +1,7 @@
 import error from './error.tmpl';
-import Link from '../../components/link/link';
+import Link from '../../components/commonComponents/link/link';
 import './error.scss'; 
-import Block from '../../block/block';
+import Block from '../../components/block/block';
 
 interface IErrorProps{}
 
