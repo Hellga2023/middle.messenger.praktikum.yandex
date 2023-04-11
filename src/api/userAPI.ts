@@ -13,5 +13,12 @@ class UserAPI extends BaseAPI {
             data: JSON.stringify(user)
           });
     }
+
+    public searchByLogin(login:string){
+        return this.http.post('/search',{
+            headers: { 'content-type': 'application/json' },
+            data: JSON.stringify({login:login})
+        })
+    }
 } 
 export default UserAPI;

@@ -14,7 +14,7 @@ const chat = `  <div class="leftMenu">
                         Loading...
                     {{else}}
                         {{#if selectedChatId}} 
-                            {{{selectedChat}}}
+                            {{{chatContent}}}
                         {{else}}
                             create chat
                             {{{chatTitle}}}

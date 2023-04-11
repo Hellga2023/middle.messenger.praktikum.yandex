@@ -21,6 +21,7 @@ class WebSocketService {
             }
           
             console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+            console.log(event);
           });
           
           this._socket.addEventListener('message', event => {

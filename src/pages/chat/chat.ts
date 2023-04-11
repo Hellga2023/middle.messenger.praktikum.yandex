@@ -2,7 +2,7 @@ import chat from './chat.tmpl';
 import './chat.scss'; 
 import Block, {IProps} from '../../components/block/block';
 import ChatItem from '../../components/chatComponents/chatItem/chatItem';
-import SelectedChat from '../../components/chatComponents/selectedChat/selectedChat';
+import ChatContent from '../../components/chatComponents/chatContent/chatContent';
 import Link from '../../components/commonComponents/link/link';
 import Button from '../../components/commonComponents/button/button';
 import Input from '../../components/commonComponents/input/input';
@@ -13,39 +13,38 @@ interface IChatProps extends IProps{
     /* state props */
     isLoading:boolean;
     selectedChatId?:number;
-
     error: string;
-    /* data props */
 
-    chats:any[]; //todo
-    selectedUsername?:string; // todo remove to separate call
-    selectedUserAvatar?:string; // todo remove to separate call
-    
+    /* data props */
+    chats:any[]; //todo    
+
+    /*children */
+
+    /* selected chat content*/
+    chatContent?:ChatContent;
+    /* profile link */
+    link?: Link;
+    /* create new chat */
+    createChatBtn?: Button;
+    chatTitle?: Input;
 }
 
 class Chat extends Block<IChatProps> {
     constructor(data:IChatProps) {
-        const selectedChat = data.chats.find((chat:any) =>{ return chat.id == data.selectedChatId});
-        data.selectedUsername = selectedChat.name;
-        data.selectedUserAvatar = selectedChat.avatarUrl;     
-        data.selectedChatMessages = selectedChat.messages;
         data.class = "content";
+        //todo make select
         data.selectedChatId = undefined;
         super(data, 'main');
 
         store.on(StoreEvents.Updated, () => { 
             try{
-               let state =  store.getState().chat; 
-               console.log(state);
-
-               
-               if(state.currentChatID){
-                this.setProps({selectedChatId: state.currentChatID})
-               }else if(state.error){
+                //todo make rerender only if selectedChatId is updated or error need to show
+               let state =  store.getState().chat;   
+               if(this.props.selectedChatId!=state.chatContent.chatId){
+                    this.setProps({selectedChatId: state.chatContent.chatId})
+               }else if(this.props.error!=state.error){
                 this.setProps({error: state.error});
-               }
-               
-                
+               }               
             }catch(err){
                 console.log(err);
             }            
@@ -60,17 +59,17 @@ class Chat extends Block<IChatProps> {
 
         if(this.props.isLoading){
             console.log(1);
-
+            return this.compile(chat);
         }else if(this.props.selectedChatId){
-            console.log(this.props.selectedChatId);
+            console.log("selected chat : "+this.props.selectedChatId);
 
             /* render selected chat control */
 
-            if(!(this.children.selectedChat instanceof SelectedChat)){
-                this.children.selectedChat = new SelectedChat({id: this.props.selectedChatId });
-            }else{
-                this.children.selectedChat.setProps({id: this.props.selectedChatId});
+            if(!(this.children.chatContent instanceof Chat)){
+                this.children.chatContent = new ChatContent({});
             }
+
+            /* todo how to handle select chat in list? */
                         
             if(!Array.isArray(this.children.chats)){
                 let chats = new Array<ChatItem>();

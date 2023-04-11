@@ -1,7 +1,8 @@
 import Block, { IProps } from "../components/block/block";
 import EventBus from "../utils/eventbus";
-import { UserWithAvatarModel } from "../models/models";
+import { UserModel, UserWithAvatarModel } from "../models/models";
 import {set} from "../utils/helpers";
+import { ChatContentState } from "../components/chatComponents/chatContent/chatContent";
 
 export enum StoreEvents {
     Updated = 'updated',
@@ -24,8 +25,19 @@ export type State = {
     },
     chat:{
       userID: number|null;
-      error: string;
-      currentChatID: number|null;
+      error: string; //get token error, create chat error
+      //currentChatID: number|null;
+      chatContent: {
+        isLoading: boolean;
+        chatId: number|null;
+        token: string;
+        state: ChatContentState;
+      };      
+      /* add user to chat control */
+      addUserToChat:{
+        isLoading: boolean;
+        foundUsers: UserModel[];
+      }
     }
 }
   
@@ -47,9 +59,17 @@ const initialState: State = {
     chat:{
       userID: null,
       error: "",
-      currentChatID: null
-    }
-    
+      chatContent:{
+        isLoading: false,
+        chatId: null,
+        token: "",
+        state: ChatContentState.CHAT_CREATED
+      },
+      addUserToChat:{
+        isLoading:false,
+        foundUsers: new Array<UserModel>
+      }
+    }    
 };
 
 class Store extends EventBus{

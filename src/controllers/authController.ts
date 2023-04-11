@@ -19,7 +19,8 @@ class AuthController {
                     let data = (response as XMLHttpRequest).responseText;
                     if(data==="OK"){
                         store.set("login.isLoading",false);
-                        router.go(Routes.Profile)
+                        //router.go(Routes.Profile)
+                        router.go(Routes.Chat);
                     }else{
                         const error = JSON.parse(data);
                         store.set("login.isLoading",false);
@@ -67,7 +68,7 @@ class AuthController {
             const user = JSON.parse((response as XMLHttpRequest).responseText);
             console.log("user fetched");
             console.log(user);
-            store.set('profile.user', user);
+            store.set('profile.user', user); //may be common place for all pages!!!
             store.set('profile.isLoading', false);
         })
         .catch((err)=>{

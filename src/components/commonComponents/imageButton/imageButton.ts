@@ -1,6 +1,6 @@
 import Block,{IProps} from "../../block/block";
 
-const button =`<i class="{{class_}}"></i>`;
+const button =`<i class="{{iconClass}}"></i>`;
 
 interface IButtonProps extends IProps{
     type?:string;

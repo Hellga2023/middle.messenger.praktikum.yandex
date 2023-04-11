@@ -33,6 +33,21 @@ class UserController {
                 });  
 
     }
+
+    public async searchUserByLogin(login:string){
+      await this._api.searchByLogin(login)
+      .then((response)=>{ 
+        let xhr = response as XMLHttpRequest;
+                    let data = JSON.parse(xhr.responseText)
+                    if(xhr.status===200){
+                        store.set("chat.addUserToChat.foundUsers",data);
+                       
+                    }else{
+                        console.log(data.reason);
+                    }
+      })
+      .catch(console.log);
+    }
 }
 
 export default new UserController();
