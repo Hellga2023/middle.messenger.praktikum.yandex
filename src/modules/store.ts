@@ -27,6 +27,7 @@ export type State = {
     chat:{
       userID: number|null,
       error: string, //get token error, create chat error
+      selectedChatId: number|null,
       chatList: {
         isLoading: boolean,
         chats: ChatInfoModel[]
@@ -69,6 +70,7 @@ const initialState: State = {
     chat:{
       userID: null,
       error: "",
+      selectedChatId: null,
       chatList:{
         isLoading: true,
         chats: new Array<ChatInfoModel>, //todo model

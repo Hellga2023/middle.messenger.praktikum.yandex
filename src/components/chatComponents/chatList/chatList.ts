@@ -10,7 +10,7 @@ interface IChatListProps extends IProps{
     isLoading?: boolean;
 
     /* data props */
-    selectedChatId?: number;
+    selectedChatId: number|null;
     chats?: ChatInfoModel[];    
     
     /* childrens */
@@ -21,14 +21,10 @@ class ChatList extends Block<IChatListProps> {
     constructor(props:IChatListProps) {
         super(props);
         store.on(StoreEvents.Updated, () => { 
-            console.log("state.chats2");  
             try{
-                //todo make rerender only if selectedChatId is updated or error need to show
+                //make rerender only if selectedChatId is updated or error need to show
                let state =  store.getState().chat; 
-               console.log("state.chats3");  
-               console.log(state.chatList.chats);  
-               console.log(state.chatList.isLoading);  
-               this.setProps({selectedChatId: state.chatContent.chatId!, chats: state.chatList.chats, isLoading: state.chatList.isLoading});//todo check             
+               this.setProps({selectedChatId: state.selectedChatId, chats: state.chatList.chats, isLoading: state.chatList.isLoading});//todo check             
             }catch(err){
                 console.log(err);
             }            
@@ -41,25 +37,22 @@ class ChatList extends Block<IChatListProps> {
     }
 
     public render(): DocumentFragment{
+
+
         console.log("in chat list render");
+        console.log(this.props.chatItems);
 
         let chats = new Array<ChatItem>();
 
-        this.props.chats?.forEach((element : any)=>{ //todo any?
-            if(element.id == this.props.selectedChatId){ element.class_ = "chat-item_selected"; }
-            element.events = {
-                click: (event:Event) => {
-                    const selectedChatId = (event.target as HTMLElement).dataset.id;
-                    const currentChat = this.children.chats.find((chat:any) =>{ return chat.props.id == selectedChatId});
-                }
-            };  
+        this.props.chats?.forEach((element : any)=>{  //chatInfoModel    
             chats.push(new ChatItem({
                 id: element.id, 
                 title: element.title, 
                 lastMessage: element.last_message.content,
                 avatar: element.avatar,
                 date: new Date(element.last_message.time),
-                unreadCount: element.unread_count
+                unreadCount: element.unread_count,
+                selectedClass: (element.id == this.props.selectedChatId) ? "chat-item_selected" : ""
             }));
         });
         this.children.chatItems = chats;

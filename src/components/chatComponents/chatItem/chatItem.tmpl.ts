@@ -1,4 +1,4 @@
-const chatItem = `<div class="chat-item {{{class_}}}" data-id="{{{id}}}">
+const chatItem = `<div class="chat-item {{{selectedClass}}}">
                     <div class="chat-item__user-data">
                         <img alt="user avatar" src="{{{avatar}}}"/>
                         <div class="chat-item__user-data__message-preview">

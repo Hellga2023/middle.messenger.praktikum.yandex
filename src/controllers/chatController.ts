@@ -6,6 +6,7 @@ import { ChatContentState } from "../components/chatComponents/chatContent/chatC
 import { ChatInfoModel } from "../models/models";
 
 class ChatController {
+    
     private _api : ChatAPI;
 
     constructor(){
@@ -106,6 +107,13 @@ class ChatController {
         }
       })
       .catch(console.log);
+    }
+
+
+    public setSelectedChat(id: number) {
+      console.log("selected chat set : " + id);
+      store.set("chat.selectedChatId", id);
+      console.log(store.getState());
     }
 }
 

@@ -3,12 +3,14 @@ import './chatItem.scss';
 import Block,{IProps} from '../../block/block';
 import { DateService } from '../../../utils/dateUtils';
 import avatarImg from '../../../../static/defaultAvatar.png';
+import chatController from '../../../controllers/chatController';
 
 interface IChatItemProps extends IProps{
 
     id: number;
     title: string;
 
+    selectedClass?:string;
     avatar?: string; // chat avatar not user!
     hasUnreadMessages?:boolean;
     unreadCount?: number;
@@ -25,6 +27,9 @@ class ChatItem extends Block<IChatItemProps> {
         this.props.convertedTime = this.convertDateTime(this.props.date as Date);
         this.props.hasUnreadMessages = this.props.unreadCount? this.props.unreadCount>0 : false;
         this.props.avatar = this.props.avatar || avatarImg;
+        this.props.events = {click:()=>{
+            chatController.setSelectedChat(this.props.id);
+        }};
     }
 
     public render(): DocumentFragment{
