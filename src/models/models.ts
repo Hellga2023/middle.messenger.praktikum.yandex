@@ -30,3 +30,17 @@ export interface UserModel {
   phone: string
 };
 
+export interface ChatInfoModel{
+  id: number,
+  title:string,
+  avatar:string, // this is chat avatar!!!! no user
+  unreadCount:number,
+  lastMessage: MessageModel
+}
+
+export interface MessageModel{
+  user: UserWithAvatarModel,
+  time: string, //$timestamp,
+  content: string
+}
+

@@ -1,7 +1,6 @@
 import {BaseAPI} from './baseAPI';
 
 class ChatAPI extends BaseAPI {
-
     constructor(){
         super("/chats");
     }
@@ -14,12 +13,15 @@ class ChatAPI extends BaseAPI {
     public getToken(id:number) {
         return this.http.post(`/token/${id}`);
     }
-    addUserToChat(userId: number, chatId: number) {
+    public addUserToChat(userId: number, chatId: number) {
         return this.http.put('/users', {
             headers: { 'content-type': 'application/json' },
             data:JSON.stringify({users: [userId], chatId: chatId})  
         });
     }
+    public getChats() {
+        return this.http.get('/');
+    }     
 }
 
 export default ChatAPI;

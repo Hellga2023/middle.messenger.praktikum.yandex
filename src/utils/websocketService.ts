@@ -25,6 +25,7 @@ class WebSocketService {
           });
           
           this._socket.addEventListener('message', event => {
+            //todo show message
             console.log('Получены данные', event.data);
           });
           

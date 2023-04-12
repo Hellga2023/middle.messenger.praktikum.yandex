@@ -1,8 +1,9 @@
 import Block, { IProps } from "../components/block/block";
 import EventBus from "../utils/eventbus";
-import { UserModel, UserWithAvatarModel } from "../models/models";
+import { ChatInfoModel, UserModel, UserWithAvatarModel } from "../models/models";
 import {set} from "../utils/helpers";
 import { ChatContentState } from "../components/chatComponents/chatContent/chatContent";
+import WebSocketService from "../utils/websocketService";
 
 export enum StoreEvents {
     Updated = 'updated',
@@ -10,33 +11,42 @@ export enum StoreEvents {
 
 export type State = {
     signup:{
-      isLoading: boolean;
-      validationError: string;
+      isLoading: boolean,
+      validationError: string
     },
     login:{
-      isLoading: boolean;
-      validationError: string;
+      isLoading: boolean,
+      validationError: string
     },
     profile:{
-      isLoading: boolean;
-      user: null | UserWithAvatarModel;
-      editMode: boolean;
-      userSavingMessage: string;
+      isLoading: boolean,
+      user: null | UserWithAvatarModel,
+      editMode: boolean,
+      userSavingMessage: string
     },
     chat:{
-      userID: number|null;
-      error: string; //get token error, create chat error
-      //currentChatID: number|null;
+      userID: number|null,
+      error: string, //get token error, create chat error
+      chatList: {
+        isLoading: boolean,
+        chats: ChatInfoModel[]
+      },
       chatContent: {
-        isLoading: boolean;
-        chatId: number|null;
-        token: string;
-        state: ChatContentState;
-      };      
+        isLoading: boolean,
+        chatId: number|null,
+        token: string,
+        state: ChatContentState,
+        shortUserInfo:{
+          avatar: string,
+          username: string
+        },
+        socket: WebSocketService|null,
+        message: string
+      },      
       /* add user to chat control */
       addUserToChat:{
-        isLoading: boolean;
-        foundUsers: UserModel[];
+        isLoading: boolean,
+        foundUsers: UserModel[]
       }
     }
 }
@@ -59,11 +69,21 @@ const initialState: State = {
     chat:{
       userID: null,
       error: "",
+      chatList:{
+        isLoading: true,
+        chats: new Array<ChatInfoModel>, //todo model
+      },      
       chatContent:{
         isLoading: false,
         chatId: null,
         token: "",
-        state: ChatContentState.CHAT_CREATED
+        state: ChatContentState.CHAT_CREATED,
+        shortUserInfo:{
+          avatar: "",
+          username: ""
+        },
+        socket: null,
+        message: ""
       },
       addUserToChat:{
         isLoading:false,

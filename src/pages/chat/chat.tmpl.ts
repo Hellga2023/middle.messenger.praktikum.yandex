@@ -4,9 +4,7 @@ const chat = `  <div class="leftMenu">
                         <input type="search" class="search" placeholder="Search"/>
                     </div>
                     <div>
-                        {{#each chats}}
-                            {{{this}}}
-                        {{/each}} 
+                        {{{chatList}}}
                     </div>
                 </div>
                 <div class="chat-content">

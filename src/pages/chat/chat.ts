@@ -1,13 +1,13 @@
 import chat from './chat.tmpl';
 import './chat.scss'; 
 import Block, {IProps} from '../../components/block/block';
-import ChatItem from '../../components/chatComponents/chatItem/chatItem';
 import ChatContent from '../../components/chatComponents/chatContent/chatContent';
 import Link from '../../components/commonComponents/link/link';
 import Button from '../../components/commonComponents/button/button';
 import Input from '../../components/commonComponents/input/input';
 import chatController from '../../controllers/chatController';
 import { store, StoreEvents } from '../../modules/store';
+import ChatList from '../../components/chatComponents/chatList/chatList';
 
 interface IChatProps extends IProps{
     /* state props */
@@ -16,7 +16,6 @@ interface IChatProps extends IProps{
     error: string;
 
     /* data props */
-    chats:any[]; //todo    
 
     /*children */
 
@@ -27,6 +26,10 @@ interface IChatProps extends IProps{
     /* create new chat */
     createChatBtn?: Button;
     chatTitle?: Input;
+    /* chat list */
+    chatList?:ChatList;
+
+    //todo chats search!!!
 }
 
 class Chat extends Block<IChatProps> {
@@ -35,16 +38,26 @@ class Chat extends Block<IChatProps> {
         //todo make select
         data.selectedChatId = undefined;
         super(data, 'main');
+        chatController.getChats();
 
         store.on(StoreEvents.Updated, () => { 
             try{
+                console.log("state.chats1");  
                 //todo make rerender only if selectedChatId is updated or error need to show
-               let state =  store.getState().chat;   
-               if(this.props.selectedChatId!=state.chatContent.chatId){
+               let state =  store.getState().chat; 
+               console.log("state.chats5");  
+               console.log(state.chatList.chats);  
+
+               if(state.error){
+                this.setProps({error: state.error});
+               }
+               //todo is loading state
+
+               /*if(this.props.selectedChatId!=state.chatContent.chatId){
                     this.setProps({selectedChatId: state.chatContent.chatId})
                }else if(this.props.error!=state.error){
                 this.setProps({error: state.error});
-               }               
+               }  */             
             }catch(err){
                 console.log(err);
             }            
@@ -57,62 +70,24 @@ class Chat extends Block<IChatProps> {
 
     render():DocumentFragment{         
 
+        //todo loading for chat list is separate, move to chat list control??
+        if(!(this.children.chatList instanceof ChatList)){
+            this.children.chatList = new ChatList({selectedChatId: this.props.selectedChatId});
+        }
+
         if(this.props.isLoading){
             console.log(1);
             return this.compile(chat);
-        }else if(this.props.selectedChatId){
-            console.log("selected chat : "+this.props.selectedChatId);
-
-            /* render selected chat control */
-
-            if(!(this.children.chatContent instanceof Chat)){
-                this.children.chatContent = new ChatContent({});
-            }
-
-            /* todo how to handle select chat in list? */
-                        
-            if(!Array.isArray(this.children.chats)){
-                let chats = new Array<ChatItem>();
-    
-                this.props.chats.forEach((element : any)=>{ //todo any?
-                    /*if(element.id == this.props.selectedChatId){ element.class_ = "chat-item_selected"; }
-                    element.events = {
-                        click: (event:Event) => {
-                            const selectedChatId = (event.target as HTMLElement).dataset.id as unknown as number; //todo is it ok?
-                            const currentChat = this.children.chats.find((chat:any) =>{ return chat.props.id == selectedChatId});
-                            this.children.selectedChat.setProps({username : currentChat.props.name});
-                            this.children.selectedChat.setProps({avatarUrl : currentChat.props.avatarUrl});
-                        }
-                    };  */
-                    chats.push(new ChatItem(element));
-                });
-                this.children.chats = chats;
-            }
-
-        
-            //this.children.chatList = new ChatList({chats: this.props.chats, selectedChatId: this.props.selectedChatId});
-            
-            
-        }else{            
-            /* this case is called if the page is just opened without selected chat */
-
-            //todo what condition should be to check if all components are inited
-            if(!Array.isArray(this.children.chats)){
-                let chats = new Array<ChatItem>();
-                this.props.chats.forEach((element : any)=>{ //todo any?
-                    //if(element.id == this.props.selectedChatId){ element.class_ = "chat-item_selected"; }
-                    /*element.events = {
-                        click: (event:Event) => {
-                            const selectedChatId = (event.target as HTMLElement).dataset.id as unknown as number; //todo is it ok?
-                            const currentChat = this.children.chats.find((chat:any) =>{ return chat.props.id == selectedChatId});
-                            this.children.selectedChat.setProps({username : currentChat.props.name});
-                            this.children.selectedChat.setProps({avatarUrl : currentChat.props.avatarUrl});
-                        }
-                    };  */
-                    chats.push(new ChatItem(element));
-                });
-                this.children.chats = chats;
-
+        }else{ 
+            if(this.props.selectedChatId){
+                console.log("selected chat : "+this.props.selectedChatId);
+                /* render chat content control */
+                if(!(this.children.chatContent instanceof Chat)){
+                    this.children.chatContent = new ChatContent({});
+                }
+            }         
+            else{
+                /* create new chat screen */
                 this.children.createChatBtn = new Button({text: 'create new chat', type: "button", events:{
                     click: (event:Event)=>{
                         const value = (this.children.chatTitle.element as HTMLInputElement).value;
@@ -127,7 +102,6 @@ class Chat extends Block<IChatProps> {
                 this.children.chatTitle = new Input({name: "title", placeholder: 'chat title'});
             }  
         }
-
         return this.compile(chat);
     }
 }

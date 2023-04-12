@@ -7,6 +7,7 @@ import UserSearch from '../userSearch/userSearch';
 import chatController from '../../../controllers/chatController';
 import { store, StoreEvents } from '../../../modules/store';
 import MessageInput from '../messageInput/messageInput';
+import ShortUserInfo from '../shortUserInfo/shortUserInfo';
 
 export const enum ChatContentState {
     CHAT_CREATED,
@@ -21,14 +22,19 @@ interface IChatContentProps extends IProps{
     isLoading: boolean;
     
     /* data props */
-    //messages?: Array<any>;
-    //username?:string; //todo?
-    //avatarUrl?:string;
+
+    //do we need chatId here?
+    //chatId: number;
+
+    message?: string; //please add user message
+    messages?: string[]; //Array<any>;
 
     /* children */
     addUserButton?:ImageButton; //shows user search to add user to chat
 
-    messageInput?:MessageInput; //to type a message to chat   
+    messageInput?:MessageInput; //to type a message to chat  
+    shortUserInfo?:ShortUserInfo;
+
     
     userSearch?: UserSearch; //list of users to add to chat
 }
@@ -36,17 +42,24 @@ interface IChatContentProps extends IProps{
 class ChatContent extends Block<IChatContentProps> { //todo withStore store.getState().chat.chatContent
     constructor(props:IChatContentProps) {        
         super(props);
-        this.props.contentState = ChatContentState.CHAT_CREATED;
         store.on(StoreEvents.Updated, () => { 
             try{
                 let state = store.getState().chat.chatContent;
                 console.log(state); // created, add user, messages
-                this.setProps({contentState: state.state, isLoading: state.isLoading });
-
+                if(state.message){
+                    const messages = this.props.messages;
+                    messages?.push(state.message);
+                    this.setProps({messages: messages });
+                }else{
+                    this.setProps({contentState: state.state, isLoading: state.isLoading });
+                }
             }catch(err){ console.log(err); }            
         });}
 
     init(): void {
+
+        this.props.contentState = ChatContentState.CHAT_CREATED;
+        this.props.messages = new Array<string>();        
 
         this.children.addUserButton = new ImageButton({
             iconClass:"fa-solid fa-ellipsis-vertical", 
@@ -89,18 +102,12 @@ class ChatContent extends Block<IChatContentProps> { //todo withStore store.getS
                 if(!(this.children.userSearch instanceof UserSearch)){
                     console.log(234234);
                     this.children.userSearch = new UserSearch({});
-                    this.children.addUserButton1 = new ImageButton({
-                        iconClass:"fa-solid fa-ellipsis-vertical", 
-                        type: "button",
-                        events:{
-                            click: ()=>{ chatController.showUserSearch(); }
-                        }});  
-                    this.props.messageEr = "test";
                     console.log(23);
                     console.log(this.children);
                 }else{
                     console.log(2343);
-                    this.children.userSearch.show();
+                    console.log(this.children.userSearch);
+                    //this.children.userSearch.show();
                 }
                 this.props.message = "";
                 if(this.children.messageInput instanceof MessageInput){
@@ -115,12 +122,19 @@ class ChatContent extends Block<IChatContentProps> { //todo withStore store.getS
                     this.children.messageInput = new MessageInput({});
                 }else{
                     this.children.messageInput.show();
-                }                
+                }      
+                if(!(this.children.shortUserInfo instanceof ShortUserInfo)){
+                    this.children.shortUserInfo = new ShortUserInfo({});
+                }else{
+                    this.children.shortUserInfo.show();
+                }   
+                
                 this.props.message = "";
                 if(this.children.userSearch instanceof UserSearch){
-                   // this.children.userSearch.hide();
+                   this.children.userSearch.hide();
                 }
                 //todo show messages
+                
                 break;  
             default:
                 console.log("default");

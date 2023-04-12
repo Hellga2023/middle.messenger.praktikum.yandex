@@ -1,4 +1,9 @@
-const chatList = `{{#each chats}}
+const chatList = `
+               {{#if isLoading}}
+               Loading...
+               {{else}}
+                    {{#each chatItems}}
                        {{{this}}}
-                  {{/each}} `;
+                  {{/each}} 
+               {{/if}}`;
 export default chatList;

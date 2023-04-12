@@ -4,22 +4,19 @@ const selectedChat = `
                 {{else}}
                 <div class="chat-content__user">
 
-                        <img alt="user avatar" src="{{avatarUrl}}"/>
-                        <p>{{username}}</p>
+                        {{{shortUserInfo}}}
                                                                      
                         {{{addUserButton}}}                       
                 </div>
                 <div class="chat-content__messages">
-
                         {{message}}
-
                         {{{userSearch}}}
-                        
-                        {{messageEr}}
-
+                        {{#each messages}}
+                                {{{this}}}
+                        {{/each}}
                 </div>                
                 <div class="chat-content__new-message-block">
-                        
+                        {{{messageInput}}}             
                 </div>   
                 {{/if}}
                 `;

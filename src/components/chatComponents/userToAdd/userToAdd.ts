@@ -1,30 +1,29 @@
 import chatController from "../../../controllers/chatController";
 import Block, { IProps } from "../../block/block";
 
-export interface IUserToAddProps{
+export interface IUserToAddProps extends IProps{
     userId: number;
     login: string;
     name: string;
+
 }
 
-class UserToAdd extends Block<IProps> {
+const template = ` <div><p> {{login}} {{name}} </p></div>`;
 
-    private _template = ` <div><p> {{login}} {{name}} </p></div>`;
+class UserToAdd extends Block<IUserToAddProps> {
 
-    constructor(props:IProps){
+    constructor(props:IUserToAddProps){
         super(props);
     }
 
     init(): void {
         this.props.events = {
-            click: () =>{
-                chatController.addUserToChat(this.props.userId);
-            }
+            click: () =>{ chatController.addUserToChat(this.props.userId, this.props.name, this.props.avatar);}
         };
     }
 
     public render(): DocumentFragment {
-        return this.compile(this._template);
+        return this.compile(template);
     }
 }
 
