@@ -44,20 +44,12 @@ class Chat extends Block<IChatProps> {
             try{
                 console.log("state.chats1");  
                 //todo make rerender only if selectedChatId is updated or error need to show
-               let state =  store.getState().chat; 
-               console.log("state.chats5");  
-               console.log(state.chatList.chats);  
+               let state =  store.getState().chat;                
 
                if(state.error){
                 this.setProps({error: state.error});
                }
-               //todo is loading state
-
-               /*if(this.props.selectedChatId!=state.chatContent.chatId){
-                    this.setProps({selectedChatId: state.chatContent.chatId})
-               }else if(this.props.error!=state.error){
-                this.setProps({error: state.error});
-               }  */             
+               //todo is loading state      
             }catch(err){
                 console.log(err);
             }            

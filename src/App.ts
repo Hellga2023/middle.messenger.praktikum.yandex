@@ -5,12 +5,17 @@ import Chat from './pages/chat/chat';
 import Error from './pages/error/error';
 import router, { Routes } from './routing/router';
 import Signup from './pages/signup/signup';
+import authController from './controllers/authController';
+import { store } from './modules/store';
 
 export const App = (rootQuery:string):void => {
 
     //todo get user id and set in state, in router check if state authorized !!!!
-
+    
     window.addEventListener("DOMContentLoaded", async () => {
+        await authController.getUser();
+        console.log("user should be set to state now");
+        console.log(store.getState());
         router
           .use(Routes.Login, Login, {})
           .use(Routes.Signup, Signup, {})

@@ -1,5 +1,4 @@
 import chatList from './chatList.tmpl';
-import './chatList.scss';
 import Block,{IProps} from '../../block/block';
 import ChatItem from '../chatItem/chatItem';
 import { store, StoreEvents } from '../../../modules/store';
@@ -37,10 +36,6 @@ class ChatList extends Block<IChatListProps> {
     }
 
     public render(): DocumentFragment{
-
-
-        console.log("in chat list render");
-        console.log(this.props.chatItems);
 
         let chats = new Array<ChatItem>();
 

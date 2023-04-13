@@ -1,5 +1,7 @@
-class WebSocketService {
+import { store } from "../modules/store";
 
+class WebSocketService {
+    
     private _socket:WebSocket;
 
 
@@ -9,7 +11,7 @@ class WebSocketService {
         this._socket.addEventListener('open', () => {
             console.log('Соединение установлено');
           
-            this.sendMessage('Моё первое сообщение миру!');
+            //this.sendMessage('Моё первое сообщение миру!');
             
           });
           
@@ -27,6 +29,7 @@ class WebSocketService {
           this._socket.addEventListener('message', event => {
             //todo show message
             console.log('Получены данные', event.data);
+            this.onGetDataCallback(event.data);
           });
           
           this._socket.addEventListener('error', event => {
@@ -42,6 +45,45 @@ class WebSocketService {
             type: 'message',
           }));
     }
+
+    public onGetDataCallback(data:any){ //move to chat controller!!
+      console.log("in callback");
+      console.log(data);
+      console.log("array : ", Array.isArray(data));
+      console.log(data[0]);
+      let messagesArray = JSON.parse(data);
+      console.log("array : ", Array.isArray(messagesArray));
+      console.log(messagesArray);
+      messagesArray.forEach(element => {
+        console.log(element.id);
+      });
+
+      if(Array.isArray(data)){
+        //assume this is messages and save to store 
+        //very bad in here, remove somewhere tomorrow!!!
+        console.log("assume this is messages");
+        console.log(data);
+        store.set("chat.chatContent.messages", data);
+      }
+
+
+    }
+
+    public getOldMessages():any { //todo
+      if(this._socket.readyState === 1){
+        console.log("send message");
+        return this._socket.send(JSON.stringify({
+          content: '0',
+          type: 'get old',
+        })); 
+      }else{
+        console.log("wait a second to send")
+        setTimeout(() =>{
+          this.getOldMessages();
+      }, 1000);
+      }            
+    }
+
 }
 
 export default WebSocketService;

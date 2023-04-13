@@ -63,13 +63,17 @@ class AuthController {
 
     public async getUser() {
         try{
-        store.set('profile.isLoading', true);
+            console.log("start fetch user");
+        //store.set('profile.isLoading', true); //remove later
         await this._api.getUser().then( (response) => {
             const user = JSON.parse((response as XMLHttpRequest).responseText);
             console.log("user fetched");
             console.log(user);
-            store.set('profile.user', user); //may be common place for all pages!!!
-            store.set('profile.isLoading', false);
+            store.set('userId', user.id); //common place 
+            console.log("userid");
+            //store.set('profile.user', user); //may be common place for all pages!!!//remove later
+            //store.set('profile.isLoading', false);//remove later
+            
         })
         .catch((err)=>{
             store.set('profile.hasError', true);

@@ -24,7 +24,7 @@ interface IChatContentProps extends IProps{
     /* data props */
 
     //do we need chatId here?
-    //chatId: number;
+    chatId: number;
 
     message?: string; //please add user message
     messages?: string[]; //Array<any>;
@@ -44,14 +44,27 @@ class ChatContent extends Block<IChatContentProps> { //todo withStore store.getS
         super(props);
         store.on(StoreEvents.Updated, () => { 
             try{
-                let state = store.getState().chat.chatContent;
+                let state = store.getState().chat;
                 console.log(state); // created, add user, messages
-                if(state.message){
+                if(state.chatContent.message){
                     const messages = this.props.messages;
-                    messages?.push(state.message);
+                    messages?.push(state.chatContent.message);
                     this.setProps({messages: messages });
-                }else{
-                    this.setProps({contentState: state.state, isLoading: state.isLoading });
+                }
+                else if(state.selectedChatId){
+                    //TODO get messages?
+                    console.log("content state : "+state.chatContent.state);
+                    console.log("content loading : "+state.chatContent.isLoading);
+                    console.log("content messages : "+state.chatContent.messages);
+                    this.setProps({
+                        contentState: ChatContentState.CHAT_MESSAGES, 
+                        isLoading: false, 
+                        chatId: state.selectedChatId,
+                        messages: state.chatContent.messages
+                    });
+                }
+                else{
+                    this.setProps({contentState: state.chatContent.state, isLoading: state.chatContent.isLoading });
                 }
             }catch(err){ console.log(err); }            
         });}

@@ -27,22 +27,29 @@ class ChatController {
       .catch(console.log);
     }
 
-    public async getToken(id:number){
-      await this._api.getToken(id)
+    public async getToken(id:number):Promise<string>{
+      return await this._api.getToken(id)
       .then((response)=>{
         store.set("chat.chatContent.isLoading", false);
         let xhr = response as XMLHttpRequest,
             data = JSON.parse(xhr.responseText);
-        if(xhr.status==200){ store.set("chat.chatContent.token", data.token); }
-        else{ store.set("chat.error", data.reason); }
+        if(xhr.status==200){ 
+          store.set("chat.chatContent.token", data.token);
+          return data.token; //todo token result?
+        }
+        else{ 
+          store.set("chat.error", data.reason);
+          return data.reason; 
+        }
       })
       .catch(err => {console.log(err);});
     }
 
-    public createWebsocket(userId:number, chatId:number, token:string){
+    public createWebsocket(userId:number, chatId:number, token:string):WebSocketService{
       let service = new WebSocketService();
       service.createWebsocket(userId, chatId, token);
       store.set("chat.chatContent.socket", service);
+      return service;
     }
 
     public showUserSearch() {
@@ -110,10 +117,20 @@ class ChatController {
     }
 
 
-    public setSelectedChat(id: number) {
+    public async setSelectedChat(id: number) {
       console.log("selected chat set : " + id);
       store.set("chat.selectedChatId", id);
-      console.log(store.getState());
+      store.set("chat.chatContent.isLoading", true);
+      console.log("get token ");
+      let token = await this.getToken(id);
+      console.log("token : " + token);
+      let userID = store.getState().userId;
+      console.log("userid : " + userID);
+      let service = this.createWebsocket(userID!, id, token); //todo check for null
+      let messages = await service.getOldMessages();
+      console.log("messages");
+      console.log(messages);
+      store.set("chat.chatContent.messages", messages);
     }
 }
 

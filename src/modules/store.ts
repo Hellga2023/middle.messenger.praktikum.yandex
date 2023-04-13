@@ -10,6 +10,7 @@ export enum StoreEvents {
   }
 
 export type State = {
+    userId: number|null,
     signup:{
       isLoading: boolean,
       validationError: string
@@ -25,7 +26,6 @@ export type State = {
       userSavingMessage: string
     },
     chat:{
-      userID: number|null,
       error: string, //get token error, create chat error
       selectedChatId: number|null,
       chatList: {
@@ -42,7 +42,8 @@ export type State = {
           username: string
         },
         socket: WebSocketService|null,
-        message: string
+        message: string,
+        messages: any[] //todo, this is array of old messages
       },      
       /* add user to chat control */
       addUserToChat:{
@@ -53,6 +54,7 @@ export type State = {
 }
   
 const initialState: State = {
+    userId: null,
     signup:{
       isLoading: false,
       validationError: ""
@@ -85,7 +87,8 @@ const initialState: State = {
           username: ""
         },
         socket: null,
-        message: ""
+        message: "",
+        messages: []
       },
       addUserToChat:{
         isLoading:false,
