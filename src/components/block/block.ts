@@ -221,7 +221,9 @@ abstract class Block<IProps> {
     }
   
     show() {
-      this.getContent()!.style.display = "block";
+      //this.getContent()!.style.display = "block";
+      //todo remove temp fix
+      this.getContent()!.style.display = "flex";
     }
   
     hide() {

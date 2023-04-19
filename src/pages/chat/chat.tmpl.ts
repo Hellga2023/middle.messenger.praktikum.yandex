@@ -1,4 +1,4 @@
-const chat = `  <div class="leftMenu">
+const chat = `  <div class="leftMenu">                    
                     <div class="text-right">
                         {{{link}}}
                         <input type="search" class="search" placeholder="Search"/>
@@ -8,18 +8,6 @@ const chat = `  <div class="leftMenu">
                     </div>
                 </div>
                 <div class="chat-content">
-                    {{#if isLoading}} 
-                        Loading...
-                    {{else}}
-                        {{#if selectedChatId}} 
-                            {{{chatContent}}}
-                        {{else}}
-                            create chat
-                            {{{chatTitle}}}
-                            {{{createChatBtn}}}
-                            {{error}}                                                  
-                        {{/if}}
-                    {{/if}}
-                        
+                    {{{chatContent}}}
                 </div>`;
 export default chat;

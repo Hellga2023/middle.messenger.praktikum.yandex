@@ -28,7 +28,7 @@ class ChatItem extends Block<IChatItemProps> {
         this.props.hasUnreadMessages = this.props.unreadCount? this.props.unreadCount>0 : false;
         this.props.avatar = this.props.avatar || avatarImg;
         this.props.events = {click:()=>{
-            chatController.setSelectedChat(this.props.id);
+            chatController.selectChat(this.props.id);
         }};
     }
 

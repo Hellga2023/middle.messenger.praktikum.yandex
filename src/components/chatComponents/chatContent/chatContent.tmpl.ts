@@ -1,19 +1,23 @@
 const selectedChat = `  
-                {{#if isLoading}}
+                {{#if isLoading}}                
                         Loading...
+                        {{{spinner}}}
                 {{else}}
                 <div class="chat-content__user">
-
+                        <div>
                         {{{shortUserInfo}}}
-                                                                     
+                        </div>                                      
                         {{{addUserButton}}}                       
                 </div>
-                <div class="chat-content__messages">
+                <div>
+
+                        {{{chatTitle}}}
+                        {{{createChatBtn}}}
+                        {{error}}
+
                         {{message}}
                         {{{userSearch}}}
-                        {{#each messages}}
-                                {{{this}}}
-                        {{/each}}
+                        {{{messageList}}}
                 </div>                
                 <div class="chat-content__new-message-block">
                         {{{messageInput}}}             
@@ -21,9 +25,3 @@ const selectedChat = `
                 {{/if}}
                 `;
 export default selectedChat;
-/*
-<div>{{date}}</div>
-                <div>{{#each messages}}
-                        {{{this}}}
-                     {{/each}} 
-                </div>*/

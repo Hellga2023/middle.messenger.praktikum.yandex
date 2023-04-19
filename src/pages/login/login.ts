@@ -45,7 +45,7 @@ class LoginPage extends Block<ILoginProps>{
         inputs.push(new ValidatableInput(props)); });
         
         this.children.btn = new Button({text: "Login"});
-        this.children.link = new Link({text:"No account yet?", url: Routes.Signup});
+        this.children.link = new Link({text:"No account yet?", url: Routes.SIGNUP});
         this.children.inputs = inputs;
         
 

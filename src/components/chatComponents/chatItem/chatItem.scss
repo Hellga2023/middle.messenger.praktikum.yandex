@@ -3,7 +3,7 @@
     flex-direction: row;
     display: flex;
     justify-content: space-between;
-    padding: 0 1em;
+    padding: 1em;
 }
 
 .chat-item_selected{
@@ -13,6 +13,10 @@
 .chat-item__user-data{
     display: flex;
     align-items: center;
+}
+
+.chat-item__user-data__avatar{
+    width: 4em;
 }
 
 .chat-item__user-data__message-preview{

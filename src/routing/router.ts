@@ -2,10 +2,11 @@ import Block, { IProps } from "../components/block/block";
 import Route from "./route";
 
 export const enum Routes {
-  Login = "/",
-  Signup = "/sign-up",
-  Profile = "/settings",
-  Chat = "/messenger"
+  LOGIN = "/",
+  SIGNUP = "/sign-up",
+  PROFILE = "/settings",
+  CHAT = "/messenger",
+  NOT_FOUND = "/404"
 }
 
 class Router {

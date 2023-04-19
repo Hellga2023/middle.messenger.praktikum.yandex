@@ -9,7 +9,7 @@ interface IChatListProps extends IProps{
     isLoading?: boolean;
 
     /* data props */
-    selectedChatId: number|null;
+    selectedChatId?: number|null;
     chats?: ChatInfoModel[];    
     
     /* childrens */
@@ -23,7 +23,7 @@ class ChatList extends Block<IChatListProps> {
             try{
                 //make rerender only if selectedChatId is updated or error need to show
                let state =  store.getState().chat; 
-               this.setProps({selectedChatId: state.selectedChatId, chats: state.chatList.chats, isLoading: state.chatList.isLoading});//todo check             
+               this.setProps({selectedChatId: state.chatContent.chatId, chats: state.chatList.chats, isLoading: state.chatList.isLoading});//todo check             
             }catch(err){
                 console.log(err);
             }            
@@ -43,9 +43,9 @@ class ChatList extends Block<IChatListProps> {
             chats.push(new ChatItem({
                 id: element.id, 
                 title: element.title, 
-                lastMessage: element.last_message.content,
+                lastMessage: element.last_message?.content,
                 avatar: element.avatar,
-                date: new Date(element.last_message.time),
+                date: new Date(element.last_message?.time),
                 unreadCount: element.unread_count,
                 selectedClass: (element.id == this.props.selectedChatId) ? "chat-item_selected" : ""
             }));

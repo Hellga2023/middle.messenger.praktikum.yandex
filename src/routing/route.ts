@@ -1,4 +1,4 @@
-import {isEqual} from '../utils/isEqual';
+//import {isEqual} from '../utils/isEqual';
 import {renderBlock} from '../utils/renderDom';
 import Block, { IProps } from '../components/block/block';
 
@@ -30,7 +30,8 @@ export default class Route {
   }
 
   match(pathname:string) {
-    return isEqual(pathname, this._pathname); 
+    //return isEqual(pathname, this._pathname);  //todo
+    return pathname==this._pathname;
   }
 
   render() {

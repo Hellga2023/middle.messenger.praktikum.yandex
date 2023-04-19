@@ -1,6 +1,7 @@
 import {BaseAPI} from './baseAPI';
 
 class ChatAPI extends BaseAPI {
+
     constructor(){
         super("/chats");
     }
@@ -22,6 +23,9 @@ class ChatAPI extends BaseAPI {
     public getChats() {
         return this.http.get('/');
     }     
+    getChatUsers(id: number):Promise<any> {
+        return this.http.get(`/${id}/users`);
+    }
 }
 
 export default ChatAPI;

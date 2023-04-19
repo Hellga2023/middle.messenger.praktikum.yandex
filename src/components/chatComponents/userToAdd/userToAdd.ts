@@ -1,11 +1,12 @@
 import chatController from "../../../controllers/chatController";
+import { UserWithAvatarModel } from "../../../models/models";
 import Block, { IProps } from "../../block/block";
 
 export interface IUserToAddProps extends IProps{
-    userId: number;
-    login: string;
-    name: string;
-
+    user: UserWithAvatarModel;
+    login?: string;
+    name?: string;
+    avatar?: string;
 }
 
 const template = ` <div><p> {{login}} {{name}} </p></div>`;
@@ -13,12 +14,15 @@ const template = ` <div><p> {{login}} {{name}} </p></div>`;
 class UserToAdd extends Block<IUserToAddProps> {
 
     constructor(props:IUserToAddProps){
+        props.login = props.user.login;
+        props.name = props.user.first_name;
+        props.avatar = props.user.avatar;
         super(props);
     }
 
     init(): void {
         this.props.events = {
-            click: () =>{ chatController.addUserToChat(this.props.userId, this.props.name, this.props.avatar);}
+            click: () =>{ chatController.addUserAndOpenChat(this.props.user);}
         };
     }
 

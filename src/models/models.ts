@@ -12,12 +12,16 @@ export interface  SignUpFormModel{
     phone: string     
 };
 
+export interface UserInChatModel extends UserWithAvatarModel{
+  role: string
+}
+
 export interface UserWithAvatarModel extends UserWithPasswordModel{
   id: number,
   avatar: string   
 };
 
-export interface UserWithPasswordModel {
+export interface UserWithPasswordModel extends UserModel {
   password: string
 };
 
@@ -42,5 +46,16 @@ export interface MessageModel{
   user: UserWithAvatarModel,
   time: string, //$timestamp,
   content: string
+}
+
+export interface MessageDetailsModel{
+  id: number,
+  chat_id: number,
+  user_id: number,
+  content: string,
+  file: any,
+  is_read: boolean,
+  type: string,
+  time: string //timestamp
 }
 

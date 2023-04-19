@@ -1,12 +1,15 @@
 import error from './error.tmpl';
 import Link from '../../components/commonComponents/link/link';
 import './error.scss'; 
-import Block from '../../components/block/block';
+import Block, { IProps } from '../../components/block/block';
 
-interface IErrorProps{}
+interface IErrorProps extends IProps {
+    /* code */
+    code?: number;
+}
 
 class Error extends Block<IErrorProps> {
-    constructor(data) {
+    constructor(data:IErrorProps) {
         if(data.code==404){
             data.message = "Sorry, this page doesn't exist";
         }else if(data.code==500){

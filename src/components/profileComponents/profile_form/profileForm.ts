@@ -42,25 +42,7 @@ class ProfileForm extends Block<IProfileFormProps> {
         super(data, "form");
 
         store.on(StoreEvents.Updated, () => { 
-            try{
-                const state = store.getState().profile;
-                    this.setProps({
-                        isLoading : state.isLoading,
-                        editMode : state.editMode,
-                        username: state.user?.first_name,
-                        userSavingMessage: state.userSavingMessage,
-                        footerClass : state.editMode ? "" :"text_left"
-                    })
-                    this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
-                        let input = validatableInput.children.input,
-                            name = input.props.name,
-                            val = state.user![name];
-                        input.setProps({value: val, isDisabled: !state.editMode });                  
-                    });
-                
-            }catch(err){
-                console.log(err);
-            }            
+            this._setUserInfo(); 
         });
     }
 
@@ -77,7 +59,7 @@ class ProfileForm extends Block<IProfileFormProps> {
                         {label:"Phone", name: "phone"}] ;  
 
         links.push(new Link({text:"Edit profile", 
-                                url: Routes.Profile, 
+                                url: Routes.PROFILE, 
                                 class_: underlinedClass, 
                                 events: {click: (event:Event)=>{ 
                                     event.preventDefault();
@@ -124,10 +106,39 @@ class ProfileForm extends Block<IProfileFormProps> {
                     // user controller post user data
                 }
         }}
+        this._setUserInfo();
     }
 
     public render(): DocumentFragment{
        return this.compile(profileForm);
+    }
+
+    private _setUserInfo(){
+        try{
+            console.log("in set user info");
+            const state = store.getState().profile,
+                user = store.getState().user;
+                if(user!=null){
+
+                    this.setProps({
+                        isLoading : state.isLoading,
+                        editMode : state.editMode,
+                        username: user?.first_name,
+                        userSavingMessage: state.userSavingMessage,
+                        footerClass : state.editMode ? "" :"text_left"
+                    })
+                    this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
+                        let input = validatableInput.children.input,
+                            name = input.props.name,
+                            val = user![name];
+                        input.setProps({value: val, isDisabled: !state.editMode });                  
+                    });
+                }else{
+                    console.log("user is null");
+                }                
+        }catch(err){
+            console.log(err);
+        }            
     }
 }
 

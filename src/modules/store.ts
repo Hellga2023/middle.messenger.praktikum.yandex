@@ -1,6 +1,6 @@
 import Block, { IProps } from "../components/block/block";
 import EventBus from "../utils/eventbus";
-import { ChatInfoModel, UserModel, UserWithAvatarModel } from "../models/models";
+import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserModel, UserWithAvatarModel } from "../models/models";
 import {set} from "../utils/helpers";
 import { ChatContentState } from "../components/chatComponents/chatContent/chatContent";
 import WebSocketService from "../utils/websocketService";
@@ -10,7 +10,8 @@ export enum StoreEvents {
   }
 
 export type State = {
-    userId: number|null,
+    //userId: number|null,
+    user: UserWithAvatarModel | null,
     signup:{
       isLoading: boolean,
       validationError: string
@@ -27,23 +28,25 @@ export type State = {
     },
     chat:{
       error: string, //get token error, create chat error
-      selectedChatId: number|null,
+      //selectedChatId: number|null,
       chatList: {
         isLoading: boolean,
         chats: ChatInfoModel[]
       },
       chatContent: {
+        //todo separate a chat selected values and chat create values
         isLoading: boolean,
         chatId: number|null,
         token: string,
         state: ChatContentState,
+        chatUsers: UserInChatModel[]|null,
         shortUserInfo:{
           avatar: string,
           username: string
         },
         socket: WebSocketService|null,
         message: string,
-        messages: any[] //todo, this is array of old messages
+        messages: MessageDetailsModel[]//|null //todo, this is array of old messages
       },      
       /* add user to chat control */
       addUserToChat:{
@@ -54,7 +57,8 @@ export type State = {
 }
   
 const initialState: State = {
-    userId: null,
+    //userId: null,
+    user: null,
     signup:{
       isLoading: false,
       validationError: ""
@@ -65,14 +69,12 @@ const initialState: State = {
     },
     profile:{
       editMode: false,
-      isLoading: true,
+      isLoading: false, //all loading set to true and then check when it can be set to false
       userSavingMessage: "",
       user: null
     },
     chat:{
-      userID: null,
       error: "",
-      selectedChatId: null,
       chatList:{
         isLoading: true,
         chats: new Array<ChatInfoModel>, //todo model
@@ -81,14 +83,15 @@ const initialState: State = {
         isLoading: false,
         chatId: null,
         token: "",
-        state: ChatContentState.CHAT_CREATED,
+        state: ChatContentState.CREATE_CHAT,
         shortUserInfo:{
           avatar: "",
           username: ""
         },
         socket: null,
         message: "",
-        messages: []
+        messages: new Array<MessageDetailsModel>, //todo make null
+        chatUsers: null
       },
       addUserToChat:{
         isLoading:false,
@@ -107,7 +110,6 @@ class Store extends EventBus{
   
   public set(path: string, value: unknown) {
     set(this.state, path, value);
-    //console.log("before event");
     this.emit(StoreEvents.Updated);
   };
 } 

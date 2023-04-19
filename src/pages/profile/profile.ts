@@ -16,7 +16,7 @@ class Profile extends Block<IProps>{
     init(): void {           
         
         this.children.sectionLeft = new SectionLeft({});//todo params?
-        this.children.profileForm = new ProfileForm({editMode: false, isLoading: true}); //todo
+        this.children.profileForm = new ProfileForm({editMode: false, isLoading: false}); //todo set initially true and then remove??? do we need this
     }
 
     render():DocumentFragment{

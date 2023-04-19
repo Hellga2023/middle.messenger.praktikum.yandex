@@ -34,10 +34,6 @@ class EventBus {
 
     private _checkEvent(event:string){
         if (!this._listeners[event]) {
-          console.log(this._listeners);
-          console.log(event);
-          console.log(this._listeners[event]);
-          console.log(this._listeners.updated);
             throw new Error(`No such event: ${event}`);
         }
     }

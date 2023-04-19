@@ -38,8 +38,8 @@ class UserSearch extends Block<IUserSearchProps> {
     public render(): DocumentFragment {
         if(this.props.usersFound){
             this.children.userItems = new Array<UserToAdd>();
-            this.props.users.forEach((data)=>{
-                this.children.userItems.push(new UserToAdd({userId: data.id, login: data.login,name: data.first_name, avatar: data.avatar}));
+            this.props.users?.forEach((data)=>{
+                this.children.userItems.push(new UserToAdd({user: data}));
             });
         }
         return this.compile(userSearch);

@@ -1,7 +1,7 @@
 import AuthAPI from "../api/authAPI";
 import {store} from "../modules/store";
 import router, { Routes } from "../routing/router";
-import { LoginFormModel, SignUpFormModel } from "../models/models";
+import { LoginFormModel, SignUpFormModel, UserWithAvatarModel } from "../models/models";
 
 class AuthController {
 
@@ -19,8 +19,7 @@ class AuthController {
                     let data = (response as XMLHttpRequest).responseText;
                     if(data==="OK"){
                         store.set("login.isLoading",false);
-                        //router.go(Routes.Profile)
-                        router.go(Routes.Chat);
+                        router.go(Routes.CHAT);
                     }else{
                         const error = JSON.parse(data);
                         store.set("login.isLoading",false);
@@ -43,7 +42,7 @@ class AuthController {
                 }else{
                     let userId = data.id;
                     store.set("signup.isLoading",false);
-                    router.go(Routes.Profile)
+                    router.go(Routes.CHAT)
                 }   
             }); 
                  
@@ -55,28 +54,38 @@ class AuthController {
     public async logout() {
         this._api.logout()
        .then(() => {
-            store.set('profile.user', null);
-            router.go(Routes.Login);
+            store.set('user', null);
+            router.go(Routes.LOGIN);
         })
       .catch(console.log);        
     }
 
     public async getUser() {
         try{
+            console.log("check if we already have user in store");
+            //check if we already have user in store
+            if(store.getState().user!=null){
+                console.log("user already in store, return");
+                return;
+            }
             console.log("start fetch user");
         //store.set('profile.isLoading', true); //remove later
+        //todo isLoading! add to proper pages (loading???)
         await this._api.getUser().then( (response) => {
-            const user = JSON.parse((response as XMLHttpRequest).responseText);
-            console.log("user fetched");
-            console.log(user);
-            store.set('userId', user.id); //common place 
-            console.log("userid");
+            const xhr = response as XMLHttpRequest,
+                result = JSON.parse(xhr.responseText);
+            if(xhr.status == 200){
+                store.set('user', result);
+                console.log("user set");
+            }else{
+                console.log("user not set");
+            }
             //store.set('profile.user', user); //may be common place for all pages!!!//remove later
-            //store.set('profile.isLoading', false);//remove later
-            
+            //store.set('profile.isLoading', false);//remove later            
         })
         .catch((err)=>{
-            store.set('profile.hasError', true);
+            console.log("user not set because of error, may be update event handler was not added to listeners yet");
+            //store.set('profile.hasError', true);
             console.log(err);
         });        
 
