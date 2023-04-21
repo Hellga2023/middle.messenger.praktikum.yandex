@@ -1,9 +1,9 @@
 import chatController from "../../../controllers/chatController";
-import { UserWithAvatarModel } from "../../../models/models";
+import { UserInChatModel } from "../../../models/models";
 import Block, { IProps } from "../../block/block";
 
 export interface IUserToAddProps extends IProps{
-    user: UserWithAvatarModel;
+    user: UserInChatModel;
     login?: string;
     name?: string;
     avatar?: string;
@@ -11,7 +11,7 @@ export interface IUserToAddProps extends IProps{
 
 const template = ` <div><p> {{login}} {{name}} </p></div>`;
 
-class UserToAdd extends Block<IUserToAddProps> {
+class UserToDelete extends Block<IUserToAddProps> {
 
     constructor(props:IUserToAddProps){
         props.login = props.user.login;
@@ -21,11 +21,12 @@ class UserToAdd extends Block<IUserToAddProps> {
     }
 
     init(): void {
-        this.props.events = {
+        /*this.props.events = {
             click: () =>{ 
-                //todo review this flow
-                chatController.addUserToChat(this.props.user);}
-        };
+                //add but not open chat
+                chatController.deleteUserFromChat(this.props.user.id);
+            }
+        };*/
     }
 
     public render(): DocumentFragment {
@@ -33,4 +34,4 @@ class UserToAdd extends Block<IUserToAddProps> {
     }
 }
 
-export default UserToAdd;
+export default UserToDelete;

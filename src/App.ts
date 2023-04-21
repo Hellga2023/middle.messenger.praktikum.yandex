@@ -24,8 +24,6 @@ export const App = async () => {
         let isProtectedRoute = true;
         let is404 = false;
 
-        //404?
-
         switch(window.location.pathname){
             case Routes.LOGIN:
             case Routes.SIGNUP:
@@ -33,34 +31,20 @@ export const App = async () => {
                 break;
             case Routes.CHAT:
             case Routes.PROFILE:
-                //isProtectedRoute = true;
                 break;
             default:
                 is404 = true; 
         }
 
         try{
-            //todo check if it works?
             await authController.getUser();
             router.start();
-
-           /* if(is404){
+            if(is404){
                 router.go(Routes.NOT_FOUND);
-            }else if(isProtectedRoute){
-                //router.go(Routes.Profile);
-                router.go(Routes.CHAT);
-            }else{
-                console.log(window.location.pathname);
-                console.log(Routes.SIGNUP);
-                console.log(window.location.pathname==Routes.SIGNUP);
-                if(window.location.pathname==Routes.SIGNUP){
-                    router.go(Routes.SIGNUP);
-                }else{
-                    console.log("in try redirect to login");
+            }
+            if(isProtectedRoute && !store.getState().user){
                 router.go(Routes.LOGIN);
-                }
-                
-            }*/
+            }
         }catch(e){
             console.log("in catch on start");
             router.start();
@@ -68,20 +52,3 @@ export const App = async () => {
         }
     });
 }
-//todo fix 500 and 404 pages!!!
-
-/* export const App = ():Block<any> => { //todo make common layout interface
-   
-    switch(window.location.pathname){
-        case '/profile': return new Profile(data.profilePage);
-        case '/login': return new Auth(data.loginPage);
-        case '/signup': return new Auth(data.signUpPage);
-        case '/editprofile': 
-            data.profilePage.editMode = true;
-            return new Profile(data.profilePage);
-        case '/chat': return new Chat(data.chatPage);
-        case '/404': return new Error({code: "404"});
-        case '/500': return new Error({code: "500"});
-        default: return new Main();        
-    }
- }*/

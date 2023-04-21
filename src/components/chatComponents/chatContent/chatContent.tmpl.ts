@@ -7,7 +7,9 @@ const selectedChat = `
                         <div>
                         {{{shortUserInfo}}}
                         </div>                                      
-                        {{{addUserButton}}}                       
+                        {{{addUserButton}}}  
+                        {{{addOrDeleteUserModal}}}
+                    
                 </div>
                 <div>
 
@@ -16,12 +18,11 @@ const selectedChat = `
                         {{error}}
 
                         {{message}}
-                        {{{userSearch}}}
+                        
                         {{{messageList}}}
                 </div>                
-                <div class="chat-content__new-message-block">
-                        {{{messageInput}}}             
-                </div>   
+                {{{messageInput}}}             
+                 
                 {{/if}}
                 `;
 export default selectedChat;

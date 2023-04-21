@@ -1,4 +1,5 @@
 import { MessageDetailsModel } from "../../../models/models";
+import { XssProtect } from "../../../utils/xssProtect";
 import Block, {IProps} from "../../block/block";
 import Message from "../message/message";
 
@@ -26,7 +27,7 @@ class MessageList extends Block<IMessageListProps>{
                 userId: message.user_id,
                 date: new Date(message.time),
                 isRead: message.is_read,
-                content: message.content
+                content: XssProtect.sanitizeHtml(message.content) 
             }));
         })        
     }

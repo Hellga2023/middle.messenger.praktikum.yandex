@@ -23,7 +23,16 @@ class ChatList extends Block<IChatListProps> {
             try{
                 //make rerender only if selectedChatId is updated or error need to show
                let state =  store.getState().chat; 
-               this.setProps({selectedChatId: state.chatContent.chatId, chats: state.chatList.chats, isLoading: state.chatList.isLoading});//todo check             
+
+               //todo  (chat.chatContent.messages) -> request whole chat list on new messages receive or send
+               //or may be update only chat with id == messages of that socket?
+               //can we map this shortly??
+               if(this.props.selectedChatId!==state.chatId || 
+                this.props.chats?.length!==state.chatList.chats?.length || 
+                this.props.isLoading!==state.chatList.isLoading){
+                    console.log("in list refresh");                    
+                    this.setProps({selectedChatId: state.chatId, chats: state.chatList.chats, isLoading: state.chatList.isLoading});  
+               }                          
             }catch(err){
                 console.log(err);
             }            
@@ -41,15 +50,11 @@ class ChatList extends Block<IChatListProps> {
 
         this.props.chats?.forEach((element : any)=>{  //chatInfoModel    
             chats.push(new ChatItem({
-                id: element.id, 
-                title: element.title, 
-                lastMessage: element.last_message?.content,
-                avatar: element.avatar,
-                date: new Date(element.last_message?.time),
-                unreadCount: element.unread_count,
+                chatInfo: element,
                 selectedClass: (element.id == this.props.selectedChatId) ? "chat-item_selected" : ""
             }));
         });
+        console.log(chats);
         this.children.chatItems = chats;
 
        return this.compile(chatList);

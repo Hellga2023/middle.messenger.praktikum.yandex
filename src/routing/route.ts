@@ -25,7 +25,7 @@ export default class Route {
 
   leave() {
     if (this._block) {
-      this._block.hide(); //remove from dom
+      this._block.componentWillUnmount();
     }
   }
 
@@ -36,11 +36,8 @@ export default class Route {
 
   render() {
     if (!this._block) {
-      this._block = new this._blockClass(this._props);
-      renderBlock(this._props.rootQuery, this._block!); //todo?
-      return;
+      this._block = new this._blockClass(this._props);      
     }
-
-    this._block.show(); //do not need? will be removed from dom
+    renderBlock(this._props.rootQuery, this._block!);
   }
 }

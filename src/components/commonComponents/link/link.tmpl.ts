@@ -1,2 +1,2 @@
-const link = `<a class="link {{class_}}" href="{{url}}">{{text}}</a>`; 
+const link = `<a class="link {{class_}}">{{text}}</a>`; 
 export default link;

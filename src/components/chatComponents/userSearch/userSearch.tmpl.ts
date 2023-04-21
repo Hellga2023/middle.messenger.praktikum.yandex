@@ -1,6 +1,5 @@
 const addUserToChat = ` 
 <div>
-user search
 {{{userSearchInput}}}
 {{#if usersFound}}
         {{#each userItems}}

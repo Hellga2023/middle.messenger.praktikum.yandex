@@ -19,6 +19,8 @@ const message =`<div class="chat-content__messages__message {{userClass}}">
 
 class Message extends Block<IMessageProps>{
     constructor(props:IMessageProps){
+        props.class = props.currentUserId == props.userId ? "chat-content__messages__message-container_right" : 
+        "chat-content__messages__message-container_left" ;
         super(props);
     }
 

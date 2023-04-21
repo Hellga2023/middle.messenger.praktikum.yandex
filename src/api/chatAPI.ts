@@ -20,6 +20,12 @@ class ChatAPI extends BaseAPI {
             data:JSON.stringify({users: [userId], chatId: chatId})  
         });
     }
+    public deleteUserFromChat(userId: number,chatId:number):Promise<unknown>{
+        return this.http.delete('/users', {
+            headers: { 'content-type': 'application/json' },
+            data:JSON.stringify({users: [userId], chatId: chatId})  
+        });
+    }
     public getChats() {
         return this.http.get('/');
     }     

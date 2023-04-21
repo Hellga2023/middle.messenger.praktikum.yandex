@@ -5,7 +5,7 @@ import ChatContent from '../../components/chatComponents/chatContent/chatContent
 import Link from '../../components/commonComponents/link/link';
 import chatController from '../../controllers/chatController';
 import ChatList from '../../components/chatComponents/chatList/chatList';
-import { Routes } from '../../routing/router';
+import router, { Routes } from '../../routing/router';
 
 interface IChatProps extends IProps{
 
@@ -30,7 +30,7 @@ class Chat extends Block<IChatProps> {
     }
 
     init():void{
-        this.children.link = new Link({text:"Profile >", url: Routes.PROFILE, class_: "grey-text"});
+        this.children.link = new Link({text:"Profile >", url: Routes.PROFILE, router: router, class_: "grey-text"});
     } 
 
     render():DocumentFragment{         

@@ -14,6 +14,7 @@ const template = `{{{loadBtn}}} {{{messageInput}}} {{{sendBtn}}}`;
 
 class MessageInput extends Block<IMessageInputProps> { 
     constructor(props: IMessageInputProps){
+        props.class = "chat-content__new-message-block";
         super(props);
     }
     
@@ -34,13 +35,12 @@ class MessageInput extends Block<IMessageInputProps> {
             type:"button",
             events: {
                 click: ()=>{
-                    let message = (this.children.messageInput.element as HTMLInputElement).value;
+                    let input = this.children.messageInput.element as HTMLInputElement;
+                    let message = input.value;
                     if(message){
-                        console.log(message);
+                        input.value = "";
                         chatController.sendMessage(message);
                     }
-                    //set message to store to show it in the chat
-                    //send message via websocket
                 }
             }
         });

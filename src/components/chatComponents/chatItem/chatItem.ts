@@ -4,40 +4,45 @@ import Block,{IProps} from '../../block/block';
 import { DateService } from '../../../utils/dateUtils';
 import avatarImg from '../../../../static/defaultAvatar.png';
 import chatController from '../../../controllers/chatController';
+import { ChatInfoModel } from '../../../models/models';
+import { XssProtect } from '../../../utils/xssProtect';
 
 interface IChatItemProps extends IProps{
 
-    id: number;
-    title: string;
-
+    chatInfo: ChatInfoModel;    
+    //calculated props
     selectedClass?:string;
-    avatar?: string; // chat avatar not user!
     hasUnreadMessages?:boolean;
-    unreadCount?: number;
-    date?: Date;//todo read about timestamps    
-    convertedTime?:string;
-    lastMessage?: string;
+    convertedTime?:string;    
 }
+
 class ChatItem extends Block<IChatItemProps> {
     constructor(props:IChatItemProps) {
         super(props);
     }
 
     public init(): void {
-        this.props.convertedTime = this.convertDateTime(this.props.date as Date);
-        this.props.hasUnreadMessages = this.props.unreadCount? this.props.unreadCount>0 : false;
-        this.props.avatar = this.props.avatar || avatarImg;
+        this.props.convertedTime = this.convertDateTime(this.props.chatInfo.last_message?.time);
+        this.props.hasUnreadMessages = this.props.chatInfo.unread_count? this.props.chatInfo.unread_count>0 : false;
+        this.props.chatInfo.avatar = this.props.chatInfo.avatar || avatarImg;
         this.props.events = {click:()=>{
-            chatController.selectChat(this.props.id);
+            chatController.selectChat(this.props.chatInfo.id);
         }};
+
+        /* sanitize data */
+        this.props.chatInfo.title = XssProtect.sanitizeHtml(this.props.chatInfo.title);
+        if(this.props.chatInfo && this.props.chatInfo.last_message){
+            this.props.chatInfo.last_message.content = XssProtect.sanitizeHtml(this.props.chatInfo.last_message.content);
+        }
     }
 
     public render(): DocumentFragment{
        return this.compile(chatItem);
     }
 
-    private convertDateTime(date:Date):string{   
-        if(date){
+    private convertDateTime(time:string|undefined):string{   
+        if(time){
+            const date = new Date(time);
             if(DateService.isToday(date)){
                 return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
             }else if(DateService.isYesterday(date)){

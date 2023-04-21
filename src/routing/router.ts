@@ -6,7 +6,8 @@ export const enum Routes {
   SIGNUP = "/sign-up",
   PROFILE = "/settings",
   CHAT = "/messenger",
-  NOT_FOUND = "/404"
+  NOT_FOUND = "/404",
+  EDIT_PASSWORD = "/edit-password"
 }
 
 class Router {

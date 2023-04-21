@@ -136,6 +136,14 @@ abstract class Block<IProps> {
       this._eventBus().emit(Block.EVENTS.FLOW_CDM);
       //dispatch children?
     }
+
+    componentWillUnmount() {  
+      //todo check if all removed???
+      this._removeEvents(); 
+      console.log("events removed");
+      this._element?.remove();
+      console.log("element removed");
+     }
   
     private _componentDidUpdate(oldProps:any, newProps:any) {
       const response = this.componentDidUpdate(oldProps, newProps);
@@ -179,7 +187,7 @@ abstract class Block<IProps> {
     }
 
     getContent() {
-      return this.element;
+      return this._element;
     }
 
     setProps = (nextProps:IProps) => {

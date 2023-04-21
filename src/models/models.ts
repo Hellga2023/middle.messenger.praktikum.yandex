@@ -37,9 +37,10 @@ export interface UserModel {
 export interface ChatInfoModel{
   id: number,
   title:string,
-  avatar:string, // this is chat avatar!!!! no user
-  unreadCount:number,
-  lastMessage: MessageModel
+  avatar:string | null, // this is chat avatar!!!! no user
+  unread_count:number,
+  last_message: MessageModel | null,
+  created_by: number
 }
 
 export interface MessageModel{

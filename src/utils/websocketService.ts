@@ -20,6 +20,7 @@ class WebSocketService {
         
         this._socket.addEventListener('message', event => {
           console.log('Получены данные', event.data);
+          console.log(event);
           getDatacallback(event.data);
         });
         

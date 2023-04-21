@@ -7,10 +7,11 @@ import avatarImg from '../../../../static/avatar.png';
 import Block, { IProps } from '../../block/block';
 import './profileForm.scss';
 import { store, StoreEvents, withStore } from '../../../modules/store';
-import { Routes } from '../../../routing/router';
+import router, { Routes } from '../../../routing/router';
 import userController from '../../../controllers/userController';
 import AuthController from '../../../controllers/authController';
 import { UserModel } from '../../../models/models';
+import { XssProtect } from '../../../utils/xssProtect';
 
 interface IProfileFormProps extends IProps{ 
     //todo check if all of that we need
@@ -42,7 +43,9 @@ class ProfileForm extends Block<IProfileFormProps> {
         super(data, "form");
 
         store.on(StoreEvents.Updated, () => { 
-            this._setUserInfo(); 
+            if(store.getState().user){
+                this._setUserInfo();
+            }             
         });
     }
 
@@ -60,13 +63,14 @@ class ProfileForm extends Block<IProfileFormProps> {
 
         links.push(new Link({text:"Edit profile", 
                                 url: Routes.PROFILE, 
+                                router: router,
                                 class_: underlinedClass, 
                                 events: {click: (event:Event)=>{ 
                                     event.preventDefault();
                                     userController.setEditMode(true);
                                 }}}));
-        links.push(new Link({text:"Change password", url: "editpassword", class_: underlinedClass}));
-        links.push(new Link({text: "Logout", events:{ click: (event:Event)=>{
+        links.push(new Link({text:"Change password", url: Routes.EDIT_PASSWORD, router: router, class_: underlinedClass}));
+        links.push(new Link({text: "Logout", router: router, url: "", events:{ click: (event:Event)=>{
                 event.preventDefault();
                 AuthController.logout();
             }}}));
@@ -130,7 +134,7 @@ class ProfileForm extends Block<IProfileFormProps> {
                     this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
                         let input = validatableInput.children.input,
                             name = input.props.name,
-                            val = user![name];
+                            val = XssProtect.sanitizeHtml(user![name]);
                         input.setProps({value: val, isDisabled: !state.editMode });                  
                     });
                 }else{

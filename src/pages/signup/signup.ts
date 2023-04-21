@@ -7,6 +7,7 @@ import AuthController from '../../controllers/authController';
 import { SignUpFormModel } from '../../models/models';
 import { withStore } from '../../modules/store';
 import ValidatableInput, { IValidatableInputProps } from '../../components/commonComponents/validatableInput/validatableInput';
+import router, { Routes } from '../../routing/router';
 
 interface ISignupProps extends IProps{
     /* calculated props */
@@ -68,7 +69,7 @@ class SignupPage extends Block<ISignupProps>{
             inputs.push(new ValidatableInput(props));
         });
         this.children.btn = new Button({text: "Sign up"});
-        this.children.link = new Link({text:"Login", url: "/"});
+        this.children.link = new Link({text:"Login", url: Routes.LOGIN, router: router});
         this.children.inputs = inputs;
     }
 

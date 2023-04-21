@@ -6,7 +6,7 @@ import Block, { IProps } from '../../components/block/block';
 import AuthController from '../../controllers/authController';
 import { LoginFormModel } from '../../models/models';
 import { withStore } from '../../modules/store';
-import { Routes } from '../../routing/router';
+import router, { Routes } from '../../routing/router';
 import ValidatableInput, { IValidatableInputProps } from '../../components/commonComponents/validatableInput/validatableInput';
 
 interface ILoginProps extends IProps{
@@ -45,7 +45,7 @@ class LoginPage extends Block<ILoginProps>{
         inputs.push(new ValidatableInput(props)); });
         
         this.children.btn = new Button({text: "Login"});
-        this.children.link = new Link({text:"No account yet?", url: Routes.SIGNUP});
+        this.children.link = new Link({text:"No account yet?", url: Routes.SIGNUP, router: router});
         this.children.inputs = inputs;
         
 

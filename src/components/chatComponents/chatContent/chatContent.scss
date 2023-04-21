@@ -40,9 +40,21 @@ $border-radius: 15px;
     flex-direction: column;
     gap: 1em;
 }
+
+.chat-content__messages__message-container_right{
+    justify-content: end;
+    display: flex;
+}
+
+.chat-content__messages__message-container_left{
+    justify-content: start;
+    display: flex;
+}
+
 .chat-content__messages__message{
     border-radius: $border-radius;
     padding: 1em;
+    display: flex;
 }
 
 
@@ -67,6 +79,11 @@ $border-radius: 15px;
 
 
 /* footer with upload file, message input and send button */
+.chat-content__new-message-block{
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
 
 .chat-content__new-message-block__input{
     background: #EFEFEF;
@@ -74,6 +91,7 @@ $border-radius: 15px;
     width: 20em;
     border:none;
     height: 2em;
+    padding: 0.5em; //todo common for message input
 }
 .chat-content__new-message-block__input:focus{
     outline: none;
@@ -83,6 +101,7 @@ $border-radius: 15px;
 color: #999;
 background-color: transparent;
 border: none;
+padding: 0;
 }
 .chat-content__new-message-block__file-button:hover{
     color: black;

@@ -1,17 +1,15 @@
-const chatItem = `<div class="chat-item {{{selectedClass}}}">
+const chatItem = `<div class="chat-item {{selectedClass}}">
                     <div class="chat-item__user-data">
-                        <img class="chat-item__user-data__avatar" alt="user avatar" src="{{{avatar}}}"/>
+                        <img class="chat-item__user-data__avatar" alt="user avatar" src="{{chatInfo.avatar}}"/>
                         <div class="chat-item__user-data__message-preview">
-                            <p class="message-preview__user">{{{title}}}</p>
-                            <p>{{{last_message.type}}}</p>
-                            <p>{{{last_message.content}}}</p>
-                            <p>{{{lastMessage}}}</p>
+                            <p class="message-preview__user">{{chatInfo.title}}</p>
+                            <p>{{chatInfo.last_message.content}}</p>
                         </div>         
                     </div>
                     <div class="chat-item__message-data">
-                        <p class="grey-text">{{{convertedTime}}}</p>   
+                        <p class="grey-text">{{convertedTime}}</p>   
                         {{#if hasUnreadMessages}}
-                        <p class="chat-item__message-count">{{{unreadCount}}}</p>
+                        <p class="chat-item__message-count">{{chatInfo.unread_count}}</p>
                         {{/if}}
                     </div>   
                   </div>`;
