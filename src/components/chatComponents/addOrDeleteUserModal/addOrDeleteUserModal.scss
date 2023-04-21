@@ -2,15 +2,18 @@
     box-shadow: 0 0 6px var(--box-shadow-color);
     border-radius: 12px;
 }
+
 @mixin round-button{
     border-radius: 50%;
 }
-//todo common place for mixin??
+
+/* todo common place for mixin?? */
 
 .add-or-delete-user{
     @include modal-border;
+
     border: none;
-    top: 100px;//temp fix for rerender!!!!
+    top: 100px;/* temp fix for rerender!!!! */
 }
 
 .add-or-delete-user__close-btn-row{
@@ -32,6 +35,7 @@
 
 .add-or-delete-user__round-button{
     @include round-button;
+    
     border-color: var(--default-blue-color);
     color: var(--default-blue-color);
     background: transparent;

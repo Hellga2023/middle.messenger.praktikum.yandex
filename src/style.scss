@@ -10,7 +10,7 @@
     --white: #fff;
     --default-red-color: #FF2F2F;
     --background-light-blue-color: #E4EDFD;
-    --background-light-grey-color: #f8f8f8;
+    --background-message-grey-color: #f8f8f8;
 }
 
 @font-face {
@@ -18,13 +18,6 @@
     src: url("../static/Inter-VariableFont_slnt,wght.ttf");
 } 
 
-@mixin modal-border{    
-    box-shadow: 0 0 6px var(--box-shadow-color);
-    border-radius: 12px;
-}
-@mixin round-button{
-    border-radius: 50%;
-}
 .content{
     display: flex;
     justify-content: center;

@@ -14,10 +14,10 @@
 }
 
 $padding: 1em 0;
+
 .info-line {
     display: flex;
-    align-items: center;
-    /*gap: 2em;*/
+    align-items: center; /* gap: 2em; */    
     justify-content: space-between;
     font-size: 1em;
 } 

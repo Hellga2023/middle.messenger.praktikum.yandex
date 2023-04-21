@@ -1,7 +1,9 @@
-//todo refactor this???
+/* todo refactor this??? */
+
 $border-radius: 15px;
 
-/* header with avatar, name and add user button*/
+/* header with avatar, name and add user button */
+
 .chat-content__user{
     border-bottom: 1px solid var(--border-grey-color);
     display: flex;
@@ -62,23 +64,23 @@ $border-radius: 15px;
     background-color: var(--background-light-blue-color);
 
 }
+
 .chat-content__messages__message_not-my-message{
-    background-color: var(--background-light-grey-color);
+    background-color: var(--background-message-grey-color);
 }
 
 .chat-content__messages__message_my-message .time{
     color: var(--default-blue-color);
     font-size:0.7em;
 }
+
 .chat-content__messages__message_not-my-message .time{
     color: var(--text-grey-color);
     font-size:0.7em;
 }
 
-
-
-
 /* footer with upload file, message input and send button */
+
 .chat-content__new-message-block{
     display: flex;
     align-items: center;
@@ -91,8 +93,9 @@ $border-radius: 15px;
     width: 20em;
     border:none;
     height: 2em;
-    padding: 0.5em; //todo common for message input
+    padding: 0.5em; /* todo common for message input */
 }
+
 .chat-content__new-message-block__input:focus{
     outline: none;
 }
@@ -103,9 +106,11 @@ background-color: transparent;
 border: none;
 padding: 0;
 }
+
 .chat-content__new-message-block__file-button:hover{
     color: black;
 }
+
 .chat-content__new-message-block__file-icon::before{
     font-size: 2em;
 }
