@@ -1,27 +1,22 @@
 import profile from './profile.tmpl';
-import Block from '../../block/block';
+import Block, { IProps } from '../../components/block/block';
 import SectionLeft from '../../components/section_nav_left/section_nav_left';
-import ProfileForm from '../../components/profile_form/profileForm';
+import ProfileForm from '../../components/profileComponents/profile_form/profileForm';
+import authController from '../../controllers/authController';
 
+class Profile extends Block<IProps>{
 
-interface IProfileProps {
-    username: string;
-    editMode: boolean;   
-    infos: any[]; //todo create interface
-    class?:string;
-}
-
-class Profile extends Block<IProfileProps>{
-
-    constructor(data:IProfileProps) {       
-
+    constructor(data:IProps) { 
+        
         data.class = "content";
-        super('div', data);
+        super(data);               
+        authController.getUser(); 
     }
 
-    init(): void {
+    init(): void {           
+        
         this.children.sectionLeft = new SectionLeft({});//todo params?
-        this.children.profileForm = new ProfileForm(this.props);
+        this.children.profileForm = new ProfileForm({editMode: false, isLoading: false}); //todo set initially true and then remove??? do we need this
     }
 
     render():DocumentFragment{

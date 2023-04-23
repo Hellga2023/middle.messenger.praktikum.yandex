@@ -1,7 +1,11 @@
 const profile = `
 {{{sectionLeft}}}  
 <main>
-{{{profileForm}}}
+{{#if isLoading}} 
+    Loading...
+{{else}}
+    {{{profileForm}}}                    
+{{/if}}
 </main>
 `; 
 

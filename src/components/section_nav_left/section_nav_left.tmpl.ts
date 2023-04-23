@@ -3,6 +3,6 @@
                     </div>`; */
 
 const section = `
-                    <button class="section-left__button" onclick="javascript:history.back()"></button>
+                    <button class="section-left__button"></button>
                 `; 
 export default section;
