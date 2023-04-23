@@ -48,6 +48,22 @@ class UserController {
       })
       .catch(console.log);
     }
+
+    public async saveUserAvatar(avatar:FormData){
+      await this._api.saveUserAvatar(avatar).
+      then((response)=>{
+        let xhr = response as XMLHttpRequest;
+        let data = JSON.parse(xhr.responseText);
+        if(xhr.status===200){
+          console.log(data);
+          //show success
+        }
+        else{
+          console.log(data.reason);
+          //todo show error
+        }
+      });
+    }    
 }
 
 export default new UserController();
