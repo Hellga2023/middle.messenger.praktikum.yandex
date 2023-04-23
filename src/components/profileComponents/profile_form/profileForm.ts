@@ -146,7 +146,7 @@ class ProfileForm extends Block<IProfileFormProps> {
                         isDisabled:!state.editMode
                     });
                     if(user.avatar){
-                        this.children.avatar.children.avatarImage.setProps({src:"https://ya-praktikum.tech/api/v2/resources" + user.avatar});
+                        this.children.avatar.children.avatarImage.setProps({src: userController.getUserAvatarUrl(user.avatar)});
                     }                    
                 }else{
                     console.log("user is null");

@@ -1,4 +1,4 @@
-import "./addOrDeleteUserModal.scss";
+import "./chatOptions.scss";
 import Block, {IProps} from "../../block/block";
 import ImageButton from "../../commonComponents/imageButton/imageButton";
 import UserSearch from "../userSearch/userSearch";
@@ -11,6 +11,7 @@ const dialog =`
 {{#if isChooseAction}}
     <div class="add-or-delete-user__button-row">{{{addUserButton}}} Add user</div>
     <div class="add-or-delete-user__button-row">{{{deleteUserButton}}} Delete user</div>
+    <div class="add-or-delete-user__button-row">{{{setChatAvatar}}} Set chat avatar</div>
 {{else}}
 
     {{#if isAddUser}}
@@ -29,36 +30,43 @@ const dialog =`
 {{/if}}
 `;
 
-enum AddOrDeleteUserState {
+enum ChatOptionsState {
     CHOOSE_ACTION,
     ADD_USER,
     DELETE_USER
 }
 
-interface IAddOrDeleteUserModalProps extends IProps{
-    state?:AddOrDeleteUserState;
+interface IChatOptionsProps extends IProps{
+    state?:ChatOptionsState;
     isChooseAction?: boolean;
     isAddUser?: boolean;
 
     usersToDelete?: UserToDelete[];
 
+    /* children */
+
+    addUserButton?:ImageButton;
+    deleteUserButton?:ImageButton;
+    closeButton?:ImageButton;
+    setChatAvatar?:ImageButton;
+    userSearch?:UserSearch;
 }
 
-class AddOrDeleteUserModal extends Block<IAddOrDeleteUserModalProps>{
-    constructor(props:IAddOrDeleteUserModalProps){
+class ChatOptions extends Block<IChatOptionsProps>{
+    constructor(props:IChatOptionsProps){
         props.class = "add-or-delete-user";
         super(props, "dialog");
     }
 
     public init(): void {    
-        this.props.state = AddOrDeleteUserState.CHOOSE_ACTION;
+        this.props.state = ChatOptionsState.CHOOSE_ACTION;
         this.children.addUserButton = new ImageButton({
             class: "add-or-delete-user__round-button",
             iconClass:"fa-solid fa-plus", 
             type: "button",
             events:{
                 click: ()=>{
-                    this.setProps({state: AddOrDeleteUserState.ADD_USER});                    
+                    this.setProps({state: ChatOptionsState.ADD_USER});                    
                 }
         }});
         this.children.deleteUserButton = new ImageButton({
@@ -68,7 +76,7 @@ class AddOrDeleteUserModal extends Block<IAddOrDeleteUserModalProps>{
             events:{
                 click: ()=>{ 
                     console.log("remove"); 
-                this.setProps({state: AddOrDeleteUserState.DELETE_USER});
+                this.setProps({state: ChatOptionsState.DELETE_USER});
             }
         }});    
         this.children.closeButton = new ImageButton({
@@ -81,14 +89,25 @@ class AddOrDeleteUserModal extends Block<IAddOrDeleteUserModalProps>{
                     this._setInitialState();                    
                 }
         }});    
+        this.children.setChatAvatar = new ImageButton({
+            class: "add-or-delete-user__round-button",
+            iconClass:"fa-solid fa-user-plus", 
+            type: "button",
+            events:{
+                click: ()=>{ 
+                    console.log("set avatar"); 
+                    //this.setProps({state: AddOrDeleteUserState.DELETE_USER});
+                }
+            }
+        });
         this.children.userSearch = new UserSearch({});  
         
     }
 
     public render(): DocumentFragment{ 
 
-        this.props.isChooseAction = this.props.state == AddOrDeleteUserState.CHOOSE_ACTION;
-        this.props.isAddUser = this.props.state == AddOrDeleteUserState.ADD_USER;
+        this.props.isChooseAction = this.props.state == ChatOptionsState.CHOOSE_ACTION;
+        this.props.isAddUser = this.props.state == ChatOptionsState.ADD_USER;
 
         this.children.usersToDelete = new Array<UserToDelete>(); 
         const chatUsers = store.getState().chat.chatContent.chatUsers;
@@ -111,10 +130,10 @@ class AddOrDeleteUserModal extends Block<IAddOrDeleteUserModalProps>{
 
     private _setInitialState(){
         this.setProps({
-            state: AddOrDeleteUserState.CHOOSE_ACTION,
+            state: ChatOptionsState.CHOOSE_ACTION,
         });
         (this.getContent() as HTMLDialogElement).close();
     }
 }
 
-export default AddOrDeleteUserModal;
+export default ChatOptions;

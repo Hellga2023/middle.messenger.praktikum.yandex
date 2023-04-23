@@ -1,6 +1,7 @@
 import { store, StoreEvents } from "../../../modules/store";
 import Block, { IProps } from "../../block/block";
-import avatarImg from '../../../../static/defaultAvatar.png';
+
+import userController from "../../../controllers/userController";
 
 interface IShortUserInfoProps extends IProps{
     username?:string,
@@ -18,7 +19,7 @@ class ShortUserInfo extends Block<IShortUserInfoProps>{
             let users = store.getState().chat.chatContent.chatUsers;
             if(users.length>0){
                 let user = users[0]; //todo if users are more than 1 in chat compile avatar
-                this.setProps({username: user.first_name, avatarUrl: user.avatar || avatarImg });
+                this.setProps({username: user.first_name, avatarUrl: userController.getUserAvatarUrl(user.avatar)});
             }else{
                 this.setProps({username: "", avatarUrl: "" });
             }

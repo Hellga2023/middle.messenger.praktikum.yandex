@@ -27,7 +27,16 @@ class MessageInput extends Block<IMessageInputProps> {
             name: "message",
             type: "text",
             class: "chat-content__new-message-block__input",
-            placeholder: "message"
+            placeholder: "message",
+            events: {
+                keyup: (event:Event) => {
+                    if((event as KeyboardEvent).key === 'Enter'){
+                        const input = event.target as HTMLInputElement;                        
+                        chatController.sendMessage(input.value);
+                        input.value = "";
+                    }
+                }
+            }
         });
         this.children.sendBtn = new ImageButton({
             iconClass:"fa-solid fa-arrow-right", 

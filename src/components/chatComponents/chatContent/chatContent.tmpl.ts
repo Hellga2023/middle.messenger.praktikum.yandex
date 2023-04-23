@@ -7,8 +7,8 @@ const selectedChat = `
                         <div>
                         {{{shortUserInfo}}}
                         </div>                                      
-                        {{{addUserButton}}}  
-                        {{{addOrDeleteUserModal}}}
+                        {{{showOptions}}}  
+                        {{{chatOptions}}}
                     
                 </div>
                 <div>

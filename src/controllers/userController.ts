@@ -1,6 +1,7 @@
 import { store } from "../modules/store";
 import { UserModel } from "../models/models";
 import UserAPI from "../api/userAPI";
+import defaultImg from '../../static/defaultAvatar.png';
 
 class UserController {
     private _api : UserAPI;
@@ -63,7 +64,15 @@ class UserController {
           //todo show error
         }
       });
-    }    
+    }
+    
+    public getUserAvatarUrl(path:string|null){
+      if(path){
+        return "https://ya-praktikum.tech/api/v2/resources" + path;
+      }else{
+        return defaultImg;
+      }      
+    }
 }
 
 export default new UserController();

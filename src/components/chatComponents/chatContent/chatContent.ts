@@ -12,7 +12,7 @@ import { MessageDetailsModel } from '../../../models/models';
 import { spinner } from '../../commonComponents/spinner/spinner';
 import Input from '../../commonComponents/input/input';
 import Button from '../../commonComponents/button/button';
-import AddOrDeleteUserModal from '../addOrDeleteUserModal/addOrDeleteUserModal';
+import ChatOptions from '../chatOptions/chatOptions';
 
 
 export const enum ChatContentState {
@@ -45,8 +45,8 @@ interface IChatContentProps extends IProps{
     createChatBtn?: Button;
     chatTitle?: Input;
 
-    addUserButton?:ImageButton; //shows user search to add user to chat
-    addOrDeleteUserModal?:AddOrDeleteUserModal; //modal with buttons
+    showOptions?:ImageButton; //shows user search to add user to chat
+    chatOptions?:ChatOptions; //modal with buttons
 
     messageInput?:MessageInput; //to type a message to chat  
     shortUserInfo?:ShortUserInfo;
@@ -100,21 +100,21 @@ class ChatContent extends Block<IChatContentProps> { //todo withStore store.getS
         this.props.spinner = spinner;
         this.props.messages = new Array<MessageDetailsModel>();        
 
-        this.children.addUserButton = new ImageButton({
+        this.children.showOptions = new ImageButton({
             class: "chat-content__user__button",
             iconClass:"fa-solid fa-ellipsis-vertical", 
             type: "button",
             events:{
                 click: ()=>{ 
                     if(this.props.chatId){
-                        this.children.addOrDeleteUserModal.getContent().showModal(); 
+                        this.children.chatOptions.getContent().showModal(); 
                     }else{
                         console.log("no chat id");
                     }                    
                 }
             }});   
 
-        this.children.addOrDeleteUserModal = new AddOrDeleteUserModal({});
+        this.children.chatOptions = new ChatOptions({});
 
             //todo move to render??
             this.children.createChatBtn = new Button({text: 'create new chat', type: "button", events:{
