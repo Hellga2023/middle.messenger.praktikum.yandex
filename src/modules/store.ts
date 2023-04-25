@@ -37,12 +37,15 @@ export type State = {
         isLoading: boolean,
         avatarSaveMessage: string
       },
+      users: {
+        chatUsers: UserInChatModel[]
+      },
       chatContent: {
         //todo separate a chat selected values and chat create values
         isLoading: boolean,
         token: string,
         state: ChatContentState,
-        chatUsers: UserInChatModel[], //without me!!!
+        //chatUsers: UserInChatModel[], //without me!!!
         shortUserInfo:{
           avatar: string,
           username: string
@@ -79,6 +82,9 @@ const initialState: State = {
     chat:{
       chatId: null,
       error: "",
+      users: {
+        chatUsers:new Array<UserInChatModel>
+      },
       chatList:{
         isLoading: true,
         chats: new Array<ChatInfoModel>, //todo model
@@ -97,8 +103,7 @@ const initialState: State = {
         },
         socket: null,
         message: "",
-        messages: new Array<MessageDetailsModel>, //todo make null
-        chatUsers: new Array<UserInChatModel>
+        messages: new Array<MessageDetailsModel>, //todo make null        
       },
       addUserToChat:{
         isLoading:false,
@@ -132,8 +137,8 @@ export const withStore = (mapStateToProps: (state: State) => any) => {
 
         super({ ...props, ...mappedState });
   
-        store.on(StoreEvents.Updated, () => {
-          const newMappedState = mapStateToProps(store.getState());          
+        store.on(StoreEvents.Updated, () => {          
+          const newMappedState = mapStateToProps(store.getState());      
           this.setProps(newMappedState);
         });
       }

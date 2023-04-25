@@ -16,7 +16,7 @@ class ShortUserInfo extends Block<IShortUserInfoProps>{
         super(props);
         store.on(StoreEvents.Updated, ()=>{
 
-            let users = store.getState().chat.chatContent.chatUsers;
+            let users = store.getState().chat.users.chatUsers;
             if(users.length>0){
                 let user = users[0]; //todo if users are more than 1 in chat compile avatar
                 this.setProps({username: user.first_name, avatarUrl: userController.getUserAvatarUrl(user.avatar)});

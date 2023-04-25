@@ -1,5 +1,6 @@
 import chatController from "../../../../controllers/chatController";
-import { store } from "../../../../modules/store";
+import { UserInChatModel } from "../../../../models/models";
+import { store, withStore } from "../../../../modules/store";
 import Block, { IProps } from "../../../block/block";
 import UserToDelete from "../userToDelete/userToDelete";
 
@@ -12,28 +13,21 @@ const template = `
 </div>`;
 
 interface IDeleteUserListProps extends IProps{
+    users?:UserInChatModel[];
     usersToDelete?: UserToDelete[];
 }
 
-class DeleteUserList extends Block<IDeleteUserListProps>{
+class DeleteUserListComponent extends Block<IDeleteUserListProps>{
     constructor(props:IDeleteUserListProps){
         super(props);
     }
 
-    public init():void{
-
-    }
-
     public render(): DocumentFragment {
         this.children.usersToDelete = new Array<UserToDelete>(); 
-        const chatUsers = store.getState().chat.chatContent.chatUsers;
-        console.log("chat users in delete");
-        console.log(chatUsers);
+        const chatUsers = store.getState().chat.users.chatUsers;
         chatUsers.forEach(user => {
-            console.log(user);
             this.children.usersToDelete.push(new UserToDelete({user:user, events: {
                 click: () =>{
-                    //add but not open chat
                     chatController.deleteUserFromChat(user.id);
                     //rerender deleted list or go to initial state if no users?
                     //refresh chat content after deleting user
@@ -43,5 +37,9 @@ class DeleteUserList extends Block<IDeleteUserListProps>{
         return this.compile(template);
     }
 }
+
+const withChatUsers = withStore((state) => ({ ...state.chat.users }));
+
+const DeleteUserList = withChatUsers(DeleteUserListComponent);
 
 export default DeleteUserList;

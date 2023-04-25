@@ -55,7 +55,7 @@ class UserSearch extends Block<IUserSearchProps> {
     private _filterUsersToAdd(){
         let state = store.getState().chat,
             users = state.addUserToChat.foundUsers,
-            chatUsers = state.chatContent.chatUsers;
+            chatUsers = state.users.chatUsers;
         return users.filter(user => !chatUsers.find(u => u.id === user.id));
     }
 }

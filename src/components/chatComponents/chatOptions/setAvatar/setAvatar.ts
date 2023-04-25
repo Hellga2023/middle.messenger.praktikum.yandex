@@ -5,11 +5,13 @@ import ImageButton from "../../../commonComponents/imageButton/imageButton";
 import Input from "../../../commonComponents/input/input";
 
 const template=`
-<div class="chat-options__button-row">{{{chooseAvatarBtn}}} Please select an image</div>
-<p>{{avatarMessage}}</p>
-    {{{input}}}
-<div class="chat-options__button-row">{{{saveAvatarBtn}}} Upload</div>
-<p class="">{{avatarSaveMessage}}</p>`;
+<div class="chat-options__set-avatar">
+    <div class="chat-options__button-row">{{{chooseAvatarBtn}}} Please select an image</div>
+    <p>{{avatarMessage}}</p>
+        {{{input}}}
+    <div class="chat-options__button-row">{{{saveAvatarBtn}}} Upload</div>
+    <p class="">{{avatarSaveMessage}}</p>
+</div>`;
 
 interface ISetAvatarProps extends IProps{
     input?:Input;
@@ -54,13 +56,10 @@ class SetAvatar extends Block<ISetAvatarProps>{
             iconClass:"fa-solid fa-download", 
             events:{
                 click: ()=>{ 
-                    console.log("save avatar"); 
-
+                    console.log("save avatar");
                     const file = this.children.input.getContent().files[0];
                     if(file){
-                        console.log("file");
-                        let form = document.createElement("form");                    
-                        let formData = new FormData(form);
+                        let formData = new FormData();
                         if(store.getState().chat.chatId){
                             formData.append('chatId', store.getState().chat.chatId!.toString());
                             formData.append('avatar', this.children.input.getContent().files[0]);                        

@@ -1,6 +1,8 @@
 import Handlebars from "../../utils/handlebarsHelpers";
 import EventBus from "../../utils/eventbus"; 
 import {v4 as makeUUID} from 'uuid';
+import { cloneDeep } from "../../utils/helpers";
+import isEqual from "../../utils/isEqual";
 
 export interface IProps extends Record<string,unknown> {
   class?:string;
@@ -154,8 +156,7 @@ abstract class Block<IProps> {
     }
   
     componentDidUpdate(oldProps, newProps) {
-      //calculate if really updated? to prevent rerender 
-      return true;
+      return !isEqual(oldProps, newProps);
     }
   
     get element() {
@@ -194,8 +195,9 @@ abstract class Block<IProps> {
       if (!nextProps) {
         return;
       }
+      const oldProps = cloneDeep(this.props as object);
       Object.assign(this.props as object, nextProps);
-      this._eventBus().emit(Block.EVENTS.FLOW_CDU);
+      this._eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     }
 
     _makePropsProxy(props:IProps){
@@ -208,9 +210,8 @@ abstract class Block<IProps> {
           return typeof value === "function" ? value.bind(target) : value;
         },
         set(target, prop, value) {
-          const oldTarget = {...target};
+          //const oldTarget = cloneDeep(target);
           target[prop] = value;
-          
           // Запускаем обновление компоненты
           // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
           //self._eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);

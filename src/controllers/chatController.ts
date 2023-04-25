@@ -64,9 +64,11 @@ class ChatController {
     }
 
     private _setChatUsers(user: UserInChatModel){
-      const chatUsers = store.getState().chat.chatContent.chatUsers;
+       //need to create new array cause compare method will check same arrays
+      const chatUsers = new Array<UserInChatModel>();
+      chatUsers.push(...store.getState().chat.users.chatUsers);
       chatUsers.push(user);
-      store.set("chat.chatContent.chatUsers", chatUsers);
+      store.set("chat.users.chatUsers", chatUsers);
     }
 
     /* private calls to api */
@@ -126,7 +128,7 @@ class ChatController {
           let chatUsers:UserInChatModel[] = JSON.parse(xhr.responseText);
           
           let currentUserId = store.getState().user?.id;
-          store.set("chat.chatContent.chatUsers", chatUsers.filter(user => user.id!=currentUserId));
+          store.set("chat.users.chatUsers", chatUsers.filter(user => user.id!=currentUserId));
         }
       });
     }
@@ -160,7 +162,7 @@ class ChatController {
         await this._getChatUsers(id);
 
         //if users show chat if no users show add user
-        let users = store.getState().chat.chatContent.chatUsers;
+        let users = store.getState().chat.users.chatUsers;
         if(users.length>0){
           this._createSocketAndGetMessages(id); 
           this._hideComponentSpinner(); 
@@ -229,8 +231,9 @@ class ChatController {
         let xhr = response as XMLHttpRequest;
         if(xhr.status!=200){ console.log(xhr); }
         else{
-          const users = store.getState().chat.chatContent.chatUsers;
-          store.set("chat.chatContent.chatUsers", users.filter(user => user.id != userId));
+          console.log("in delete chat users");
+          const users = store.getState().chat.users.chatUsers;
+          store.set("chat.users.chatUsers", users.filter(user => user.id != userId));
         }
       });
     }
@@ -262,7 +265,7 @@ class ChatController {
     }
     
     public showChatMessages(){
-      if(store.getState().chat.chatContent.chatUsers.length>0){
+      if(store.getState().chat.users.chatUsers.length>0){
         store.set("chat.chatContent.state", ChatContentState.CHAT_MESSAGES);
       }         
     }
