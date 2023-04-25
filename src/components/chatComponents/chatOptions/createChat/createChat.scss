@@ -9,10 +9,11 @@
 
 .create-chat__input{
     @include text-input;
+
     text-align: center;
 }
 
-.create-chat__input:focus{ // todo add to input mixin!!!
+.create-chat__input:focus{ /* todo add to input mixin!!! */
     outline: none;
 }
 
