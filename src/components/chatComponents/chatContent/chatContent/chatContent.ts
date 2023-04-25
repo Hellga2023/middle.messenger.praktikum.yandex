@@ -72,11 +72,11 @@ class ChatContent extends Block<IChatContentProps> { //todo withStore store.getS
                         messages?.push(state.chatContent.message);
                         this.setProps({messages: messages });
                     }
-                    else if(state.chatId){
+                    else if(state.selected.chatId){
                         this.setProps({
                             contentState: state.chatContent.state, 
                             isLoading: false, 
-                            chatId: state.chatId,
+                            chatId: state.selected.chatId,
                             messages: state.chatContent.messages
                         });
                     }

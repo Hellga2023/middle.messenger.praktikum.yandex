@@ -28,17 +28,21 @@ export type State = {
     },
     chat:{
       error: string, //get token error, create chat error
-      chatId: number|null,
+      selected:{
+        chatId: number|null,
+      },
       chatList: {
         isLoading: boolean,
         chats: ChatInfoModel[]
       },
       chatOptions:{
-        isLoading: boolean,
-        avatarSaveMessage: string
+        isLoading: boolean        
       },
       users: {
         chatUsers: UserInChatModel[]
+      },
+      setAvatar:{
+        avatarSaveMessage: string
       },
       chatContent: {
         //todo separate a chat selected values and chat create values
@@ -80,7 +84,9 @@ const initialState: State = {
       user: null
     },
     chat:{
-      chatId: null,
+      selected:{
+        chatId: null,
+      },
       error: "",
       users: {
         chatUsers:new Array<UserInChatModel>
@@ -90,7 +96,9 @@ const initialState: State = {
         chats: new Array<ChatInfoModel>, //todo model
       },      
       chatOptions:{
-        isLoading: false,
+        isLoading: false        
+      },
+      setAvatar:{
         avatarSaveMessage: ""
       },
       chatContent:{

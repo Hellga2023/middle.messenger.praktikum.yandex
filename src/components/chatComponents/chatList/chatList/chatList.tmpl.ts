@@ -1,6 +1,7 @@
 const chatList = `
                {{#if isLoading}}
                Loading...
+               {{{spinner}}}
                {{else}}
                     {{#each chatItems}}
                        {{{this}}}

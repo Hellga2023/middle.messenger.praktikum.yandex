@@ -151,7 +151,7 @@ class ChatController {
       
       this._showComponentSpinner(ChatComponents.CHAT_CONTENT);
 
-      store.set("chat.chatId", id);
+      store.set("chat.selected.chatId", id);
       store.set("chat.chatContent.messages", new Array<MessageDetailsModel>());//clean old data     
 
       const tokenResult:IErrorOrDataResponse = await this._getToken(id);
@@ -195,7 +195,7 @@ class ChatController {
         };
         //why it's not working in other order????
         this._addChatToStore(chatInList);
-        store.set("chat.chatId", chatId);
+        store.set("chat.selected.chatId", chatId);
 
         const tokenResult:IErrorOrDataResponse = await this._getToken(chatId);
         if(tokenResult.isSuccess){ 
@@ -210,7 +210,7 @@ class ChatController {
 
     public async addUserToChat(user:UserWithAvatarModel){
       this._showComponentSpinner(ChatComponents.CHAT_CONTENT);
-      let chatId = store.getState().chat.chatId;
+      let chatId = store.getState().chat.selected.chatId;
       if(!chatId){ this._setChatError("chat id is null"); return; }
       else{
         const result:IErrorOrDataResponse = await this._addUserToChat(user.id, chatId);
@@ -226,7 +226,7 @@ class ChatController {
     }
 
     public async deleteUserFromChat(userId:number){      
-      this._api.deleteUserFromChat(userId,store.getState().chat.chatId!)
+      this._api.deleteUserFromChat(userId,store.getState().chat.selected.chatId!)
       .then((response)=>{
         let xhr = response as XMLHttpRequest;
         if(xhr.status!=200){ console.log(xhr); }
@@ -247,19 +247,14 @@ class ChatController {
         let xhr = response as XMLHttpRequest,
           data = JSON.parse(xhr.responseText),
           message;
-        if(xhr.status==200){ 
-          console.log("saved");
-          console.log(data); 
-          //todo set new avatar in chat list
+        if(xhr.status==200){          
           message = "Avatar is saved";
-          this.getChats();
+          this.getChats();//todo set new avatar in chat list
         }else{
-          console.log("not saved");
-          console.log(data.reason); 
           message = data.reason;
         }
         store.set("chat.chatOptions.isLoading", false);
-        store.set("chat.chatOptions.avatarSaveMessage", message);
+        store.set("chat.setAvatar.avatarSaveMessage", message);
         //todo rerender makes not showModal!!!
       });
     }

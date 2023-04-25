@@ -1,5 +1,5 @@
 import chatController from "../../../../controllers/chatController";
-import { store } from "../../../../modules/store";
+import { store, withStore } from "../../../../modules/store";
 import Block, { IProps } from "../../../block/block";
 import ImageButton from "../../../commonComponents/imageButton/imageButton";
 import Input from "../../../commonComponents/input/input";
@@ -24,7 +24,7 @@ interface ISetAvatarProps extends IProps{
 
 const chooseAvatarMessage = "no file is selected";
 
-class SetAvatar extends Block<ISetAvatarProps>{
+class SetAvatarComponent extends Block<ISetAvatarProps>{
     constructor(props:ISetAvatarProps){
         super(props);
     }
@@ -60,8 +60,8 @@ class SetAvatar extends Block<ISetAvatarProps>{
                     const file = this.children.input.getContent().files[0];
                     if(file){
                         let formData = new FormData();
-                        if(store.getState().chat.chatId){
-                            formData.append('chatId', store.getState().chat.chatId!.toString());
+                        if(store.getState().chat.selected.chatId){
+                            formData.append('chatId', store.getState().chat.selected.chatId!.toString());
                             formData.append('avatar', this.children.input.getContent().files[0]);                        
                             chatController.saveAvatar(formData);
                         }else{
@@ -84,5 +84,9 @@ class SetAvatar extends Block<ISetAvatarProps>{
         this.setProps({avatarMessage: chooseAvatarMessage});
     }
 }
+
+const withAvatarSave = withStore((state) => ({ ...state.chat.setAvatar }));
+
+const SetAvatar = withAvatarSave(SetAvatarComponent);
 
 export default SetAvatar;
