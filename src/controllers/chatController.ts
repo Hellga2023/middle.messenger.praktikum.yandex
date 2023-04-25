@@ -283,8 +283,10 @@ class ChatController {
     }    
 
     public onGetMessages(data:any){
-
-      const messages = store.getState().chat.chatContent.messages;
+      //temp array fix - need to review isEqual for arrays!!!!
+      const messages = new Array<MessageDetailsModel>();
+      messages.push(...store.getState().chat.chatContent.messages);
+      //const messages = store.getState().chat.chatContent.messages;
       if(Array.isArray(messages)){
         console.log(data);
         let messagesArray:MessageDetailsModel[]|MessageDetailsModel = JSON.parse(data);
