@@ -2,6 +2,7 @@ import {BaseAPI} from './baseAPI';
 
 class ChatAPI extends BaseAPI {
 
+
     constructor(){
         super("/chats");
     }
@@ -28,7 +29,14 @@ class ChatAPI extends BaseAPI {
     }
     public getChats() {
         return this.http.get('/');
-    }     
+    }    
+    
+    saveAvatar(data: FormData) {
+        return this.http.put('/avatar', {
+            data: data
+        });
+    }
+    
     getChatUsers(id: number):Promise<any> {
         return this.http.get(`/${id}/users`);
     }

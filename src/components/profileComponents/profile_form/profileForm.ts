@@ -91,7 +91,7 @@ class ProfileForm extends Block<IProfileFormProps> {
         });
 
         this.children.links = links;
-        this.children.avatar= new Avatar({avatarUrl: this.props.avatarImg, alt: "avatar"});
+        this.children.avatar= new Avatar({avatarUrl: this.props.avatarImg, isDisabled: !this.props.editMode});
         this.children.btn = new Button({ text:"Save"});
         this.children.userinfos = infoTemplates;
 
@@ -104,6 +104,11 @@ class ProfileForm extends Block<IProfileFormProps> {
                     let isValid = input.validateInForm(data);
                     if(!isValid) { isFormValid = false;}
                 });
+                const avatarImg = (this.children.avatar.children.input.element as HTMLInputElement).value;
+                if(avatarImg){
+                    let form = new FormData(this.children.avatar.element);
+                    userController.saveUserAvatar(form);
+                }
                 if(isFormValid){
                     console.log(data);
                     userController.saveUser(data as UserModel);
@@ -137,6 +142,11 @@ class ProfileForm extends Block<IProfileFormProps> {
                             val = XssProtect.sanitizeHtml(user![name]);
                         input.setProps({value: val, isDisabled: !state.editMode });                  
                     });
+                    this.children.avatar.setProps({
+                        isDisabled:!state.editMode
+                    });
+                    //todo check if default is shown?
+                    this.children.avatar.children.avatarImage.setProps({src: userController.getUserAvatarUrl(user.avatar)});                                        
                 }else{
                     console.log("user is null");
                 }                

@@ -2,7 +2,7 @@ import Block, { IProps } from "../components/block/block";
 import EventBus from "../utils/eventbus";
 import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserModel, UserWithAvatarModel } from "../models/models";
 import {set} from "../utils/helpers";
-import { ChatContentState } from "../components/chatComponents/chatContent/chatContent";
+import { ChatContentState } from "../components/chatComponents/chatContent/chatContent/chatContent";
 import WebSocketService from "../utils/websocketService";
 
 export enum StoreEvents {
@@ -28,17 +28,28 @@ export type State = {
     },
     chat:{
       error: string, //get token error, create chat error
-      chatId: number|null,
+      selected:{
+        chatId: number|null,
+      },
       chatList: {
         isLoading: boolean,
         chats: ChatInfoModel[]
+      },
+      chatOptions:{
+        isLoading: boolean        
+      },
+      users: {
+        chatUsers: UserInChatModel[]
+      },
+      setAvatar:{
+        avatarSaveMessage: string
       },
       chatContent: {
         //todo separate a chat selected values and chat create values
         isLoading: boolean,
         token: string,
         state: ChatContentState,
-        chatUsers: UserInChatModel[], //without me!!!
+        //chatUsers: UserInChatModel[], //without me!!!
         shortUserInfo:{
           avatar: string,
           username: string
@@ -50,7 +61,7 @@ export type State = {
       /* add user to chat control */
       addUserToChat:{
         isLoading: boolean,
-        foundUsers: UserModel[]
+        foundUsers: UserWithAvatarModel[]
       }
     }
 }
@@ -73,28 +84,38 @@ const initialState: State = {
       user: null
     },
     chat:{
-      chatId: null,
+      selected:{
+        chatId: null,
+      },
       error: "",
+      users: {
+        chatUsers:new Array<UserInChatModel>
+      },
       chatList:{
         isLoading: true,
         chats: new Array<ChatInfoModel>, //todo model
       },      
+      chatOptions:{
+        isLoading: false        
+      },
+      setAvatar:{
+        avatarSaveMessage: ""
+      },
       chatContent:{
         isLoading: false,
         token: "",
-        state: ChatContentState.CREATE_CHAT,
+        state: 0,//ChatContentState.CREATE_CHAT, todo wtf???
         shortUserInfo:{
           avatar: "",
           username: ""
         },
         socket: null,
         message: "",
-        messages: new Array<MessageDetailsModel>, //todo make null
-        chatUsers: new Array<UserInChatModel>
+        messages: new Array<MessageDetailsModel>, //todo make null        
       },
       addUserToChat:{
         isLoading:false,
-        foundUsers: new Array<UserModel>
+        foundUsers: new Array<UserWithAvatarModel>
       }
     }    
 };
@@ -116,15 +137,16 @@ class Store extends EventBus{
 const store = new Store();
 
 export const withStore = (mapStateToProps: (state: State) => any) => {
-  return (Component: typeof Block) => {
-    return class WithStore extends Component<IProps> {
+  return (Component: typeof Block<any>) => {
+    type Props = typeof Component extends typeof Block<infer P> ? P : any;
+    return class WithStore extends Component {
       constructor(props: IProps) {
         const mappedState = mapStateToProps(store.getState());
 
         super({ ...props, ...mappedState });
   
-        store.on(StoreEvents.Updated, () => {
-          const newMappedState = mapStateToProps(store.getState());          
+        store.on(StoreEvents.Updated, () => {          
+          const newMappedState = mapStateToProps(store.getState());      
           this.setProps(newMappedState);
         });
       }

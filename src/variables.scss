@@ -1,0 +1,21 @@
+@mixin modal-border{    
+    box-shadow: 0 0 6px var(--box-shadow-color);
+    border-radius: 12px;
+}
+
+@mixin round-button{
+    border-radius: 50%;
+}
+
+@mixin text-input{
+    width: 20em;
+    height: 2em;
+    background: #efefef;
+    border: none;
+    border-radius: 30px;
+    padding: 0.5em;
+}
+
+@mixin error{
+    color: var(--default-red-color);
+}

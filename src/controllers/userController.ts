@@ -1,6 +1,7 @@
 import { store } from "../modules/store";
 import { UserModel } from "../models/models";
 import UserAPI from "../api/userAPI";
+import defaultImg from '../../static/defaultAvatar.png';
 
 class UserController {
     private _api : UserAPI;
@@ -47,6 +48,30 @@ class UserController {
                     }
       })
       .catch(console.log);
+    }
+
+    public async saveUserAvatar(avatar:FormData){
+      await this._api.saveUserAvatar(avatar).
+      then((response)=>{
+        let xhr = response as XMLHttpRequest;
+        let data = JSON.parse(xhr.responseText);
+        if(xhr.status===200){
+          console.log(data);
+          //show success
+        }
+        else{
+          console.log(data.reason);
+          //todo show error
+        }
+      });
+    }
+    
+    public getUserAvatarUrl(path:string|null){
+      if(path){
+        return "https://ya-praktikum.tech/api/v2/resources" + path;
+      }else{
+        return defaultImg;
+      }      
     }
 }
 

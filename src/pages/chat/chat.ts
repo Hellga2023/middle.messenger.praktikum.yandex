@@ -1,10 +1,10 @@
 import chat from './chat.tmpl';
 import './chat.scss'; 
 import Block, {IProps} from '../../components/block/block';
-import ChatContent from '../../components/chatComponents/chatContent/chatContent';
+import ChatContent from '../../components/chatComponents/chatContent/chatContent/chatContent';
 import Link from '../../components/commonComponents/link/link';
 import chatController from '../../controllers/chatController';
-import ChatList from '../../components/chatComponents/chatList/chatList';
+import ChatList from '../../components/chatComponents/chatList/chatList/chatList';
 import router, { Routes } from '../../routing/router';
 
 interface IChatProps extends IProps{
