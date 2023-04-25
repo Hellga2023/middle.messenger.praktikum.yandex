@@ -1,0 +1,21 @@
+@import "../../../../variables.scss";
+
+.create-chat{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+}
+
+.create-chat__input{
+    @include text-input;
+    text-align: center;
+}
+
+.create-chat__input:focus{ // todo add to input mixin!!!
+    outline: none;
+}
+
+.create-chat__error{
+    @include error;
+}

@@ -44,8 +44,8 @@ class Avatar extends Block<IAvatarProps> {
             name: "avatar",
             placeholder: "Avatar photo",
             type: "file",
-            class: "avatar-upload"
-            //accept="image/*"
+            class: "avatar-upload",
+            accept: "image/*"
         });
         
         this.children.avatarImage = new Image({

@@ -1,0 +1,37 @@
+.message{
+    //border-radius: $border-radius;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.message__content{
+    margin:0;
+}
+
+.message__info{
+    display: flex;
+    padding: 0.5em;
+    justify-content: end;
+    align-items: end;
+}
+
+.message__info__seen-state{
+    background-size: 1em 0.7em;
+    background-repeat: no-repeat;
+    width: 1.25em;
+    height: 0.8em;
+    margin: 0;
+}
+
+.message__info__seen{
+    background-image: url("../../../../../static/double-check-seen.jpg");
+}   
+
+.message__info__not-seen{
+    background-image: url("../../../../../static/double-check-unseen.jpg");
+}
+
+.message__info__time{
+    margin: 0;
+}

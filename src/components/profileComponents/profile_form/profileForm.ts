@@ -145,9 +145,8 @@ class ProfileForm extends Block<IProfileFormProps> {
                     this.children.avatar.setProps({
                         isDisabled:!state.editMode
                     });
-                    if(user.avatar){
-                        this.children.avatar.children.avatarImage.setProps({src: userController.getUserAvatarUrl(user.avatar)});
-                    }                    
+                    //todo check if default is shown?
+                    this.children.avatar.children.avatarImage.setProps({src: userController.getUserAvatarUrl(user.avatar)});                                        
                 }else{
                     console.log("user is null");
                 }                

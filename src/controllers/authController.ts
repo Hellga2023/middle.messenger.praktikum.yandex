@@ -22,8 +22,12 @@ class AuthController {
                         router.go(Routes.CHAT);
                     }else{
                         const error = JSON.parse(data);
-                        store.set("login.isLoading",false);
-                        store.set("login.validationError", error.reason);
+                        if(error.reason === "User already in system"){
+                            router.go(Routes.CHAT);
+                        }else{
+                            store.set("login.isLoading",false);
+                            store.set("login.validationError", error.reason);
+                        }                        
                     }
                 });  
         } catch (error) {

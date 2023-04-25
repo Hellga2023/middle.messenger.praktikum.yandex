@@ -12,7 +12,7 @@ class ImageButton extends Block<IButtonProps> {
     }
 
     init(): void {
-        this.element?.setAttribute("type", this.props.type||"submit");
+        this.element?.setAttribute("type", this.props.type||"button");
     }
 
     public render(): DocumentFragment{

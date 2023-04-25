@@ -2,7 +2,7 @@ import Block, { IProps } from "../components/block/block";
 import EventBus from "../utils/eventbus";
 import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserModel, UserWithAvatarModel } from "../models/models";
 import {set} from "../utils/helpers";
-import { ChatContentState } from "../components/chatComponents/chatContent/chatContent";
+import { ChatContentState } from "../components/chatComponents/chatContent/chatContent/chatContent";
 import WebSocketService from "../utils/websocketService";
 
 export enum StoreEvents {
@@ -33,6 +33,10 @@ export type State = {
         isLoading: boolean,
         chats: ChatInfoModel[]
       },
+      chatOptions:{
+        isLoading: boolean,
+        avatarSaveMessage: string
+      },
       chatContent: {
         //todo separate a chat selected values and chat create values
         isLoading: boolean,
@@ -50,7 +54,7 @@ export type State = {
       /* add user to chat control */
       addUserToChat:{
         isLoading: boolean,
-        foundUsers: UserModel[]
+        foundUsers: UserWithAvatarModel[]
       }
     }
 }
@@ -79,10 +83,14 @@ const initialState: State = {
         isLoading: true,
         chats: new Array<ChatInfoModel>, //todo model
       },      
+      chatOptions:{
+        isLoading: false,
+        avatarSaveMessage: ""
+      },
       chatContent:{
         isLoading: false,
         token: "",
-        state: ChatContentState.CREATE_CHAT,
+        state: 0,//ChatContentState.CREATE_CHAT, todo wtf???
         shortUserInfo:{
           avatar: "",
           username: ""
@@ -94,7 +102,7 @@ const initialState: State = {
       },
       addUserToChat:{
         isLoading:false,
-        foundUsers: new Array<UserModel>
+        foundUsers: new Array<UserWithAvatarModel>
       }
     }    
 };
@@ -116,8 +124,9 @@ class Store extends EventBus{
 const store = new Store();
 
 export const withStore = (mapStateToProps: (state: State) => any) => {
-  return (Component: typeof Block) => {
-    return class WithStore extends Component<IProps> {
+  return (Component: typeof Block<any>) => {
+    type Props = typeof Component extends typeof Block<infer P> ? P : any;
+    return class WithStore extends Component {
       constructor(props: IProps) {
         const mappedState = mapStateToProps(store.getState());
 

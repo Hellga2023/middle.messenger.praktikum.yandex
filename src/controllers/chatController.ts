@@ -1,9 +1,10 @@
 import { store } from "../modules/store";
 import ChatAPI from "../api/chatAPI";
 import WebSocketService from "../utils/websocketService";
-import { ChatContentState } from "../components/chatComponents/chatContent/chatContent";
+import { ChatContentState } from "../components/chatComponents/chatContent/chatContent/chatContent";
 import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserWithAvatarModel } from "../models/models";
 import { XssProtect } from "../utils/xssProtect";
+import defaultImg from '../../static/defaultAvatar.png';
 
 class IErrorOrDataResponse{
   isSuccess: boolean;
@@ -233,6 +234,32 @@ class ChatController {
         }
       });
     }
+
+    public async saveAvatar(data:FormData){     
+      store.set("chat.chatOptions.isLoading", true);
+      this._api.saveAvatar(data)
+      .then((response)=>{
+        //loader end
+        
+        let xhr = response as XMLHttpRequest,
+          data = JSON.parse(xhr.responseText),
+          message;
+        if(xhr.status==200){ 
+          console.log("saved");
+          console.log(data); 
+          //todo set new avatar in chat list
+          message = "Avatar is saved";
+          this.getChats();
+        }else{
+          console.log("not saved");
+          console.log(data.reason); 
+          message = data.reason;
+        }
+        store.set("chat.chatOptions.isLoading", false);
+        store.set("chat.chatOptions.avatarSaveMessage", message);
+        //todo rerender makes not showModal!!!
+      });
+    }
     
     public showChatMessages(){
       if(store.getState().chat.chatContent.chatUsers.length>0){
@@ -241,12 +268,15 @@ class ChatController {
     }
 
     public async getChats(){ // todo handle error with IError result?
+      console.log("get chats called");
+      store.set("chat.chatList.isLoading", true);
       await this._api.getChats()
       .then((response)=>{
         let xhr = response as XMLHttpRequest;
         store.set("chat.chatList.isLoading", false);
         if(xhr.status!=200){ console.log(xhr); }
         else{
+          console.log("chats set to store");
           let chats:ChatInfoModel[] = JSON.parse(xhr.responseText);
           store.set("chat.chatList.chats", chats);
         }
@@ -280,6 +310,15 @@ class ChatController {
     public sendMessage(message:string){     
       let socket = store.getState().chat.chatContent.socket;
       if(socket!=null){ socket.sendMessage(message); }            
+    }
+
+    //todo move it to resources controller?? 
+    public getChatAvatarUrl(path:string|null){
+      if(path){
+        return "https://ya-praktikum.tech/api/v2/resources" + path;
+      }else{
+        return defaultImg;
+      }      
     }
 }
 

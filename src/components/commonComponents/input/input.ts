@@ -6,6 +6,7 @@ export interface IInputProps extends IProps{
     value?:string;
     placeholder?:string;
     isDisabled?: boolean;
+    accept?: string;
 }
 
 class Input extends Block<IInputProps>{
@@ -16,13 +17,12 @@ class Input extends Block<IInputProps>{
     public init(): void {
         this.element?.setAttribute("type", this.props.type || "text");
         this.element?.setAttribute("name", this.props.name);
+        this.props.accept && this.element?.setAttribute("accept", this.props.accept);
         this.props.placeholder && this.element?.setAttribute("placeholder", this.props.placeholder);              
     }
 
-    public render(): DocumentFragment{        
-        if(this.props.value){
-            (this.element as HTMLInputElement).value = this.props.value;
-        }
+    public render(): DocumentFragment{   
+        (this.element as HTMLInputElement).value = this.props.value || "";
         if(typeof this.props.isDisabled !== "undefined") {this.setDisabled(this.props.isDisabled)};
         return this.compile("");
     }
