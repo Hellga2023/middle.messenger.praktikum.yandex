@@ -1,6 +1,8 @@
 import './avatar.scss';
 import Block, { IProps } from '../../block/block';
 import Input from '../../commonComponents/input/input';
+import userController from '../../../controllers/userController';
+import { withStore } from '../../../modules/store';
 
 interface IImageProps extends IProps {
     src: string;    
@@ -25,7 +27,7 @@ class Image extends Block<IImageProps>{
 const avatar = `{{{avatarImage}}} {{{input}}}`;
 
 interface IAvatarProps{
-    avatarUrl:string;
+    avatar:string;
     isDisabled: boolean;  
 
     /* children */
@@ -33,7 +35,7 @@ interface IAvatarProps{
     avatarImage?:Image;
 }
 
-class Avatar extends Block<IAvatarProps> {
+class AvatarComponent extends Block<IAvatarProps> {
 
     constructor(props:IAvatarProps) {
         super(props, "form");
@@ -49,7 +51,7 @@ class Avatar extends Block<IAvatarProps> {
         });
         
         this.children.avatarImage = new Image({
-            src: this.props.avatarUrl,
+            src: userController.getUserAvatarUrl(this.props.avatar),
             events : {
                 click: ()=>{
                     console.log("click");
@@ -60,10 +62,14 @@ class Avatar extends Block<IAvatarProps> {
         });
     }
 
-    public render(): DocumentFragment{        
+    public render(): DocumentFragment{ 
+        this.children.avatarImage.setProps({src:userController.getUserAvatarUrl(this.props.avatar)});
         return this.compile(avatar);
     }
-
 }
+
+const withAvatar = withStore((state) => ({ ...{avatar: state.user?.avatar} }));
+
+const Avatar = withAvatar(AvatarComponent);
 
 export default Avatar;

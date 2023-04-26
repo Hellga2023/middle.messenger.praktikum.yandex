@@ -29,6 +29,7 @@ interface IProfileFormProps extends IProps{
     password?: string;
     phone?: string;
     userSavingMessage?:string;
+    avatarSavingMessage?:string;
     /* children */
     infos?: ValidatableInput[];
     avatar?: Avatar;
@@ -134,6 +135,7 @@ class ProfileForm extends Block<IProfileFormProps> {
                         editMode : state.editMode,
                         username: user?.first_name,
                         userSavingMessage: state.userSavingMessage,
+                        avatarSavingMessage: state.avatarSavingMessage,
                         footerClass : state.editMode ? "" :"text_left"
                     })
                     this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 

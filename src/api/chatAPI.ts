@@ -1,8 +1,7 @@
 import {BaseAPI} from './baseAPI';
 
 class ChatAPI extends BaseAPI {
-
-
+    
     constructor(){
         super("/chats");
     }
@@ -31,14 +30,21 @@ class ChatAPI extends BaseAPI {
         return this.http.get('/');
     }    
     
-    saveAvatar(data: FormData) {
+    public saveAvatar(data: FormData) {
         return this.http.put('/avatar', {
             data: data
         });
     }
     
-    getChatUsers(id: number):Promise<any> {
+    public getChatUsers(id: number):Promise<any> {
         return this.http.get(`/${id}/users`);
+    }
+
+    public deleteChat(id: number) {
+        return this.http.delete('/', {
+            headers: { 'content-type': 'application/json' },
+            data: JSON.stringify({chatId:id})
+        });
     }
 }
 

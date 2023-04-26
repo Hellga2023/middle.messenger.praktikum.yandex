@@ -258,6 +258,29 @@ class ChatController {
         //todo rerender makes not showModal!!!
       });
     }
+
+    public async deleteChat() {
+      store.set("chat.chatOptions.isLoading", true);
+      const id= store.getState().chat.selected.chatId; 
+      if(!id){ this._setChatError("chat id is null"); return; }
+        
+      this._api.deleteChat(id)
+        .then((response)=>{
+          let xhr = response as XMLHttpRequest,
+            data = JSON.parse(xhr.responseText),
+            message;
+          if(xhr.status==200){          
+            message = "Chat is deleted";
+            this.getChats();
+          }else{
+            message = data.reason;
+          }
+          store.set("chat.chatOptions.isLoading", false);
+          store.set("chat.setAvatar.avatarSaveMessage", message);
+          //todo rerender makes not showModal!!!
+        });
+    
+    }
     
     public showChatMessages(){
       if(store.getState().chat.users.chatUsers.length>0){

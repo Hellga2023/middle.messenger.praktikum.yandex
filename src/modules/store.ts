@@ -24,12 +24,13 @@ export type State = {
       isLoading: boolean,
       user: null | UserWithAvatarModel,
       editMode: boolean,
-      userSavingMessage: string
+      userSavingMessage: string,
+      avatarSavingMessage: string
     },
     chat:{
       error: string, //get token error, create chat error
       selected:{
-        chatId: number|null,
+        chatId: number|null, ///todo!!! do not need this if we can create anon objects!!!
       },
       chatList: {
         isLoading: boolean,
@@ -81,6 +82,7 @@ const initialState: State = {
       editMode: false,
       isLoading: false, //all loading set to true and then check when it can be set to false
       userSavingMessage: "",
+      avatarSavingMessage: "",
       user: null
     },
     chat:{
