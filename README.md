@@ -14,15 +14,32 @@ Command to run locally: npm run start
 
 Command for netlify: npm run build
 
-At the moment my project contains:
+Command for stylelint check: npm run stylelint
+
+Solution fle structure:
+
+src/api - api to work with server data
+
+src/components/ - all components that are used in the pages:
+
+    /chatComponents - for chat page and 3 sub folders for main parts of the page (chat content, chat list and chat options)
+    /profileComponents - for the profile page
+    /commonComponents - common for all parts of the app, inputs, links etc.
+
 
 src/pages/ - for all main pages like login, sign up, profile, profile edit, error page etc.
-(all list of already implemented pages are in the App.js file that decides what page to show)
-
-src/components/ - all components that are used in the pages
 
 static/ - for fonts and images
 
+src/controller - controller that contains the logic of the app, 3 main for 3 main parts users, chat and authentication
+
+src/models - models of the data
+
+src/modules - store that stores the app state
+
+src/routing - for routing
+
+src/utils - util function to format the time, validate, fetch etc.
 
 what is needed to be installed:
 
@@ -36,18 +53,10 @@ sprint 2
 typescript
 eslint
 
+sprint 3
 
-
-
-
-### Ветка, в которой делаете задания спринта, должна называться sprint_i, где i - номер спринта. Не переименовывайте её.
-
-### Откройте pull request в ветку main из ветки, где вы разрабатывали проект, и добавьте ссылку на этот pr в README.md в ветке main. 
-### ВАЖНО: pull request должен называться “Sprint i” (i — номер спринта).
-
-### Например, задания для проектной работы во втором спринте вы делаете в ветке sprint_2. Открываете из неё pull request в ветку main. Ссылку на этот pr добавляете в README.md в ветке main. После этого на платформе Практикума нажимаете «Проверить задание».
-
-### Также не забудьте проверить, что репозиторий публичный.
+express-rate-limit
+sanitize-html
 ---
 
 

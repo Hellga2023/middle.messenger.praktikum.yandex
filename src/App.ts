@@ -42,9 +42,14 @@ export const App = async () => {
             if(is404){
                 router.go(Routes.NOT_FOUND);
             }
+            console.log(isProtectedRoute);
             if(isProtectedRoute && !store.getState().user){
                 router.go(Routes.LOGIN);
             }
+
+            if(!isProtectedRoute && store.getState().user){
+                router.go(Routes.CHAT);
+            }            
         }catch(e){
             console.log("in catch on start");
             router.start();

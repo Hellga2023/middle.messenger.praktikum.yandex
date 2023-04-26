@@ -15,24 +15,30 @@ export class HTTP {
                 this.endpoint = `${HTTP.API_URL}${endpoint}`;
         }
 
-    public get (path: string, options = {}) {             
+        private _queryStringify(data:any){
+                const urlParams = new URLSearchParams(data);
+                return urlParams.toString();              	
+        }
+
+        public get (path: string, options = {}) {             
             return this.request(this.endpoint + path, {...options, method: METHODS.GET});
-    };
+        };
 
-    public post(path: string, options = {}) {
+        public post(path: string, options = {}) {
             return this.request(this.endpoint + path, {...options, method: METHODS.POST});
-    };
+        };
 
-    public put (path: string, options = {}) {
+        public put (path: string, options = {}) {
             return this.request(this.endpoint + path, {...options, method: METHODS.PUT});
-    };
+        };
 
-    public delete (path: string, options = {}) { 
+        public delete (path: string, options = {}) { 
             return this.request(this.endpoint + path, {...options, method: METHODS.DELETE});
-    };
+        };
 
-    public request(url:string, options = {}, timeout = 5000) {
-            const {headers = {}, method, data} = options;
+        public request(url:string, options = {}, timeout = 5000) {
+            const {headers = {}, method, data} = options,
+                self = this;
 
            return new Promise(function(resolve, reject) {
                         if (!method) {
@@ -42,6 +48,10 @@ export class HTTP {
 
                         const xhr = new XMLHttpRequest();
                         const isGet = method === METHODS.GET;
+
+                        if(isGet && data){
+                                url= `${url}?${self._queryStringify(data)}`;
+                        }
 
                         xhr.open( method, url,);
                         xhr.withCredentials = true;
@@ -63,7 +73,7 @@ export class HTTP {
                         if (isGet || !data) { xhr.send(); } 
                         else { xhr.send(data); }
           });
-    };
+        };
 };
 
 
