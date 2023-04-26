@@ -25,9 +25,10 @@ class ChatInfo extends Block<IChatInfoProps>{
     }
 }
 
+//temp fix for one user, what will be for many users?
 const withChatInfo = withStore((state)=>({...{
-    username: state.chat.users.chatUsers[0] ? state.chat.users.chatUsers[0].first_name : "", 
-    avatar: state.chat.users.chatUsers[0] ? state.chat.users.chatUsers[0].avatar : undefined
+    username: state.chat.chatContent.chatUsers[0] ? state.chat.chatContent.chatUsers[0].first_name : "", 
+    avatar: state.chat.chatContent.chatUsers[0] ? state.chat.chatContent.chatUsers[0].avatar : undefined
 }}));
 
 const ChatShortInfo = withChatInfo(ChatInfo);

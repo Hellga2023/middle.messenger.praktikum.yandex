@@ -4,6 +4,7 @@ import ChatItem from '../chatItem/chatItem';
 import { withStore } from '../../../../modules/store';
 import { ChatInfoModel } from '../../../../models/models';
 import { spinner } from '../../../commonComponents/spinner/spinner';
+import './chatList.scss';
 
 interface IChatListProps extends IProps{
     /* state props */
@@ -24,8 +25,6 @@ class ChatListComponent extends Block<IChatListProps> {
     }
 
     init(): void {
-        this.props.isLoading = true;
-        this.props.chats = [];
         this.props.spinner = spinner;
     }
 
@@ -45,7 +44,10 @@ class ChatListComponent extends Block<IChatListProps> {
     }
 }
 
-const withChatList = withStore((state) => ({ ...state.chat.chatList, ...state.chat.selected }));
+const withChatList = withStore((state) => ({ ...{
+    chats: state.chat.chatList.chats, 
+    chatId: state.chat.chatId, 
+    isLoading:state.chat.chatList.isLoading} }));
 
 const ChatList = withChatList(ChatListComponent);
 

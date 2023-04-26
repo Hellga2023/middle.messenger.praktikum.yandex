@@ -56,8 +56,6 @@ class ChatContentComponent extends Block<IChatContentProps> { //todo withStore s
     }
 
     public render(): DocumentFragment{
-        console.log("in render chat content");
-        console
        return this.compile(chatContent);
     }
 }

@@ -22,6 +22,7 @@ interface IChatOptionsProps extends IProps{
 
     state?:ChatOptionsState;
     isLoading?: boolean;
+    chatId?: number;
 
     /* navigation */
     closeButton?:ImageButton;
@@ -108,10 +109,12 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
         this.children.deleteChatButton = new ImageButton({
             class: "chat-options__round-button",
             iconClass:"fa-solid fa-trash", 
+            disabledClass: "chat-options__round-button_disabled",
             events:{
                 click: ()=>{ 
-                    chatController.deleteChat(); 
-                    //todo make the button disabled, cause there is no selected chat id after delete
+                    if(!this.children.deleteChatButton.props.disabled){
+                        chatController.deleteChat();
+                    }
                 }
             }
         });        
@@ -125,6 +128,7 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
     }
 
     public render(): DocumentFragment{ 
+        this.children.deleteChatButton.setProps({disabled: !this.props.chatId});
         return this.compile(dialog);
     }
 
@@ -138,11 +142,18 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
     private _closeModal(){
         (this.getContent() as HTMLDialogElement).close();
     }
+
+    private _showModal(){
+        (this.getContent() as HTMLDialogElement).showModal();
+    }
 }
 
 //todo store check??
 
-const withChatOptions = withStore((state) => ({ ...state.chat.chatOptions }));
+const withChatOptions = withStore((state) => ({ ...{
+    isLoading: state.chat.chatOptions.isLoading,
+    chatId: state.chat.chatId
+} }));
 
 const ChatOptions = withChatOptions(ChatOptionsComponent);
 

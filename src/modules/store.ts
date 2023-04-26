@@ -22,51 +22,44 @@ export type State = {
     },
     profile:{
       isLoading: boolean,
-      user: null | UserWithAvatarModel,
       editMode: boolean,
       userSavingMessage: string,
       avatarSavingMessage: string
     },
     chat:{
       error: string, //get token error, create chat error
-      selected:{
-        chatId: number|null, ///todo!!! do not need this if we can create anon objects!!!
-      },
+      chatId: number|null,      
       chatList: {
         isLoading: boolean,
         chats: ChatInfoModel[]
       },
-      chatOptions:{
-        isLoading: boolean        
-      },
-      chatMessages:{
-        isLoading: boolean,
-        messages: MessageDetailsModel[]
-      },
-      users: {
-        chatUsers: UserInChatModel[]
-      },
-      setAvatar:{
-        avatarSaveMessage: string
-      },
       chatContent: {
         //todo separate a chat selected values and chat create values
         isLoading: boolean,
-        token: string,
         state: ChatContentState,
-        //chatUsers: UserInChatModel[], //without me!!!
+        chatUsers: UserInChatModel[], //without me!!!        
         shortUserInfo:{
           avatar: string,
           username: string
         },
+        token: string,        
         socket: WebSocketService|null,
-        message: string,
-        messages: MessageDetailsModel[]//|null //todo, this is array of old messages
-      },      
-      /* add user to chat control */
+        //message: string,
+        //messages: MessageDetailsModel[]//|null //todo, this is array of old messages
+      },
+      chatMessages:{
+        isLoading: boolean,
+        messages: MessageDetailsModel[]
+      },  
+      chatOptions:{
+        isLoading: boolean        
+      },
       addUserToChat:{
         isLoading: boolean,
         foundUsers: UserWithAvatarModel[]
+      },
+      setAvatar:{
+        avatarSaveMessage: string
       }
     }
 }
@@ -86,17 +79,11 @@ const initialState: State = {
       editMode: false,
       isLoading: false, //all loading set to true and then check when it can be set to false
       userSavingMessage: "",
-      avatarSavingMessage: "",
-      user: null
+      avatarSavingMessage: ""
     },
-    chat:{
-      selected:{
-        chatId: null,
-      },
+    chat:{      
+      chatId: null,      
       error: "",
-      users: {
-        chatUsers:new Array<UserInChatModel>
-      },
       chatMessages:{
         isLoading: false,
         messages: new Array<MessageDetailsModel>
@@ -113,15 +100,15 @@ const initialState: State = {
       },
       chatContent:{
         isLoading: false,
-        token: "",
         state: 0,//ChatContentState.CREATE_CHAT, todo wtf???
+        chatUsers: new Array<UserInChatModel>,
         shortUserInfo:{
           avatar: "",
           username: ""
         },
+        token: "",
         socket: null,
-        message: "",
-        messages: new Array<MessageDetailsModel>, //todo make null        
+        //messages: new Array<MessageDetailsModel>, //todo make null        
       },
       addUserToChat:{
         isLoading:false,

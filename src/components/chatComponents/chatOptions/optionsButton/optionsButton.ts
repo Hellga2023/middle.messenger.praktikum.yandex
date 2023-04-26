@@ -39,7 +39,7 @@ class OptionsButtonComponent extends Block<IOptionsButtonProps>{
     }
 }
 
-const withChatId = withStore((state) => ({...{chatId: state.chat.selected.chatId}}));
+const withChatId = withStore((state) => ({...{chatId: state.chat.chatId}}));
 const OptionsButton = withChatId(OptionsButtonComponent);
 
 export default OptionsButton;

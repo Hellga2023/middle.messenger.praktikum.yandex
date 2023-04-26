@@ -60,8 +60,8 @@ class SetAvatarComponent extends Block<ISetAvatarProps>{
                     const file = this.children.input.getContent().files[0];
                     if(file){
                         let formData = new FormData();
-                        if(store.getState().chat.selected.chatId){
-                            formData.append('chatId', store.getState().chat.selected.chatId!.toString());
+                        if(store.getState().chat.chatId){
+                            formData.append('chatId', store.getState().chat.chatId!.toString());
                             formData.append('avatar', this.children.input.getContent().files[0]);                        
                             chatController.saveAvatar(formData);
                         }else{

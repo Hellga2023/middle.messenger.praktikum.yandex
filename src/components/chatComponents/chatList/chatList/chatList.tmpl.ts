@@ -3,8 +3,10 @@ const chatList = `
                Loading...
                {{{spinner}}}
                {{else}}
+                  <div class="chat-list">
                     {{#each chatItems}}
                        {{{this}}}
-                  {{/each}} 
+                     {{/each}} 
+                  </div>
                {{/if}}`;
 export default chatList;
