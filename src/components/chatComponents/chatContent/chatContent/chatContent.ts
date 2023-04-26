@@ -127,5 +127,7 @@ class ChatContent extends Block<IChatContentProps> { //todo withStore store.getS
     }
 }
 
+//tod with store after testing on the avatar
+
 export default ChatContent;
  

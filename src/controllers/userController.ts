@@ -1,5 +1,5 @@
 import { store } from "../modules/store";
-import { UserModel } from "../models/models";
+import { UserModel, UserWithAvatarModel } from "../models/models";
 import UserAPI from "../api/userAPI";
 import defaultImg from '../../static/defaultAvatar.png';
 
@@ -22,7 +22,7 @@ class UserController {
                     let data = JSON.parse(xhr.responseText)
                     if(xhr.status===200){
                         store.set("profile.isLoading",false);
-                        store.set("profile.user", data);
+                        store.set("user", data);
                         store.set("profile.userSavingMessage", "User data saved successfully");
                     }else{
                         store.set("profile.isLoading",false);
@@ -56,12 +56,12 @@ class UserController {
         let xhr = response as XMLHttpRequest;
         let data = JSON.parse(xhr.responseText);
         if(xhr.status===200){
-          console.log(data);
-          //show success
+          let user = data as UserWithAvatarModel;
+          store.set("user", user);
+          store.set("profile.avatarSavingMessage", "new avatar is saved");
         }
         else{
-          console.log(data.reason);
-          //todo show error
+          store.set("profile.avatarSavingMessage", data.reason)
         }
       });
     }

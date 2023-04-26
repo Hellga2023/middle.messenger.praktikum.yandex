@@ -33,6 +33,7 @@ interface IChatOptionsProps extends IProps{
     addUserButton?:ImageButton;
     deleteUserButton?:ImageButton;    
     setChatAvatar?:ImageButton;
+    deleteChatButton?:ImageButton;
 
     /* loading */
     spinner?: string;
@@ -41,7 +42,7 @@ interface IChatOptionsProps extends IProps{
     createChat?:CreateChat;
     addUser?:AddUser;
     deleteUser?:DeleteUserList;
-    setAvatar?:SetAvatar;
+    setAvatar?:SetAvatar;    
 }
 
 class ChatOptionsComponent extends Block<IChatOptionsProps>{
@@ -103,6 +104,14 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
                 click: ()=>{ this.setProps({state: ChatOptionsState.SET_AVATAR}); }
             }
         });
+
+        this.children.deleteChatButton = new ImageButton({
+            class: "chat-options__round-button",
+            iconClass:"fa-solid fa-trash", 
+            events:{
+                click: ()=>{ chatController.deleteChat(); }
+            }
+        });        
 
         /* init state pages */
 

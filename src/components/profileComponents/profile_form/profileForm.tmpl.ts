@@ -8,6 +8,7 @@ const profileForm = `  {{#if isLoading}}
                                 {{{this}}}
                             {{/each}}
                             {{userSavingMessage}}
+                            {{avatarSavingMessage}}
                         </div>
                         <div class="{{footerClass}}">
                             {{#if editMode}} 

@@ -10,6 +10,7 @@ const dialog =`
         <div class="chat-options__button-row">{{{addUserButton}}} Add user to chat</div>
         <div class="chat-options__button-row">{{{deleteUserButton}}} Delete user from chat</div>
         <div class="chat-options__button-row">{{{setChatAvatar}}} Set chat avatar</div>
+        <div class="chat-options__button-row">{{{deleteChatButton}}} Delete chat</div>
     {{/case}}
     {{#case 1}} 
         {{{addUser}}}
