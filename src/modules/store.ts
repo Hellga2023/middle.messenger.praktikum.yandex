@@ -39,6 +39,10 @@ export type State = {
       chatOptions:{
         isLoading: boolean        
       },
+      chatMessages:{
+        isLoading: boolean,
+        messages: MessageDetailsModel[]
+      },
       users: {
         chatUsers: UserInChatModel[]
       },
@@ -92,6 +96,10 @@ const initialState: State = {
       error: "",
       users: {
         chatUsers:new Array<UserInChatModel>
+      },
+      chatMessages:{
+        isLoading: false,
+        messages: new Array<MessageDetailsModel>
       },
       chatList:{
         isLoading: true,

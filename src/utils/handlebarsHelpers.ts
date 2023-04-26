@@ -1,6 +1,9 @@
 import Handlebars from "handlebars";
 
 Handlebars.registerHelper("switch", function(value, options) {
+    console.log("in switch");
+    console.log(value);
+    console.log(options);
     this._switch_value_ = value;
     var html = options.fn(this); // Process the body of the switch block
     delete this._switch_value_;
@@ -8,6 +11,10 @@ Handlebars.registerHelper("switch", function(value, options) {
 });
 
 Handlebars.registerHelper("case", function(value, options) {
+    console.log("in case");
+    console.log(value);
+    console.log(options);
+
     var args = Array.prototype.slice.call(arguments);
         var options    = args.pop();
         var caseValues = args;

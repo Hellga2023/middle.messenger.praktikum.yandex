@@ -150,9 +150,10 @@ class ChatController {
     public async selectChat(id: number){
       
       this._showComponentSpinner(ChatComponents.CHAT_CONTENT);
+      store.set("chat.chatMessages.isLoading", true);
 
       store.set("chat.selected.chatId", id);
-      store.set("chat.chatContent.messages", new Array<MessageDetailsModel>());//clean old data     
+      store.set("chat.chatMessages.messages", new Array<MessageDetailsModel>());//clean old data
 
       const tokenResult:IErrorOrDataResponse = await this._getToken(id);
       if(!tokenResult.isSuccess){ 
@@ -308,8 +309,8 @@ class ChatController {
     public onGetMessages(data:any){
       //temp array fix - need to review isEqual for arrays!!!!
       const messages = new Array<MessageDetailsModel>();
-      messages.push(...store.getState().chat.chatContent.messages);
-      //const messages = store.getState().chat.chatContent.messages;
+      messages.push(...store.getState().chat.chatMessages.messages);
+      //const messages = store.getState().chat.chatMessages.messages;
       if(Array.isArray(messages)){
         console.log(data);
         let messagesArray:MessageDetailsModel[]|MessageDetailsModel = JSON.parse(data);
@@ -323,7 +324,8 @@ class ChatController {
           }          
         }
         messages.sort((a,b)=>{ return (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0)});
-        store.set("chat.chatContent.messages", messages); 
+        store.set("chat.chatMessages.messages", messages); 
+        store.set("chat.chatMessages.isLoading", false); //todo do we need to place it together with start loading?
       }else{
         console.log("messages should be an array initially")
       }

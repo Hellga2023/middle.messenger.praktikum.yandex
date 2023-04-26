@@ -109,7 +109,10 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
             class: "chat-options__round-button",
             iconClass:"fa-solid fa-trash", 
             events:{
-                click: ()=>{ chatController.deleteChat(); }
+                click: ()=>{ 
+                    chatController.deleteChat(); 
+                    //todo make the button disabled, cause there is no selected chat id after delete
+                }
             }
         });        
 

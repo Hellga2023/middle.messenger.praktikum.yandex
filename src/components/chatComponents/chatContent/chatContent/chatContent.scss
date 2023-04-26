@@ -2,28 +2,12 @@
 
 $border-radius: 15px;
 
-/* header with avatar, name and add user button */
-
 .chat-content__user{
     border-bottom: 1px solid var(--border-grey-color);
     display: flex;
     justify-content: space-between;
     padding: 1em 0;
     align-items: center;
-}
-
-.chat-content__user__user-info{
-    display: flex;
-    align-items: center;
-}
-
-.chat-content__user__user-info__username{
-    font-weight: bold;
-    padding-left: 1em;
-}
-
-.chat-content__user__user-info__avatar{
-    width: 3em;
 }
 
 .chat-content__user__button{
