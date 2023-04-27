@@ -7,6 +7,11 @@ class WebSocketService {
         
         this._socket.addEventListener('open', () => {
             console.log('Соединение установлено');
+            setInterval(()=>{
+              this._socket.send(JSON.stringify({
+                type: "ping"
+              }));
+            }, 60000);
         });
           
         this._socket.addEventListener('close', event => {
@@ -15,7 +20,7 @@ class WebSocketService {
           } else {
             console.log('Обрыв соединения');
           }        
-          console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+          console.log(`Код: ${event.code} | Причина: ${event.reason}`);          
         });
         
         this._socket.addEventListener('message', event => {
@@ -29,16 +34,32 @@ class WebSocketService {
         });
     }
 
-    public sendMessage(message:string){      
-      if(this._socket.OPEN){
+    public sendMessage(message:string){  
+      this.sendData(JSON.stringify({
+        content: message,
+        type: 'message',
+      }));    
+      /*if(this._socket.OPEN){
         this._socket.send(JSON.stringify({
           content: message,
           type: 'message',
         }));
-      } 
+      } */
     }
 
-    public getOldMessages() {
+    public sendData(data:any){
+      if(this._socket.OPEN){
+        this._socket.send(data);
+      }else{
+        console.log("sorry the socket is closed");
+      }
+    }
+
+    public getState():number{
+      return this._socket.readyState;
+    }
+
+    /*public getOldMessages() {
       if(this._socket.readyState === 1){
         console.log("send message");
         return this._socket.send(JSON.stringify({
@@ -52,7 +73,7 @@ class WebSocketService {
       }else{
         console.log("socket has been closed before get messages");
       }            
-    }
+    }*/
 }
 
 export default WebSocketService;
