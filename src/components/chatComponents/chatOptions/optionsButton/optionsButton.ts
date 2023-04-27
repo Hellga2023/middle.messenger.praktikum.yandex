@@ -1,7 +1,7 @@
 import { withStore } from "../../../../modules/store";
 import Block, { IProps } from "../../../block/block";
 import ImageButton from "../../../commonComponents/imageButton/imageButton";
-import ChatOptions from "../chatOptions/chatOptions";
+import OptionsModal from "../optionsModal/optionsModal";
 
 const template = `{{{showButton}}} {{{optionsModal}}}`;
 
@@ -9,7 +9,7 @@ interface IOptionsButtonProps extends IProps{
     chatId:number|null;
     /* children */
     showButton?:ImageButton;
-    optionsModal?:ChatOptions;
+    optionsModal?:OptionsModal;
 }
 
 class OptionsButtonComponent extends Block<IOptionsButtonProps>{
@@ -31,7 +31,7 @@ class OptionsButtonComponent extends Block<IOptionsButtonProps>{
                 }
             }});   
 
-        this.children.optionsModal = new ChatOptions({});
+        this.children.optionsModal = new OptionsModal({});
     }
 
     public render():DocumentFragment{

@@ -1,3 +1,5 @@
+import WebSocketService from "../utils/websocketService";
+
 export interface LoginFormModel {
     email: string;
     password: string;
@@ -33,6 +35,11 @@ export interface UserModel {
   email: string,
   phone: string
 };
+
+export interface ChatWithSocketModel extends ChatInfoModel{
+  socket: WebSocketService,
+  token: string
+}
 
 export interface ChatInfoModel{
   id: number,

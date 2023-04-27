@@ -38,7 +38,7 @@ export type State = {
         isLoading: boolean,
         state: ChatContentState,
         chatUsers: UserInChatModel[], //without me!!!        
-        shortUserInfo:{
+        shortUserInfo:{ //from chat users
           avatar: string,
           username: string
         },

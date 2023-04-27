@@ -2,7 +2,7 @@ import { store } from "../modules/store";
 import ChatAPI from "../api/chatAPI";
 import WebSocketService from "../utils/websocketService";
 import { ChatContentState } from "../components/chatComponents/chatContent/chatContent/chatContent";
-import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserWithAvatarModel } from "../models/models";
+import { ChatInfoModel, ChatWithSocketModel, MessageDetailsModel, UserInChatModel, UserWithAvatarModel } from "../models/models";
 import { XssProtect } from "../utils/xssProtect";
 import defaultImg from '../../static/defaultAvatar.png';
 
@@ -262,7 +262,7 @@ class ChatController {
     }
 
     public async deleteChat() {
-      store.set("chat.chatOptions.isLoading", true);
+      //store.set("chat.chatOptions.isLoading", true);
       const id= store.getState().chat.chatId; 
       if(!id){ this._setChatError("chat id is null"); return; }
         
@@ -278,7 +278,7 @@ class ChatController {
           }else{
             message = data.reason;
           }
-          store.set("chat.chatOptions.isLoading", false);          
+          //store.set("chat.chatOptions.isLoading", false);          
           //todo rerender makes not showModal!!!
         });
     
@@ -299,12 +299,33 @@ class ChatController {
         store.set("chat.chatList.isLoading", false);
         if(xhr.status!=200){ console.log(xhr); }
         else{
-          let chats:ChatInfoModel[] = JSON.parse(xhr.responseText);
+          let chats:ChatWithSocketModel[] = JSON.parse(xhr.responseText);
           store.set("chat.chatList.chats", chats);
+          console.log("set tokens");
+          this._setTokensToChats(chats);          
         }
       })
       .catch(console.log);
     }    
+
+    private async _setTokensToChats(chats:ChatWithSocketModel[]){
+      const userId = store.getState().user?.id!;
+      chats.forEach(async chat => {
+        await this._getToken(chat.id).then(response => {
+          if(response.isSuccess){
+            chat.token = response.data;
+            let service = new WebSocketService();
+            service.createWebsocket(userId, chat.id, chat.token, this.onGetChatInListMessages);
+            chat.socket = service;
+          }else{
+            console.log(response.data);
+          }          
+        });        
+      });
+      console.log("chats with sockets");
+      console.log(chats);
+      store.set("chat.chatList.chats", chats);
+    }
 
     public onGetMessages(data:any){
       //temp array fix - need to review isEqual for arrays!!!!
@@ -329,6 +350,12 @@ class ChatController {
       }else{
         console.log("messages should be an array initially")
       }
+    }
+
+    public onGetChatInListMessages(data:any){
+      let parsed = JSON.parse(data);
+      console.log("socket data");
+      console.log(parsed);
     }
 
     //todo add file or media handle

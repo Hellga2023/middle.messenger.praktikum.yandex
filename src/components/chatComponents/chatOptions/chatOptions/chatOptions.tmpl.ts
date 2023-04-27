@@ -1,6 +1,4 @@
-const dialog =` 
-<div class="chat-options__nav-row">{{{backButton}}} {{{closeButton}}}</div>
-<div class="chat-options__content">
+const options =` 
 {{#if isLoading}}
     {{{spinner}}}
 {{else}}
@@ -26,7 +24,6 @@ const dialog =`
     {{/case}} 
     {{/switch}}
 {{/if}}
-</div>
 `;
 
-export default dialog;
+export default options;
