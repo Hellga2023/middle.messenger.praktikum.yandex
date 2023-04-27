@@ -1,4 +1,4 @@
-import main from './main.tmpl';
+/*import main from './main.tmpl';
 import Block from '../../block/block';
 
 interface IMainProps{}
@@ -6,10 +6,10 @@ interface IMainProps{}
 
 class Main extends Block<IMainProps>{ 
     constructor (){
-        super('div', {});
+        super({});
     }
     render():DocumentFragment{
         return this.compile(main);
     }
 }
-export default Main;
+export default Main;*/

@@ -1,0 +1,71 @@
+@import '../../../../variables.scss';
+
+.chat-options{
+    @include modal-border;
+
+    border: none;
+    top: 100px;/* temp fix for rerender!!!! */    
+}
+
+.chat-options__content{
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    min-width: 300px;
+    align-items: center;
+}
+
+.chat-options__nav-row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-options__nav-button{
+    background: transparent;
+    border: none;
+}
+
+.chat-options__button-row{
+    display: flex;
+    padding: 1em 0;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5em;
+}
+
+.chat-options__round-button{
+    @include round-button;
+    
+    border-color: var(--default-blue-color);
+    color: var(--default-blue-color);
+    background: transparent;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-options__round-button_disabled{
+    color: var(--text-grey-color);
+    border-color: var(--text-grey-color);
+}
+
+.chat-options__user{
+    display: flex;
+    cursor: pointer;
+    gap: 0.5em;
+}
+
+.chat-options__user-avatar{
+    width: 3em;
+}
+
+.chat-options__set-avatar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+

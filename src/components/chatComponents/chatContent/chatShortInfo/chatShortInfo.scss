@@ -1,0 +1,13 @@
+.chat-info{
+    display: flex;
+    align-items: center;
+}
+
+.chat-info__username{
+    font-weight: bold;
+    padding-left: 1em;
+}
+
+.chat-info__avatar{
+    width: 3em;
+}

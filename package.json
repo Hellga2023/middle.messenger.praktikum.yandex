@@ -6,7 +6,8 @@
         "dev": "parcel index.html",
         "build": "parcel build index.html",
         "express": "node ./server.js",
-        "start": "npm run build && npm run express"
+        "start": "npm run build && npm run express",
+        "stylelint": "stylelint \"**/*.scss\""
     },
     "keywords": [],
     "author": "",
@@ -15,8 +16,10 @@
         "@anikin/parcel-transformer-handlebars": "^1.0.9",
         "@parcel/transformer-inline-string": "^2.8.3",
         "@parcel/transformer-sass": "^2.8.3",
+        "@types/sanitize-html": "^2.9.0",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",
+        "buffer": "^5.7.1",
         "concurrently": "^7.6.0",
         "engine-version": "^1.0.2",
         "eslint": "^8.36.0",
@@ -28,7 +31,9 @@
         "typescript": "^4.9.5"
     },
     "dependencies": {
+        "express-rate-limit": "^6.7.0",
         "handlebars": "^4.7.7",
+        "sanitize-html": "^2.10.0",
         "uuid": "^9.0.0"
     }
 }

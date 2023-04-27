@@ -1,52 +1,48 @@
 import chat from './chat.tmpl';
-import ChatItem from '../../components/chatItem/chatItem';
-import SelectedChat from '../../components/selectedChat/selectedChat';
-import Link from '../../components/link/link';
 import './chat.scss'; 
-import Block, {IProps} from '../../block/block';
+import Block, {IProps} from '../../components/block/block';
+import ChatContent from '../../components/chatComponents/chatContent/chatContent/chatContent';
+import Link from '../../components/commonComponents/link/link';
+import chatController from '../../controllers/chatController';
+import ChatList from '../../components/chatComponents/chatList/chatList/chatList';
+import router, { Routes } from '../../routing/router';
 
 interface IChatProps extends IProps{
-    chats:any[]; //todo
-    selectedUsername?:string;
-    selectedUserAvatar?:string;
-    selectedChatId?:number;
+
+    /*children */
+
+    /* selected chat content*/
+    chatContent?:ChatContent;
+    /* profile link */
+    link?: Link;
+
+    /* chat list */
+    chatList?:ChatList;
+
+    //todo chats search!!!
 }
 
 class Chat extends Block<IChatProps> {
     constructor(data:IChatProps) {
-        const selectedChat = data.chats.find((chat:any) =>{ return chat.id == data.selectedChatId});
-        data.selectedUsername = selectedChat.name;
-        data.selectedUserAvatar = selectedChat.avatarUrl;     
-        data.selectedChatMessages = selectedChat.messages;
         data.class = "content";
-        super('main', data);
+        super(data, 'main');
+        chatController.getChats();
     }
 
     init():void{
-        this.children.link = new Link({text:"Profile >", url: "/profile", class_: "grey-text"});
-        let chats = new Array<ChatItem>();
-
-        this.props.chats.forEach((element : any, id:number)=>{ //todo any?
-            if(id==0){ element.class_ = "chat-item_first" }; 
-            let events = {
-                click: (event:Event) => {
-                    const selectedChatId = (event.target as HTMLElement).dataset.id;
-                    const currentChat = this.children.chats.find((chat:any) =>{ return chat.props.id == selectedChatId});
-                    this.children.selectedChat.setProps({username : currentChat.props.name});
-                    this.children.selectedChat.setProps({avatarUrl : currentChat.props.avatarUrl});
-                }
-            };  
-            chats.push(new ChatItem({...element, events}));
-        });
-        this.children.chats = chats;
-        this.children.selectedChat = new SelectedChat({
-            username:this.props.selectedUsername, 
-            avatarUrl:this.props.selectedUserAvatar,
-            messages: this.props.selectedChatMessages as Array<any>
-        });
+        this.children.link = new Link({text:"Profile >", url: Routes.PROFILE, router: router, class_: "grey-text"});
     } 
 
-    render():DocumentFragment{
+    render():DocumentFragment{         
+
+        //todo loading for chat list is separate, move to chat list control??
+        if(!(this.children.chatList instanceof ChatList)){
+            this.children.chatList = new ChatList({});
+        }
+        if(!(this.children.chatContent instanceof Chat)){
+            this.children.chatContent = new ChatContent({});
+        }
+
         return this.compile(chat);
     }
 }
