@@ -2,7 +2,7 @@ import { store } from "../modules/store";
 import ChatAPI from "../api/chatAPI";
 import WebSocketService from "../utils/websocketService";
 import { ChatContentState } from "../components/chatComponents/chatContent/chatContent/chatContent";
-import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserWithAvatarModel } from "../models/models";
+import { ChatInfoModel, ChatWithSocketModel, MessageDetailsModel, UserInChatModel, UserWithAvatarModel } from "../models/models";
 import { XssProtect } from "../utils/xssProtect";
 import defaultImg from '../../static/defaultAvatar.png';
 
@@ -25,8 +25,8 @@ class ChatController {
     }
 
     /* private helper methods */
-    private _setChatError(error:string){
-      store.set("chat.error", error);
+    private _setChatError(error:string, path:string="chat.error"){
+      store.set(path, error);
       this._hideComponentSpinner(true);
     }
 
@@ -66,9 +66,9 @@ class ChatController {
     private _setChatUsers(user: UserInChatModel){
        //need to create new array cause compare method will check same arrays
       const chatUsers = new Array<UserInChatModel>();
-      chatUsers.push(...store.getState().chat.users.chatUsers);
+      chatUsers.push(...store.getState().chat.chatContent.chatUsers);
       chatUsers.push(user);
-      store.set("chat.users.chatUsers", chatUsers);
+      store.set("chat.chatContent.chatUsers", chatUsers);
     }
 
     /* private calls to api */
@@ -128,7 +128,7 @@ class ChatController {
           let chatUsers:UserInChatModel[] = JSON.parse(xhr.responseText);
           
           let currentUserId = store.getState().user?.id;
-          store.set("chat.users.chatUsers", chatUsers.filter(user => user.id!=currentUserId));
+          store.set("chat.chatContent.chatUsers", chatUsers.filter(user => user.id!=currentUserId));
         }
       });
     }
@@ -150,9 +150,10 @@ class ChatController {
     public async selectChat(id: number){
       
       this._showComponentSpinner(ChatComponents.CHAT_CONTENT);
+      store.set("chat.chatMessages.isLoading", true);
 
-      store.set("chat.selected.chatId", id);
-      store.set("chat.chatContent.messages", new Array<MessageDetailsModel>());//clean old data     
+      store.set("chat.chatId", id);
+      store.set("chat.chatMessages.messages", new Array<MessageDetailsModel>());//clean old data
 
       const tokenResult:IErrorOrDataResponse = await this._getToken(id);
       if(!tokenResult.isSuccess){ 
@@ -162,7 +163,7 @@ class ChatController {
         await this._getChatUsers(id);
 
         //if users show chat if no users show add user
-        let users = store.getState().chat.users.chatUsers;
+        let users = store.getState().chat.chatContent.chatUsers;
         if(users.length>0){
           this._createSocketAndGetMessages(id); 
           this._hideComponentSpinner(); 
@@ -180,7 +181,8 @@ class ChatController {
 
       const result:IErrorOrDataResponse = await this._createNewChat(XssProtect.sanitizeHtml(title));
       if(!result.isSuccess){ 
-        this._setChatError(result.data); 
+        //todo where to display?
+        this._setChatError(result.data, "chat.error"); 
       }else{ 
         let chatId = result.data as unknown as number;
         let userId = store.getState().user?.id;
@@ -195,7 +197,7 @@ class ChatController {
         };
         //why it's not working in other order????
         this._addChatToStore(chatInList);
-        store.set("chat.selected.chatId", chatId);
+        store.set("chat.chatId", chatId);
 
         const tokenResult:IErrorOrDataResponse = await this._getToken(chatId);
         if(tokenResult.isSuccess){ 
@@ -210,7 +212,7 @@ class ChatController {
 
     public async addUserToChat(user:UserWithAvatarModel){
       this._showComponentSpinner(ChatComponents.CHAT_CONTENT);
-      let chatId = store.getState().chat.selected.chatId;
+      let chatId = store.getState().chat.chatId;
       if(!chatId){ this._setChatError("chat id is null"); return; }
       else{
         const result:IErrorOrDataResponse = await this._addUserToChat(user.id, chatId);
@@ -226,14 +228,14 @@ class ChatController {
     }
 
     public async deleteUserFromChat(userId:number){      
-      this._api.deleteUserFromChat(userId,store.getState().chat.selected.chatId!)
+      this._api.deleteUserFromChat(userId,store.getState().chat.chatId!)
       .then((response)=>{
         let xhr = response as XMLHttpRequest;
         if(xhr.status!=200){ console.log(xhr); }
         else{
           console.log("in delete chat users");
-          const users = store.getState().chat.users.chatUsers;
-          store.set("chat.users.chatUsers", users.filter(user => user.id != userId));
+          const users = store.getState().chat.chatContent.chatUsers;
+          store.set("chat.chatContent.chatUsers", users.filter(user => user.id != userId));
         }
       });
     }
@@ -260,8 +262,8 @@ class ChatController {
     }
 
     public async deleteChat() {
-      store.set("chat.chatOptions.isLoading", true);
-      const id= store.getState().chat.selected.chatId; 
+      //store.set("chat.chatOptions.isLoading", true);
+      const id= store.getState().chat.chatId; 
       if(!id){ this._setChatError("chat id is null"); return; }
         
       this._api.deleteChat(id)
@@ -272,18 +274,18 @@ class ChatController {
           if(xhr.status==200){          
             message = "Chat is deleted";
             this.getChats();
+            store.set("chat.chatId", null); 
           }else{
             message = data.reason;
           }
-          store.set("chat.chatOptions.isLoading", false);
-          store.set("chat.setAvatar.avatarSaveMessage", message);
+          //store.set("chat.chatOptions.isLoading", false);          
           //todo rerender makes not showModal!!!
         });
     
     }
     
     public showChatMessages(){
-      if(store.getState().chat.users.chatUsers.length>0){
+      if(store.getState().chat.chatContent.chatUsers.length>0){
         store.set("chat.chatContent.state", ChatContentState.CHAT_MESSAGES);
       }         
     }
@@ -297,19 +299,39 @@ class ChatController {
         store.set("chat.chatList.isLoading", false);
         if(xhr.status!=200){ console.log(xhr); }
         else{
-          console.log("chats set to store");
-          let chats:ChatInfoModel[] = JSON.parse(xhr.responseText);
+          let chats:ChatWithSocketModel[] = JSON.parse(xhr.responseText);
           store.set("chat.chatList.chats", chats);
+          console.log("set tokens");
+          this._setTokensToChats(chats);          
         }
       })
       .catch(console.log);
     }    
 
+    private async _setTokensToChats(chats:ChatWithSocketModel[]){
+      const userId = store.getState().user?.id!;
+      chats.forEach(async chat => {
+        await this._getToken(chat.id).then(response => {
+          if(response.isSuccess){
+            chat.token = response.data;
+            let service = new WebSocketService();
+            service.createWebsocket(userId, chat.id, chat.token, this.onGetChatInListMessages);
+            chat.socket = service;
+          }else{
+            console.log(response.data);
+          }          
+        });        
+      });
+      console.log("chats with sockets");
+      console.log(chats);
+      store.set("chat.chatList.chats", chats);
+    }
+
     public onGetMessages(data:any){
       //temp array fix - need to review isEqual for arrays!!!!
       const messages = new Array<MessageDetailsModel>();
-      messages.push(...store.getState().chat.chatContent.messages);
-      //const messages = store.getState().chat.chatContent.messages;
+      messages.push(...store.getState().chat.chatMessages.messages);
+      //const messages = store.getState().chat.chatMessages.messages;
       if(Array.isArray(messages)){
         console.log(data);
         let messagesArray:MessageDetailsModel[]|MessageDetailsModel = JSON.parse(data);
@@ -323,10 +345,17 @@ class ChatController {
           }          
         }
         messages.sort((a,b)=>{ return (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0)});
-        store.set("chat.chatContent.messages", messages); 
+        store.set("chat.chatMessages.messages", messages); 
+        store.set("chat.chatMessages.isLoading", false); //todo do we need to place it together with start loading?
       }else{
         console.log("messages should be an array initially")
       }
+    }
+
+    public onGetChatInListMessages(data:any){
+      let parsed = JSON.parse(data);
+      console.log("socket data");
+      console.log(parsed);
     }
 
     //todo add file or media handle

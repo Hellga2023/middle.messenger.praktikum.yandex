@@ -4,6 +4,8 @@ const button =`<i class="{{iconClass}}"></i>`;
 
 interface IButtonProps extends IProps{
     type?:string;
+    disabled?:boolean;
+    disabledClass?:string;
 }
 
 class ImageButton extends Block<IButtonProps> {
@@ -16,7 +18,8 @@ class ImageButton extends Block<IButtonProps> {
     }
 
     public render(): DocumentFragment{
-       return this.compile(button);
+        this.getContent()?.classList[this.props.disabled? "add":"remove"](this.props.disabledClass!); //todo union disabled and class        
+        return this.compile(button);
     }
 }
 

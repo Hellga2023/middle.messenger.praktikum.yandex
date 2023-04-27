@@ -46,6 +46,11 @@
     align-items: center;
 }
 
+.chat-options__round-button_disabled{
+    color: var(--text-grey-color);
+    border-color: var(--text-grey-color);
+}
+
 .chat-options__user{
     display: flex;
     cursor: pointer;

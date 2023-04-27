@@ -4,7 +4,7 @@ import ImageButton from "../../../commonComponents/imageButton/imageButton";
 import AddUser from "../userSearch/userSearch";
 import chatController from "../../../../controllers/chatController";
 import { withStore } from "../../../../modules/store";
-import dialog from "./chatOptions.tmpl";
+import options from "./chatOptions.tmpl";
 import CreateChat from '../createChat/createChat';
 import { spinner } from '../../../commonComponents/spinner/spinner';
 import DeleteUserList from "../deleteUserList/deleteUserList";
@@ -22,10 +22,7 @@ interface IChatOptionsProps extends IProps{
 
     state?:ChatOptionsState;
     isLoading?: boolean;
-
-    /* navigation */
-    closeButton?:ImageButton;
-    backButton?:ImageButton;
+    chatId?: number;
 
     /* state buttons */
 
@@ -47,34 +44,14 @@ interface IChatOptionsProps extends IProps{
 
 class ChatOptionsComponent extends Block<IChatOptionsProps>{
     constructor(props:IChatOptionsProps){
-        props.class = "chat-options";
-        super(props, "dialog");
+        props.class = "chat-options__content";
+        super(props, "div");
     }
 
     public init(): void { 
         
         this.props.state = ChatOptionsState.CHOOSE_ACTION;
         this.props.spinner = spinner;
-
-        /* navigation */
-
-        this.children.closeButton = new ImageButton({
-            class: "chat-options__nav-button",
-            iconClass:"fa-solid fa-x", 
-            events:{
-                click: ()=>{ 
-                    chatController.showChatMessages(); //todo if no messages??
-                    this._setInitialState();  
-                    this._closeModal();                  
-                }
-        }});    
-
-        this.children.backButton = new ImageButton({
-            class: "chat-options__nav-button",
-            iconClass:"fa-solid fa-arrow-left", 
-            events:{
-                click: ()=>{ this._setInitialState(); }
-        }}); 
 
         /* init action buttons */
 
@@ -108,8 +85,13 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
         this.children.deleteChatButton = new ImageButton({
             class: "chat-options__round-button",
             iconClass:"fa-solid fa-trash", 
+            disabledClass: "chat-options__round-button_disabled",
             events:{
-                click: ()=>{ chatController.deleteChat(); }
+                click: ()=>{ 
+                    if(!this.children.deleteChatButton.props.disabled){
+                        chatController.deleteChat();
+                    }
+                }
             }
         });        
 
@@ -122,24 +104,22 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
     }
 
     public render(): DocumentFragment{ 
-        return this.compile(dialog);
+        this.children.deleteChatButton.setProps({disabled: !this.props.chatId});
+        return this.compile(options);
     }
 
-    private _setInitialState(){
+    public setInitialState(){
         this.setProps({ state: ChatOptionsState.CHOOSE_ACTION });
         this.children.setAvatar.reset();        
         this.children.addUser.reset();
         this.children.createChat.reset();
     }
-
-    private _closeModal(){
-        (this.getContent() as HTMLDialogElement).close();
-    }
 }
 
-//todo store check??
-
-const withChatOptions = withStore((state) => ({ ...state.chat.chatOptions }));
+const withChatOptions = withStore((state) => ({ ...{
+    isLoading: state.chat.chatOptions.isLoading,
+    chatId: state.chat.chatId
+} }));
 
 const ChatOptions = withChatOptions(ChatOptionsComponent);
 

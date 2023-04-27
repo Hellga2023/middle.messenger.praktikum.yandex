@@ -49,6 +49,8 @@ class WebSocketService {
         setTimeout(() =>{
           this.getOldMessages();
       }, 1000);
+      }else{
+        console.log("socket has been closed before get messages");
       }            
     }
 }

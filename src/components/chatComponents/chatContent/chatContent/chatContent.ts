@@ -1,16 +1,12 @@
 import chatContent from './chatContent.tmpl';
 import './chatContent.scss';
 import Block, { IProps } from '../../../block/block';
-import ImageButton from '../../../commonComponents/imageButton/imageButton';
-import chatController from '../../../../controllers/chatController';
-import { store, StoreEvents } from '../../../../modules/store';
-import MessageInput from '../messageInput/messageInput';
-import ShortUserInfo from '../shortUserInfo/shortUserInfo';
-import MessageList from '../messagesList/messagesList';
-import { MessageDetailsModel } from '../../../../models/models';
+import { withStore } from '../../../../modules/store';
+import ChatInfo from '../chatShortInfo/chatShortInfo';
 import { spinner } from '../../../commonComponents/spinner/spinner';
-import ChatOptions from '../../chatOptions/chatOptions/chatOptions';
 import CreateChat from '../../chatOptions/createChat/createChat';
+import OptionsButton from '../../chatOptions/optionsButton/optionsButton';
+import ChatMessages from '../chatMessages/chatMessages';
 
 export const enum ChatContentState {
     CREATE_CHAT,
@@ -21,113 +17,55 @@ export const enum ChatContentState {
 interface IChatContentProps extends IProps{    
 
     /* state props */
-    contentState: ChatContentState;
+    state: ChatContentState;
     isLoading: boolean;
     
     /* data props */
 
-    error?: string; //todo do we need this
-
-    //do we need chatId here?
-    chatId?: number;
-
-    message?: string; //please add user message
-    messages?: MessageDetailsModel[]; 
-
+    addUserToChatMessage?: string; //please add user message
     spinner?: string;
     
     /* children */
 
-    showOptions?:ImageButton; //shows options modal
-    chatOptions?:ChatOptions; //modal with options add/delete user, add avatar
+    chatInfo?:ChatInfo; //short chat info
+    optionsButton?:OptionsButton;
 
-    messageInput?:MessageInput; //to type a message to chat  
-    shortUserInfo?:ShortUserInfo; //short chat info
-    messageList?:MessageList; // all messages
+    chatMessages?:ChatMessages;    
 
     createChat?:CreateChat;
 }
 
-class ChatContent extends Block<IChatContentProps> { //todo withStore store.getState().chat.chatContent
+class ChatContentComponent extends Block<IChatContentProps> { //todo withStore store.getState().chat.chatContent
     constructor(props:IChatContentProps) {     
         super(props);
-        store.on(StoreEvents.Updated, () => { 
-            try{
-                let state = store.getState().chat;             
-
-                if(state.chatContent.isLoading){
-                    if(this.props.isLoading){
-                        return;
-                    }else{
-                        this.setProps({isLoading: state.chatContent.isLoading});
-                    }
-                }else{
-                    if(state.error){
-                        this.setProps({error: state.error});
-                        return;
-                       }
-
-                    if(state.chatContent.message){
-                        const messages = this.props.messages;
-                        messages?.push(state.chatContent.message);
-                        this.setProps({messages: messages });
-                    }
-                    else if(state.selected.chatId){
-                        this.setProps({
-                            contentState: state.chatContent.state, 
-                            isLoading: false, 
-                            chatId: state.selected.chatId,
-                            messages: state.chatContent.messages
-                        });
-                    }
-                    else{
-                        this.setProps({contentState: state.chatContent.state, isLoading: state.chatContent.isLoading });
-                    }
-                }  
-            }catch(err){ console.log(err); }            
-        });}
+    }
 
     init(): void {
 
         this.props.spinner = spinner;
-        this.props.messages = new Array<MessageDetailsModel>();        
+        this.props.addUserToChatMessage = "To create a chat or add a user please click this button (⋮)";
 
-        this.children.showOptions = new ImageButton({
-            class: "chat-content__user__button",
-            iconClass:"fa-solid fa-ellipsis-vertical", 
-            events:{
-                click: ()=>{ 
-                    if(this.props.chatId){
-                        this.children.chatOptions.getContent().showModal(); 
-                    }else{
-                        console.log("no chat id");
-                    }                    
-                }
-            }});   
-
-        this.children.chatOptions = new ChatOptions({});
+        /* header section */
+        this.children.chatInfo = new ChatInfo({});         
+        this.children.optionsButton = new OptionsButton({});
 
         this.children.createChat = new CreateChat({});
-        this.children.messageInput = new MessageInput({});
-        this.children.shortUserInfo = new ShortUserInfo({}); 
-        let state = store.getState();
-        //this.children.messageList = new MessageList({messages: this.props.messages, userId: state.user?.id!});   
-        this.props.message = "To create a chat or add a user please click this button (⋮)";      
+
+        /* messages section */
+        this.children.chatMessages = new ChatMessages({});        
     }
 
     public render(): DocumentFragment{
-        switch(this.props.contentState){
-            case ChatContentState.CHAT_MESSAGES:
-                let state = store.getState();
-                this.children.messageList = new MessageList({messages: this.props.messages, userId: state.user?.id!});                
-                break;             
-        }
-
        return this.compile(chatContent);
     }
 }
 
-//tod with store after testing on the avatar
+const withChatContent = withStore((state)=>({...{
+    state:state.chat.chatContent.state,
+    isLoading: state.chat.chatContent.isLoading    
+}}));
+
+const ChatContent = withChatContent(ChatContentComponent);
 
 export default ChatContent;
  

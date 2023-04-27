@@ -1,0 +1,44 @@
+.new-message-block{
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.new-message-block__input{
+    background: #EFEFEF;
+    border-radius: 30px;
+    width: 20em;
+    border:none;
+    height: 2em;
+    padding: 0.5em; /* todo common for message input */
+}
+
+.new-message-block__input:focus{
+    outline: none;
+}
+
+.new-message-block__file-button{
+color: #999;
+background-color: transparent;
+border: none;
+padding: 0;
+}
+
+.new-message-block__file-button:hover{
+    color: black;
+}
+
+.new-message-block__file-icon::before{
+    font-size: 2em;
+}
+
+.new-message-block__send-button{
+    width: 2em;
+    height: 2em;
+    background: var(--default-blue-color);
+    color: var(--white);
+    text-align: center;
+    border-radius: 50%;
+    padding-top: 0.4em;
+    border: none;
+}

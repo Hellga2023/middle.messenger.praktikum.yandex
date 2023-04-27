@@ -24,7 +24,7 @@ class DeleteUserListComponent extends Block<IDeleteUserListProps>{
 
     public render(): DocumentFragment {
         this.children.usersToDelete = new Array<UserToDelete>(); 
-        const chatUsers = store.getState().chat.users.chatUsers;
+        const chatUsers = store.getState().chat.chatContent.chatUsers;
         chatUsers.forEach(user => {
             this.children.usersToDelete.push(new UserToDelete({user:user, events: {
                 click: () =>{
@@ -38,7 +38,7 @@ class DeleteUserListComponent extends Block<IDeleteUserListProps>{
     }
 }
 
-const withChatUsers = withStore((state) => ({ ...state.chat.users }));
+const withChatUsers = withStore((state) => ({ ...{users:state.chat.chatContent.chatUsers} }));
 
 const DeleteUserList = withChatUsers(DeleteUserListComponent);
 

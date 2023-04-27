@@ -26,7 +26,7 @@ class UserSearch extends Block<IUserSearchProps> {
         this.children.userSearchInput = new Input({
             type: "search", 
             name:"login_name", 
-            class:"chat-content__new-message-block__input", //move to chat content or create mixin??
+            class:"new-message-block__input", //move to chat content or create mixin??
             events: {
                 keyup: (event:Event) => {
                     if((event as KeyboardEvent).key === 'Enter'){ //todo add button!
@@ -55,7 +55,7 @@ class UserSearch extends Block<IUserSearchProps> {
     private _filterUsersToAdd(){
         let state = store.getState().chat,
             users = state.addUserToChat.foundUsers,
-            chatUsers = state.users.chatUsers;
+            chatUsers = state.chatContent.chatUsers;
         return users.filter(user => !chatUsers.find(u => u.id === user.id));
     }
 }
