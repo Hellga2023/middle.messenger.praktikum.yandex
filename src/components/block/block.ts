@@ -21,12 +21,12 @@ abstract class Block<IProps> {
     private _element?:HTMLElement;
     private _meta? : {
       tagName: string, 
-      props: IProps //todo
+      props: IProps 
       };
-    private _id?:string; //todo check?    
+    private _id?:string;    
     private _eventBus: Function;
 
-    public children?: any;//todo
+    public children?: any;
     public props: IProps;
   
     constructor(props:IProps, tagName:string = "div") {
@@ -42,10 +42,8 @@ abstract class Block<IProps> {
       //const withInternalID = props.withInternalID; todo
   
       this._eventBus = () => eventBus;
-      
-  
-     this._registerEvents(eventBus);
-     eventBus.emit(Block.EVENTS.INIT);
+      this._registerEvents(eventBus);
+      eventBus.emit(Block.EVENTS.INIT);
     }
   
     private _registerEvents(eventBus:EventBus) {
@@ -67,8 +65,7 @@ abstract class Block<IProps> {
       }
       
       const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
-      fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
-      
+      fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);      
 
       if(hasChildren){
         this._replaceStubWithChildren(fragment);
@@ -106,21 +103,21 @@ abstract class Block<IProps> {
     });
   }
   
-    private _createResources() : void {
+  private _createResources() : void {
       const { tagName } = this._meta!;
       this._element = this._createDocumentElement(tagName);           
-    }
+  }
 
-    private _init(){
+  private _init(){
       this._createResources();  
       if(this.props.class){this._element!.classList.add(this.props.class);}
       this.init();
       this._eventBus().emit(Block.EVENTS.FLOW_RENDER);
-    }
+  }
   
     init() {}
   
-    private _componentDidMount() : void {
+  private _componentDidMount() : void {
       this.componentDidMount();      
       
       Object.values(this.children).forEach((child:any) => { //todo
@@ -128,7 +125,7 @@ abstract class Block<IProps> {
 
           child.dispatchComponentDidMount();}
       });
-    }
+  }
   
     componentDidMount() {  
       console.log("mounted");
@@ -140,11 +137,8 @@ abstract class Block<IProps> {
     }
 
     componentWillUnmount() {  
-      //todo check if all removed???
       this._removeEvents(); 
-      console.log("events removed");
       this._element?.remove();
-      console.log("element removed");
      }
   
     private _componentDidUpdate(oldProps:any, newProps:any) {
