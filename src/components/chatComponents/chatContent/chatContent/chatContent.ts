@@ -5,33 +5,25 @@ import { withStore } from '../../../../modules/store';
 import ChatInfo from '../chatShortInfo/chatShortInfo';
 import { spinner } from '../../../commonComponents/spinner/spinner';
 import CreateChat from '../../chatOptions/createChat/createChat';
-import OptionsButton from '../../chatOptions/optionsButton/optionsButton';
+import OptionsContainer from '../../chatOptions/optionsContainer/optionsContainer';
 import ChatMessages from '../chatMessages/chatMessages';
 
 export const enum ChatContentState {
     CREATE_CHAT,
-    ADD_USER,
     CHAT_MESSAGES
 }
 
 interface IChatContentProps extends IProps{    
 
-    /* state props */
     state: ChatContentState;
-    isLoading: boolean;
-    
-    /* data props */
 
-    addUserToChatMessage?: string; //please add user message
     spinner?: string;
     
     /* children */
 
     chatInfo?:ChatInfo; //short chat info
-    optionsButton?:OptionsButton;
-
-    chatMessages?:ChatMessages;    
-
+    optionsContainer?:OptionsContainer;
+    chatMessages?:ChatMessages;
     createChat?:CreateChat;
 }
 
@@ -41,17 +33,14 @@ class ChatContentComponent extends Block<IChatContentProps> { //todo withStore s
     }
 
     init(): void {
-
-        this.props.spinner = spinner;
-        this.props.addUserToChatMessage = "To create a chat or add a user please click this button (⋮)";
+        this.props.spinner = spinner;        
 
         /* header section */
         this.children.chatInfo = new ChatInfo({});         
-        this.children.optionsButton = new OptionsButton({});
-
-        this.children.createChat = new CreateChat({});
+        this.children.optionsContainer = new OptionsContainer({});        
 
         /* messages section */
+        this.children.createChat = new CreateChat({});
         this.children.chatMessages = new ChatMessages({});        
     }
 
@@ -61,8 +50,7 @@ class ChatContentComponent extends Block<IChatContentProps> { //todo withStore s
 }
 
 const withChatContent = withStore((state)=>({...{
-    state:state.chat.chatContent.state,
-    isLoading: state.chat.chatContent.isLoading    
+    state:state.chat.chatContent.state  
 }}));
 
 const ChatContent = withChatContent(ChatContentComponent);

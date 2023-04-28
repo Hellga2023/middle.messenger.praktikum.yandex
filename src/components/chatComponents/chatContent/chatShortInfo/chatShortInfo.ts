@@ -20,6 +20,8 @@ class ChatInfo extends Block<IChatInfoProps>{
     }
 
     render(): DocumentFragment {
+        //this.props.addUserToChatMessage = "To add a user please click this button (⋮)";
+        //todo if no users show add user message
         this.props.avatarUrl = this.props.avatar!==undefined ? userController.getUserAvatarUrl(this.props.avatar):"";
         return this.compile(template);
     }
