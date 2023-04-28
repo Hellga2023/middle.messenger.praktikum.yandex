@@ -55,22 +55,6 @@ class WebSocketService {
     public getState():number{
       return this._socket.readyState;
     }
-
-    /*public getOldMessages() {
-      if(this._socket.readyState === 1){
-        console.log("send message");
-        return this._socket.send(JSON.stringify({
-          content: '0',
-          type: 'get old',
-        })); 
-      }else if(this._socket.readyState === 0){
-        setTimeout(() =>{
-          this.getOldMessages();
-      }, 1000);
-      }else{
-        console.log("socket has been closed before get messages");
-      }            
-    }*/
 }
 
 export default WebSocketService;

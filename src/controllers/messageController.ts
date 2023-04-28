@@ -2,12 +2,12 @@ import { ChatInfoModel, MessageDetailsModel } from "../models/models";
 import { store } from "../modules/store";
 import WebSocketService from "../utils/websocketService";
 
-interface SocketMessage {
+/*interface SocketMessage {
   id: number,
   time: string,
   type: string,
   user_id: number
-}
+}*/
 
 class MessageController{
 
@@ -24,41 +24,37 @@ class MessageController{
 
     public onGetSocketData(data:any, chatId: number){
       const parsedData = JSON.parse(data);
-      console.log("socket data");
-      console.log(parsedData);
       //console.log(parsedData as SocketMessage);//content id time type user_id
-
       if(Array.isArray(parsedData)){
-        console.log("array");
-      }
-
-      if(parsedData.type && parsedData.type==MessageController.MessageTypes.PONG){
+        MessageController.addOldMessagesToChat(parsedData);
+      }else if(parsedData.type && parsedData.type==MessageController.MessageTypes.PONG){
         console.log("this is ping message")
-      }else{
-        const messages = MessageController.getChatMessages(parsedData);
+      }else if(parsedData.type==MessageController.MessageTypes.USER_CONNETED){
+        console.log("user connected");
+      }else if(parsedData.type==MessageController.MessageTypes.MESSAGE){
+        MessageController.addNewMessageToChat(parsedData);
+      }
+      else{
+        console.log("other data");
       }       
     }
 
-    public static getChatMessages(data:any){
+    public static addOldMessagesToChat(data:MessageDetailsModel[]):void{
       const messages = new Array<MessageDetailsModel>();
       messages.push(...store.getState().chat.chatContent.chatMessages.messages);
-      console.log(data);
-      let messagesArray:MessageDetailsModel[]|MessageDetailsModel = data;
-      if(Array.isArray(messagesArray)){
-        messages.push(...messagesArray);
-      }else{
-        if(messagesArray.type==MessageController.MessageTypes.MESSAGE){
-          messages.push(messagesArray);
-        }else if(messagesArray.type==MessageController.MessageTypes.USER_CONNETED){
-          console.log("user connected");
-        }else{
-          console.log("message data:");
-          console.log(data);
-        }        
-      }
+      let messagesArray:MessageDetailsModel[] = data;
+      messages.push(...messagesArray);
       messages.sort((a,b)=>{ return (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0)});
-          store.set("chat.chatMessages.messages", messages); 
-          store.set("chat.chatMessages.isLoading", false);
+      store.set("chat.chatContent.chatMessages.messages", messages); 
+      store.set("chat.chatContent.chatMessages.isLoading", false);
+    }
+
+    public static addNewMessageToChat(message:MessageDetailsModel):void{
+      const messages = new Array<MessageDetailsModel>();
+      messages.push(...store.getState().chat.chatContent.chatMessages.messages);
+      messages.push(message);
+      messages.sort((a,b)=>{ return (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0)});
+      store.set("chat.chatContent.chatMessages.messages", messages);      
     }
 
     public getOldMessages(chatId:number):any{
