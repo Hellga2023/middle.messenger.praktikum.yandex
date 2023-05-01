@@ -1,12 +1,12 @@
 const selectedChat = `
                 <div class="chat-content__user">
                         <div>{{{chatInfo}}}</div>                                      
-                        {{{optionsContainer}}}                    
+                        {{{optionsButton}}}                    
                 </div>
                 <div>                
                 {{#switch state}}
                         {{#case 0}} 
-                                {{{createChat}}} 
+                                <p>Please select existing or create new chat</p>
                         {{/case}}                        
                         {{#case 1}} 
                                 {{{chatMessages}}}

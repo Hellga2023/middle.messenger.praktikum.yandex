@@ -37,6 +37,7 @@ class CreateChat extends Block<ICreateChatProps> {
                 const value = (this.children.chatTitle.element as HTMLInputElement).value;
                 if(value){
                    chatController.createChat(value);
+                   this.reset();
                 }else{
                     console.log("no value")
                 }                   
@@ -54,10 +55,11 @@ class CreateChat extends Block<ICreateChatProps> {
     }
 }
 
+//todo
 const withLoading = withStore((state) => ({...{
     isLoading: state.chat.chatOptions.createChat.isLoading,
     error: state.chat.chatOptions.createChat.error
-}}))
+}}));
 
 export default CreateChat;
 

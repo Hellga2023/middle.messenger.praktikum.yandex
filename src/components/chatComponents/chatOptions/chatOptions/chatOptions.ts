@@ -64,21 +64,34 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
         this.children.addUserButton = new ImageButton({
             class: "chat-options__round-button",
             iconClass:"fa-solid fa-plus", 
+            disabledClass: "chat-options__round-button_disabled",
             events:{
-                click: ()=>{ this.setProps({state: ChatOptionsState.ADD_USER}); }
+                click: ()=>{ 
+                    if(!this.children.addUserButton.props.disabled){
+                        this.setProps({state: ChatOptionsState.ADD_USER}); 
+                    }
+                }
         }});
         this.children.deleteUserButton = new ImageButton({
             class: "chat-options__round-button",
             iconClass:"fa-solid fa-x", 
+            disabledClass: "chat-options__round-button_disabled",
             events:{
-                click: ()=>{ this.setProps({state: ChatOptionsState.DELETE_USER}); }
+                click: ()=>{ 
+                    if(!this.children.deleteUserButton.props.disabled){
+                    this.setProps({state: ChatOptionsState.DELETE_USER}); 
+                }}
         }});    
         
         this.children.setChatAvatar = new ImageButton({
             class: "chat-options__round-button",
             iconClass:"fa-solid fa-user-plus", 
+            disabledClass: "chat-options__round-button_disabled",
             events:{
-                click: ()=>{ this.setProps({state: ChatOptionsState.SET_AVATAR}); }
+                click: ()=>{ 
+                    if(!this.children.setChatAvatar.props.disabled){
+                    this.setProps({state: ChatOptionsState.SET_AVATAR}); 
+                }}
             }
         });
 
@@ -104,7 +117,11 @@ class ChatOptionsComponent extends Block<IChatOptionsProps>{
     }
 
     public render(): DocumentFragment{ 
-        this.children.deleteChatButton.setProps({disabled: !this.props.chatId});
+        const disableChatRelatedButtons = !this.props.chatId;
+        this.children.addUserButton.setProps({disabled: disableChatRelatedButtons});
+        this.children.deleteUserButton.setProps({disabled: disableChatRelatedButtons});
+        this.children.setChatAvatar.setProps({disabled: disableChatRelatedButtons});
+        this.children.deleteChatButton.setProps({disabled: disableChatRelatedButtons});
         return this.compile(options);
     }
 

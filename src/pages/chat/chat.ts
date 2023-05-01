@@ -6,6 +6,7 @@ import Link from '../../components/commonComponents/link/link';
 import chatController from '../../controllers/chatController';
 import ChatList from '../../components/chatComponents/chatList/chatList/chatList';
 import router, { Routes } from '../../routing/router';
+import ModalWindow from '../../components/commonComponents/modalWindow/modalWindow';
 
 interface IChatProps extends IProps{
 
@@ -20,6 +21,7 @@ interface IChatProps extends IProps{
     chatList?:ChatList;
 
     //todo chats search!!!
+    modalWindow?: ModalWindow;
 }
 
 class Chat extends Block<IChatProps> {
@@ -31,6 +33,7 @@ class Chat extends Block<IChatProps> {
 
     init():void{
         this.children.link = new Link({text:"Profile >", url: Routes.PROFILE, router: router, class_: "grey-text"});
+        this.children.modalWindow = new ModalWindow({});
     } 
 
     render():DocumentFragment{         

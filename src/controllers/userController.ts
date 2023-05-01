@@ -41,7 +41,7 @@ class UserController {
         let xhr = response as XMLHttpRequest;
                     let data = JSON.parse(xhr.responseText)
                     if(xhr.status===200){
-                        store.set("chat.addUserToChat.foundUsers",data);
+                        store.set("chat.chatOptions.addUserToChat.foundUsers",data);
                        
                     }else{
                         console.log(data.reason);

@@ -1,4 +1,3 @@
-import chatController from "../../../../controllers/chatController";
 import userController from "../../../../controllers/userController";
 import { UserInChatModel } from "../../../../models/models";
 import Block, { IProps } from "../../../block/block";
@@ -24,15 +23,6 @@ class UserToDelete extends Block<IUserToAddProps> {
         props.avatar = userController.getUserAvatarUrl(props.user.avatar);
 
         super(props);
-    }
-
-    init(): void {
-        /*this.props.events = {
-            click: () =>{ 
-                //add but not open chat
-                chatController.deleteUserFromChat(this.props.user.id);
-            }
-        };*/
     }
 
     public render(): DocumentFragment {

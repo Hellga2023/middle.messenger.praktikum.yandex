@@ -21,13 +21,9 @@ class OptionsButtonComponent extends Block<IOptionsButtonProps>{
             iconClass:"fa-solid fa-ellipsis-vertical", 
             events:{
                 click: ()=>{ 
-                    if(this.props.chatId){
                         //todo how to show it via service?
                         const modal = document.getElementsByTagName('dialog')[0] as HTMLDialogElement;
-                        modal.showModal();
-                    }else{
-                        console.log("no chat id");
-                    }                    
+                        modal.showModal();                   
                 }
             }});   
     }

@@ -89,13 +89,9 @@ class ChatController {
 
       const selectedChat = store.getState().chat.chatList.chats.find(chat => chat.id === id);
 
-      if(!selectedChat){
-        console.log("selectChat : no chat find in the list")
-      }
+      if(!selectedChat){ console.log("selectChat : no chat find in the list"); }
       await this._getChatUsers(id); 
-      console.log("before get messages");
-      messageController.getOldMessages(id); //remove loading in get messages store.set("chat.chatMessages.isLoading", false);
-      console.log("after get messages");
+      messageController.getOldMessages(id);
       store.set("chat.chatContent.state", ChatContentState.CHAT_MESSAGES);
     }    
 

@@ -2,7 +2,6 @@ import chatItem from './chatItem.tmpl';
 import './chatItem.scss';
 import Block,{IProps} from '../../../block/block';
 import { DateService } from '../../../../utils/dateUtils';
-//import avatarImg from '../../../../static/defaultAvatar.png';
 import chatController from '../../../../controllers/chatController';
 import { ChatInfoModel } from '../../../../models/models';
 import { XssProtect } from '../../../../utils/xssProtect';
@@ -37,7 +36,6 @@ class ChatItem extends Block<IChatItemProps> {
     }
 
     public render(): DocumentFragment{
-        //todo rerender list or this item on update?
        this.props.avatar = chatController.getChatAvatarUrl(this.props.chatInfo.avatar);
        return this.compile(chatItem);
     }

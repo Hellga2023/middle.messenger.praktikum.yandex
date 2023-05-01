@@ -1,13 +1,7 @@
 import { ChatInfoModel, MessageDetailsModel } from "../models/models";
 import { store } from "../modules/store";
 import WebSocketService from "../utils/websocketService";
-
-/*interface SocketMessage {
-  id: number,
-  time: string,
-  type: string,
-  user_id: number
-}*/
+import chatController from "./chatController";
 
 class MessageController{
 
@@ -24,7 +18,6 @@ class MessageController{
 
     public onGetSocketData(data:any, chatId: number){
       const parsedData = JSON.parse(data);
-      //console.log(parsedData as SocketMessage);//content id time type user_id
       if(Array.isArray(parsedData)){
         MessageController.addOldMessagesToChat(parsedData);
       }else if(parsedData.type && parsedData.type==MessageController.MessageTypes.PONG){
@@ -32,7 +25,17 @@ class MessageController{
       }else if(parsedData.type==MessageController.MessageTypes.USER_CONNETED){
         console.log("user connected");
       }else if(parsedData.type==MessageController.MessageTypes.MESSAGE){
-        MessageController.addNewMessageToChat(parsedData);
+        console.log(parsedData); //id: "string", time: "string", user_id: "string", content: "string", type: "message"
+        const selectedChatId = store.getState().chat.chatId;
+        if(chatId==selectedChatId){ //check if it is current chat??
+          MessageController.addNewMessageToChat(parsedData as MessageDetailsModel);
+        }else{
+          //todo get current chat and update only this chat in store
+          //const chatWithMessages = store.getState().chat.chatList.chats.find(chat => chat.id==chatId);
+          console.log("assume that is other chat message");
+          //temp refresh list of chats, later refresh only one chatI
+          chatController.getChats();
+        }
       }
       else{
         console.log("other data");
@@ -58,15 +61,13 @@ class MessageController{
     }
 
     public getOldMessages(chatId:number):any{
-      console.log("getOldMessages");
-        const chat:ChatInfoModel|undefined = store.getState().chat.chatList.chats.find(chat => chat.id == chatId);
-        if(!chat){ console.log("getOldMessages : no chat is found"); return;}
-        const socketService:WebSocketService = chat.socket!;
-        this._getOldMessages(socketService);       
+      const chat:ChatInfoModel|undefined = store.getState().chat.chatList.chats.find(chat => chat.id == chatId);
+      if(!chat){ console.log("getOldMessages : no chat is found"); return;}
+      const socketService:WebSocketService = chat.socket!;
+      this._getOldMessages(socketService);       
     }
 
     private _getOldMessages(socketService:WebSocketService){
-      console.log("_getOldMessages");
       if(socketService.getState() === 1){
         console.log("_getOldMessages");
         socketService.sendData(JSON.stringify({

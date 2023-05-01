@@ -3,10 +3,8 @@ import './chatContent.scss';
 import Block, { IProps } from '../../../block/block';
 import { withStore } from '../../../../modules/store';
 import ChatInfo from '../chatShortInfo/chatShortInfo';
-import { spinner } from '../../../commonComponents/spinner/spinner';
-import CreateChat from '../../chatOptions/createChat/createChat';
-import OptionsContainer from '../../chatOptions/optionsContainer/optionsContainer';
 import ChatMessages from '../chatMessages/chatMessages';
+import OptionsButton from '../../chatOptions/optionsButton/optionsButton';
 
 export const enum ChatContentState {
     CREATE_CHAT,
@@ -17,30 +15,24 @@ interface IChatContentProps extends IProps{
 
     state: ChatContentState;
 
-    spinner?: string;
-    
     /* children */
 
     chatInfo?:ChatInfo; //short chat info
-    optionsContainer?:OptionsContainer;
+    optionsButton?:OptionsButton;
     chatMessages?:ChatMessages;
-    createChat?:CreateChat;
 }
 
-class ChatContentComponent extends Block<IChatContentProps> { //todo withStore store.getState().chat.chatContent
+class ChatContentComponent extends Block<IChatContentProps> {
     constructor(props:IChatContentProps) {     
         super(props);
     }
 
     init(): void {
-        this.props.spinner = spinner;        
-
         /* header section */
         this.children.chatInfo = new ChatInfo({});         
-        this.children.optionsContainer = new OptionsContainer({});        
+        this.children.optionsButton = new OptionsButton({});        
 
         /* messages section */
-        this.children.createChat = new CreateChat({});
         this.children.chatMessages = new ChatMessages({});        
     }
 

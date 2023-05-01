@@ -37,14 +37,14 @@ class MessageListComponent extends Block<IMessageListProps>{
     }
 
     public render(): DocumentFragment{   
+        console.log("spinner");
+        console.log(this.props.spinner);
         if(this.props.userId){
 
             this.props.hasNoMessages = !this.props.messages || this.props.messages.length==0;
 
             if(!this.props.hasNoMessages){
                 this.children.messageItems = new Array<Message>();
-
-                //todo if no messages show "start messaging"
                 this.props.messages?.forEach(message => {
                     this.children.messageItems.push(new Message({
                         currentUserId: this.props.userId!,
@@ -52,7 +52,7 @@ class MessageListComponent extends Block<IMessageListProps>{
                         userId: message.user_id,
                         date: new Date(message.time),
                         isRead: message.is_read,
-                        content: message.content//XssProtect.sanitizeHtml(message.content) 
+                        content: XssProtect.sanitizeHtml(message.content)  //XssProtect.sanitizeHtml(message.content) 
                     }));
                 });  
             }            

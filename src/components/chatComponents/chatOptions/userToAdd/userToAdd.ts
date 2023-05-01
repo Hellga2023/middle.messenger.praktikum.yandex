@@ -28,7 +28,6 @@ class UserToAdd extends Block<IUserToAddProps> {
     init(): void {
         this.props.events = {
             click: () =>{ 
-                //todo review this flow
                 chatController.addUserToChat(this.props.user);}
         };
     }

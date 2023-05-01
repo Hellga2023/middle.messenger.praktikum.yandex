@@ -1,7 +1,6 @@
-import chatController from "../../../../controllers/chatController";
-import Block, { IProps } from "../../../block/block";
-import ImageButton from "../../../commonComponents/imageButton/imageButton";
-import ChatOptions from "../chatOptions/chatOptions";
+import Block, { IProps } from "../../block/block";
+import ImageButton from "../imageButton/imageButton";
+import ChatOptions from "../../chatComponents/chatOptions/chatOptions/chatOptions";
 
 const template = `
 <div class="chat-options__nav-row">{{{backButton}}} {{{closeButton}}}</div>
@@ -13,7 +12,9 @@ interface IModalWindowProps extends IProps{
     chatOptions?:ChatOptions;
 }
 
-class OptionsModal extends Block<IModalWindowProps>{
+//todo later window to get data and nows how to open and close, via service
+
+class ModalWindow extends Block<IModalWindowProps>{
     constructor(props:IModalWindowProps){
         props.class = "chat-options";
         super(props, "dialog");
@@ -28,8 +29,6 @@ class OptionsModal extends Block<IModalWindowProps>{
             iconClass:"fa-solid fa-x", 
             events:{
                 click: ()=>{ 
-                    //todo do we need this state chat content chat messages defined here?
-                    chatController.showChatMessages();
                     this.children.chatOptions.setInitialState();  
                     (this.getContent() as HTMLDialogElement).close();                 
                 }
@@ -53,4 +52,4 @@ class OptionsModal extends Block<IModalWindowProps>{
     }   
 }
 
-export default OptionsModal;
+export default ModalWindow;
