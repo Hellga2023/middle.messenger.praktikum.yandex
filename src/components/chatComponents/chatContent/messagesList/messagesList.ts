@@ -4,11 +4,12 @@ import { XssProtect } from "../../../../utils/xssProtect"; //todo!!!
 import Block, {IProps} from "../../../block/block";
 import Message from "../message/message";
 import { spinner } from '../../../commonComponents/spinner/spinner';
+import { NullableId } from "../../../../utils/customTypes";
 
 export interface IMessageListProps extends IProps{
     isLoading: boolean,
     spinner: string,
-    userId?: number|null,
+    userId?: NullableId,
     messages?: MessageDetailsModel[],
     hasNoMessages?:boolean,
     /* children */

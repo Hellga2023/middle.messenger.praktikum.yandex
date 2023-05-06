@@ -20,7 +20,7 @@ interface IProfileFormProps extends IProps{
     /* calculated props */
     footerClass?:string;
     username?: string;    
-    avatarImg?: any;
+    avatarImg?: string;
     id?: number;
     first_name?: string;
     second_name?: string;
@@ -37,7 +37,6 @@ interface IProfileFormProps extends IProps{
 
 class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
-
         data.class = "profile-container";    
         data.avatarImg = avatarImg;
         data.footerClass = data.editMode? "" :"text_left";   //move where?

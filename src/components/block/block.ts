@@ -6,7 +6,7 @@ import isEqual from "../../utils/isEqual";
 
 export interface IProps extends Record<string,unknown> {
   class?:string;
-  events?:any;
+  events?:object;
 }
 
 abstract class Block<IProps> {
@@ -74,7 +74,7 @@ abstract class Block<IProps> {
       return fragment.content;
   }
 
-  private _generateChildrenStubs(propsAndStubs){
+  private _generateChildrenStubs(propsAndStubs:any){
     Object.entries(this.children).forEach(([key, child]) => {        
       if(child instanceof Block){
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`
@@ -149,7 +149,7 @@ abstract class Block<IProps> {
       this._render();
     }
   
-    componentDidUpdate(oldProps, newProps) {
+    componentDidUpdate(oldProps:any, newProps:any) {
       return !isEqual(oldProps, newProps);
     }
   
@@ -170,7 +170,7 @@ abstract class Block<IProps> {
     _addEvents() {
       const {events = {}} = this.props;  
       Object.keys(events).forEach(eventName => {
-        this._element!.addEventListener(eventName, events[eventName]);//.bind(this)
+        this._element!.addEventListener(eventName, events[eventName]);
       });
     }
 
@@ -185,7 +185,8 @@ abstract class Block<IProps> {
       return this._element;
     }
 
-    setProps = (nextProps:IProps) => {
+    setProps = (nextProps:Partial<IProps>) => {
+      //setProps = (nextProps:IProps) => {
       if (!nextProps) {
         return;
       }
@@ -196,14 +197,14 @@ abstract class Block<IProps> {
 
     _makePropsProxy(props:IProps){
       
-        const self = this;
+       // const self = this;
   
       return new Proxy(props, {
-        get(target, prop) {
+        get(target:any, prop:any) {
           const value = target[prop];
           return typeof value === "function" ? value.bind(target) : value;
         },
-        set(target, prop, value) {
+        set(target:any, prop:any, value:any) {
           //const oldTarget = cloneDeep(target);
           target[prop] = value;
           // Запускаем обновление компоненты

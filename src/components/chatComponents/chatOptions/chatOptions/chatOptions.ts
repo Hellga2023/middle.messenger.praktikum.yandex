@@ -36,10 +36,10 @@ interface IChatOptionsProps extends IProps{
     spinner?: string;
 
     /* state pages */
-    createChat?:CreateChat;
-    addUser?:AddUser;
-    deleteUser?:DeleteUserList;
-    setAvatar?:SetAvatar;    
+    createChat:CreateChat;
+    addUser:AddUser;
+    deleteUser:DeleteUserList;
+    setAvatar:SetAvatar;    
 }
 
 class ChatOptionsComponent extends Block<IChatOptionsProps>{

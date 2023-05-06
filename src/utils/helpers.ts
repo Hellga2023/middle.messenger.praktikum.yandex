@@ -1,4 +1,4 @@
-import Block from "../components/block/block";
+//import Block from "../components/block/block";
 
 export type Indexed<T = any> = {
     [key in string]: T;
@@ -67,12 +67,12 @@ export function cloneDeep<T extends object = object>(obj: T) {
   }   
 };
 
-function renderBlock(query:string, block:Block<unknown>) {
+/*function renderBlock(query:string, block:Block<unknown>) {
   const root = document.querySelector(query);
   root!.textContent = (block.getContent() as Node).textContent; //todo handle null
   block.dispatchComponentDidMount();//todo move somewhere?
   return root;
-}
+}*/
 
 /*function cloneDeep<T extends object = object>(obj: T) {
     return (function _cloneDeep(item: T): T | Date | Set<unknown> | Map<unknown, unknown> | object | T[] {

@@ -16,6 +16,12 @@ interface ILoginProps extends IProps{
     link:Link
 }
 
+type inputInfo = {
+    label: string,
+    type: string,
+    name: string
+};
+
 class LoginPage extends Block<ILoginProps>{
 
     constructor(data:ILoginProps) {        
@@ -25,12 +31,12 @@ class LoginPage extends Block<ILoginProps>{
     }
 
     init() {
-        const inputsData = [
+        const inputsData:inputInfo[] = [
             {label: "Email", type: "text", name: "login"}, 
             {label: "Password", type: "password", name: "password"}
         ];
         let inputs:Array<ValidatableInput> = new Array<ValidatableInput>;
-        inputsData.forEach((info:any) => {  
+        inputsData.forEach((info:inputInfo) => {  
             let props = {
                 labelText: info.label,
                 labelClass: "input-container__label",

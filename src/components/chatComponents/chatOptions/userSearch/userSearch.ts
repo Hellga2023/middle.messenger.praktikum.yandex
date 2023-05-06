@@ -5,9 +5,10 @@ import Input from "../../../commonComponents/input/input";
 import UserToAdd from "../userToAdd/userToAdd";
 import userSearch from "./userSearch.tmpl";
 import "./userSearch.scss";
+import { UserWithAvatarModel } from "../../../../models/models";
 
 interface IUserSearchProps extends IProps{
-    users?:any[];
+    users?:UserWithAvatarModel[];
     usersFound?: boolean;
     userSearchInput?:Input;
 }
