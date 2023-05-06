@@ -32,10 +32,10 @@ class ChatListComponent extends Block<IChatListProps> {
 
         let chats = new Array<ChatItem>();
 
-        this.props.chats?.forEach((element : any)=>{  //chatInfoModel    
+        this.props.chats?.forEach((chat : ChatInfoModel)=>{   
             chats.push(new ChatItem({
-                chatInfo: element,
-                selectedClass: (element.id == this.props.chatId) ? "chat-item_selected" : ""
+                chatInfo: chat,
+                selectedClass: (chat.id == this.props.chatId) ? "chat-item_selected" : ""
             }));
         });
         this.children.chatItems = chats;
