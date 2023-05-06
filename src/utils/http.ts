@@ -1,8 +1,14 @@
-const METHODS = {
+export const METHODS = {
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
     DELETE: 'DELETE',
+};
+
+type Options = {
+    headers?: any,
+    method?: string,
+    data?: any
 };
 
 export class HTTP {        
@@ -36,7 +42,7 @@ export class HTTP {
             return this.request(this.endpoint + path, {...options, method: METHODS.DELETE});
         };
 
-        public request(url:string, options = {}, timeout = 5000) {
+        public request(url:string, options:Options = {}, timeout = 5000) {
             const {headers = {}, method, data} = options,
                 self = this;
 

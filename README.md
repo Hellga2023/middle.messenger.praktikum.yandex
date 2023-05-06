@@ -57,6 +57,17 @@ sprint 3
 
 express-rate-limit
 sanitize-html
+
+sprint 4
+
+for testing purposes the following dependencies are added
+
+mocha
+chai
+sinon
+jsdom
+
+
 ---
 
 

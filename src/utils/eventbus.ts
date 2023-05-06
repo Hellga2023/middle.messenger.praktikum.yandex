@@ -1,9 +1,9 @@
 class EventBus {
 
-    private _listeners:{ [key: string]: Function[] } = null;
+    private _listeners:{ [key: string]: Function[] } = {};
 
     constructor() {
-      this._listeners = {};
+      //this._listeners = {};
     }
   
     public on(event:string, callback:Function) {
@@ -14,7 +14,7 @@ class EventBus {
       this._listeners[event].push(callback);
     }
   
-    public off(event:string, callback) {
+    public off(event:string, callback:Function) {
 
         this._checkEvent(event);
   
@@ -23,7 +23,7 @@ class EventBus {
         );
     }
   
-    public emit(event:string, ...args) {
+    public emit(event:string, ...args:any[]) {
 
       this._checkEvent(event);
       

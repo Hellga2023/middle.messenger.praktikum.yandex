@@ -4,12 +4,12 @@ import {v4 as makeUUID} from 'uuid';
 import { cloneDeep } from "../../utils/helpers";
 import isEqual from "../../utils/isEqual";
 
-export interface IProps extends Record<string,unknown> {
+export interface IProps extends Record<string,any> {
   class?:string;
-  events?:object;
+  events?:any;
 }
 
-abstract class Block<IProps> {
+abstract class Block<T extends IProps> {
 
     static EVENTS = {
       INIT: "init",
@@ -29,7 +29,8 @@ abstract class Block<IProps> {
     public children?: any;
     public props: IProps;
   
-    constructor(props:IProps, tagName:string = "div") {
+    constructor(props:T, tagName:string = "div") {
+
       const eventBus = new EventBus();
       this._meta = {
         tagName,
