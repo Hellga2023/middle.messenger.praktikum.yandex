@@ -6,18 +6,15 @@ export interface IValidationResult {
 const Validation = {
 
     validateLogin(value:string):IValidationResult{
-        const regex = /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/,
-        isValid = regex.test(value);
-
+        const regex = /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/;
         return {
             errorMessage: "Login should be 3 to 20 symbols,can contain digits, cannot have spaces or special  characters",
-            isValid: isValid
+            isValid: regex.test(value)
         };
     },
 
     validateName(value:string):IValidationResult{
-        const regex = /^[A-Z]{1}[A-za-z-]*$/,
-        isValid = regex.test(value);
+        const regex = /^[A-Z]{1}[A-za-z-]*$/;
         return {
             errorMessage: "First letter should be upper case, no spaces or digits or special characters allowed",
             isValid: regex.test(value)
@@ -25,8 +22,7 @@ const Validation = {
     },
 
     validatePassword(value:string):IValidationResult{
-        const regex = /^(?=.*\d)(?=.*[A-Z]).{8,40}$/,
-        isValid = regex.test(value);
+        const regex = /^(?=.*\d)(?=.*[A-Z]).{8,40}$/;
         return {
             errorMessage: "Password should be 8 to 40 characters, should have at least one digit or uppercase letter",
             isValid: regex.test(value)
@@ -34,17 +30,14 @@ const Validation = {
     },
 
     validateEmail(value:string):IValidationResult{
-        const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            isValid = regex.test(value);
-
+        const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         return {
             errorMessage: "Invalid email",
             isValid: regex.test(value)
         };
     },
     validatePhone(value:string):IValidationResult{
-        const regex = /^((\+[0-9])|([0-9])){10,15}$/,
-        isValid = regex.test(value);
+        const regex = /^((\+[0-9])|([0-9])){10,15}$/;
         return {
             errorMessage: "Phone should have 10 to 15 symbols, should contain only digits or plus at teh beginning",
             isValid: regex.test(value)

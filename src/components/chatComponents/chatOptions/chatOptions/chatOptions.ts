@@ -38,8 +38,8 @@ interface IChatOptionsProps extends IProps{
     /* state pages */
     createChat:CreateChat;
     addUser:AddUser;
-    deleteUser:DeleteUserList;
-    setAvatar:SetAvatar;    
+    deleteUser:typeof DeleteUserList;
+    setAvatar:typeof SetAvatar;    
 }
 
 class ChatOptionsComponent extends Block<IChatOptionsProps>{

@@ -13,12 +13,12 @@ interface IChatProps extends IProps{
     /*children */
 
     /* selected chat content*/
-    chatContent?:ChatContent;
+    chatContent?:typeof ChatContent;
     /* profile link */
     link?: Link;
 
     /* chat list */
-    chatList?:ChatList;
+    chatList?:typeof ChatList;
 
     //todo chats search!!!
     modalWindow?: ModalWindow;

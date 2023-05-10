@@ -9,7 +9,7 @@ const template = `
 interface IModalWindowProps extends IProps{
     backButton?: ImageButton;
     closeButton?:ImageButton;
-    chatOptions?:ChatOptions;
+    chatOptions?:typeof ChatOptions;
 }
 
 //todo later window to get data and nows how to open and close, via service

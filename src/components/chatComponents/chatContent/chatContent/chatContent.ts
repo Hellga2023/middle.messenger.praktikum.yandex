@@ -17,8 +17,8 @@ interface IChatContentProps extends IProps{
 
     /* children */
 
-    chatInfo?:ChatInfo; //short chat info
-    optionsButton?:OptionsButton;
+    chatInfo?:typeof ChatInfo; //short chat info
+    optionsButton?:typeof OptionsButton;
     chatMessages?:ChatMessages;
 }
 

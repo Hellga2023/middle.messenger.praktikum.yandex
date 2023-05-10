@@ -1,4 +1,4 @@
-import userController from "../../../../controllers/userController";
+import resourceController from "../../../../controllers/resourceController";
 import { withStore } from "../../../../modules/store";
 import Block, { IProps } from "../../../block/block";
 import "./chatShortInfo.scss";
@@ -22,7 +22,7 @@ class ChatInfo extends Block<IChatInfoProps>{
     render(): DocumentFragment {
         //this.props.addUserToChatMessage = "To add a user please click this button (⋮)";
         //todo if no users show add user message
-        this.props.avatarUrl = this.props.avatar!==undefined ? userController.getUserAvatarUrl(this.props.avatar):"";
+        this.props.avatarUrl = this.props.avatar!==undefined ? resourceController.getAvatarUrl(this.props.avatar):"";
         return this.compile(template);
     }
 }

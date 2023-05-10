@@ -46,7 +46,7 @@ class MessageListComponent extends Block<IMessageListProps>{
 
             if(!this.props.hasNoMessages){
                 this.children.messageItems = new Array<Message>();
-                this.props.messages?.forEach(message => {
+                this.props.messages?.forEach((message:MessageDetailsModel) => {
                     this.children.messageItems.push(new Message({
                         currentUserId: this.props.userId!,
                         id: message.id,

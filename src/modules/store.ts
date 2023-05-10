@@ -129,7 +129,6 @@ const store = new Store();
 
 export const withStore = (mapStateToProps: (state: State) => any) => {
   return (Component: typeof Block<any>) => {
-    type Props = typeof Component extends typeof Block<infer P> ? P : any;
     return class WithStore extends Component {
       constructor(props: IProps) {
         const mappedState = mapStateToProps(store.getState());

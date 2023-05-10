@@ -1,5 +1,5 @@
 import chatController from "../../../../controllers/chatController";
-import { withStore } from "../../../../modules/store";
+//import { withStore } from "../../../../modules/store";
 import Block, { IProps } from "../../../block/block";
 import Button from "../../../commonComponents/button/button";
 import Input from "../../../commonComponents/input/input";
@@ -33,7 +33,7 @@ class CreateChat extends Block<ICreateChatProps> {
     public init(): void {
         this.children.spinner = spinner;
         this.children.createChatBtn = new Button({text: 'create new chat', type: "button", events:{
-            click: (event:Event)=>{
+            click: ()=>{
                 const value = (this.children.chatTitle.element as HTMLInputElement).value;
                 if(value){
                    chatController.createChat(value);
@@ -55,11 +55,11 @@ class CreateChat extends Block<ICreateChatProps> {
     }
 }
 
-//todo
+/*//todo
 const withLoading = withStore((state) => ({...{
     isLoading: state.chat.chatOptions.createChat.isLoading,
     error: state.chat.chatOptions.createChat.error
-}}));
+}}));*/
 
 export default CreateChat;
 

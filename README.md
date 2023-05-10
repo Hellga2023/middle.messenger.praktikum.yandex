@@ -66,7 +66,12 @@ mocha
 chai
 sinon
 jsdom
-
+webpack with the following packages:
+    ts-loader
+    sass-loader
+    style-loader
+    css-loader
+    HtmlWebpackPlugin
 
 ---
 

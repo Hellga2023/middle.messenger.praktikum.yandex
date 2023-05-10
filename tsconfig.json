@@ -10,5 +10,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true
-   }
+   },
+   "include": ["src/types/declaration.d.ts"]
 }  

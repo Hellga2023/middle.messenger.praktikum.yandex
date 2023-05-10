@@ -1,8 +1,8 @@
 import './avatar.scss';
 import Block, { IProps } from '../../block/block';
 import Input from '../../commonComponents/input/input';
-import userController from '../../../controllers/userController';
 import { withStore } from '../../../modules/store';
+import resourceController from '../../../controllers/resourceController';
 
 interface IImageProps extends IProps {
     src: string;    
@@ -51,7 +51,7 @@ class AvatarComponent extends Block<IAvatarProps> {
         });
         
         this.children.avatarImage = new Image({
-            src: userController.getUserAvatarUrl(this.props.avatar),
+            src: resourceController.getAvatarUrl(this.props.avatar),
             events : {
                 click: ()=>{
                     console.log("click");
@@ -63,7 +63,7 @@ class AvatarComponent extends Block<IAvatarProps> {
     }
 
     public render(): DocumentFragment{ 
-        this.children.avatarImage.setProps({src:userController.getUserAvatarUrl(this.props.avatar)});
+        this.children.avatarImage.setProps({src:resourceController.getAvatarUrl(this.props.avatar)});
         return this.compile(avatar);
     }
 }

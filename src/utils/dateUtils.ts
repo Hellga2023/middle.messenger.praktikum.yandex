@@ -1,6 +1,7 @@
 export class DateService{
 
     public static isCurrentWeekDay(date:Date):boolean{
+        console.log(date);
         throw new Error("not implemented");
     }
 

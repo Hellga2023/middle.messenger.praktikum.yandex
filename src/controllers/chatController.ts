@@ -3,7 +3,6 @@ import ChatAPI from "../api/chatAPI";
 import { ChatContentState } from "../components/chatComponents/chatContent/chatContent/chatContent";
 import { ChatInfoModel, MessageDetailsModel, UserInChatModel, UserWithAvatarModel } from "../models/models";
 import { XssProtect } from "../utils/xssProtect";
-import defaultImg from '../../static/defaultAvatar.png';
 import messageController from "./messageController";
 import tokenController from "./tokenController";
 
@@ -82,10 +81,11 @@ class ChatController {
 
     /* all actions from select to loading chat data */
     public async selectChat(id: number){
-      
-      store.set("chat.chatMessages.isLoading", true);
+      const currentChatId = store.getState().chat.chatId;
+      if(currentChatId==id){ return; }
+      store.set("chat.chatContent.chatMessages.isLoading", true);
       store.set("chat.chatId", id);
-      store.set("chat.chatMessages.messages", new Array<MessageDetailsModel>());//clean old data
+      store.set("chat.chatContent.chatMessages.messages", new Array<MessageDetailsModel>());//clean old data
 
       const selectedChat = store.getState().chat.chatList.chats.find(chat => chat.id === id);
 
@@ -116,7 +116,8 @@ class ChatController {
           socket: null,
           token:null
         };
-        await tokenController.setTokenToChatAndCreateWebsocket(selectedChat!, store.getState().user?.id);       
+
+        await tokenController.setTokenToChatAndCreateWebsocket(selectedChat!, userId);       
         
         //why it's not working in other order????
         this._addChatToStore(selectedChat);
@@ -210,14 +211,6 @@ class ChatController {
         }
       })
       .catch(console.log);
-    }
-
-    public getChatAvatarUrl(path:string|null){
-      if(path){
-        return "https://ya-praktikum.tech/api/v2/resources" + path;
-      }else{
-        return defaultImg;
-      }      
     }
 }
 

@@ -5,6 +5,7 @@ import { DateService } from '../../../../utils/dateUtils';
 import chatController from '../../../../controllers/chatController';
 import { ChatInfoModel } from '../../../../models/models';
 import { XssProtect } from '../../../../utils/xssProtect';
+import resourceController from '../../../../controllers/resourceController';
 
 interface IChatItemProps extends IProps{
 
@@ -36,7 +37,7 @@ class ChatItem extends Block<IChatItemProps> {
     }
 
     public render(): DocumentFragment{
-       this.props.avatar = chatController.getChatAvatarUrl(this.props.chatInfo.avatar);
+       this.props.avatar = resourceController.getAvatarUrl(this.props.chatInfo.avatar);
        return this.compile(chatItem);
     }
 
