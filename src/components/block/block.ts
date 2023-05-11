@@ -109,7 +109,7 @@ abstract class Block<T extends IProps> {
       this._element = this._createDocumentElement(tagName);           
   }
 
-  private _init(){
+  private _init():void{
       this._createResources();  
       if(this.props.class){this._element!.classList.add(this.props.class);}
       this.init();
@@ -142,7 +142,7 @@ abstract class Block<T extends IProps> {
       this._element?.remove();
      }
   
-    private _componentDidUpdate(oldProps:any, newProps:any) {
+    private _componentDidUpdate(oldProps:any, newProps:any):void {
       const response = this.componentDidUpdate(oldProps, newProps);
       if (!response) {
         return;

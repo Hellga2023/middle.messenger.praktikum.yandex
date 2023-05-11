@@ -1,80 +1,106 @@
-//import Block from "../components/block/block";
+// import Block from "../components/block/block";
 
 export type Indexed<T = any> = {
     [key in string]: T;
   };
-  
-  export function isEqual():boolean{
+
+export function isEqual():boolean{
+
     return true;
-  }
 
-  export function merge(lhs: Indexed, rhs: Indexed): Indexed {
+}
 
-    for (let p in rhs) {
-      if (!rhs.hasOwnProperty(p)) {
-        continue;
-      }
-  
-      try {
-        if (rhs[p].constructor === Object) {
-          rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
-        } else {
-          lhs[p] = rhs[p];
+export function merge(lhs: Indexed, rhs: Indexed): Indexed{
+
+    for (const p in rhs){
+
+        if (!rhs.hasOwnProperty(p)){
+
+            continue;
+
         }
-      } catch (e) {
-        lhs[p] = rhs[p];
-      }
+
+        try {
+
+            if (rhs[p].constructor === Object){
+
+                rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
+
+            } else {
+
+                lhs[p] = rhs[p];
+
+            }
+
+        } catch (e){
+
+            lhs[p] = rhs[p];
+
+        }
+
     }
-  
+
     return lhs;
-  }
+
+}
 
 export function set(object:Indexed|unknown, path:string, value: unknown):Indexed|unknown{
 
-   if(typeof object !== "object" || object === null){
+    if (typeof object !== 'object' || object === null){
+
         return object;
+
     }
 
-    if(typeof path !== "string"){
+    if (typeof path !== 'string'){
+
         throw new Error('path must be a string');
+
     }
 
-    const result = path.split('.').reduceRight<Indexed>((acc, key) => ({ 
-      [key]:acc
+    const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
+        [key]: acc,
     }), value as any);
 
-  return merge(object as Indexed, result);
+    return merge(object as Indexed, result);
+
 }
 
-export function cloneDeep<T extends object = object>(obj: T) {
-  if (obj === null || typeof (obj) !== 'object')// || 'isActiveClone' in obj)
-      return obj;
+export function cloneDeep<T extends object = object>(obj: T){
 
-  if (obj instanceof Date)
-      return new Date(obj);
-  else if(Array.isArray(obj)){
-    let arr:Array<any> = new Array<any>();
-   for (const element of obj) {
-      arr.push(cloneDeep(element));
-    }  
-    return arr;    
-  }else{
-     let temp:any = {};//obj.constructor();
-     for (var key in obj) {        
-      temp[key] = cloneDeep(obj[key] as any);
-     }
+    if (obj === null || typeof (obj) !== 'object')// || 'isActiveClone' in obj)
+    { return obj; }
+
+    if (obj instanceof Date) return new Date(obj);
+    if (Array.isArray(obj)){
+
+        const arr:Array<any> = new Array<any>();
+        for (const element of obj){
+
+            arr.push(cloneDeep(element));
+
+        }
+        return arr;
+
+    }
+    const temp:any = {};// obj.constructor();
+    for (const key in obj){
+
+        temp[key] = cloneDeep(obj[key] as any);
+
+    }
     return temp;
-  }   
-};
 
-/*function renderBlock(query:string, block:Block<unknown>) {
+}
+
+/* function renderBlock(query:string, block:Block<unknown>) {
   const root = document.querySelector(query);
   root!.textContent = (block.getContent() as Node).textContent; //todo handle null
   block.dispatchComponentDidMount();//todo move somewhere?
   return root;
-}*/
+} */
 
-/*function cloneDeep<T extends object = object>(obj: T) {
+/* function cloneDeep<T extends object = object>(obj: T) {
     return (function _cloneDeep(item: T): T | Date | Set<unknown> | Map<unknown, unknown> | object | T[] {
         // Handle:
         // * null

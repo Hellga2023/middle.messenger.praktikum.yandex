@@ -50,7 +50,7 @@ class TokenController {
         }
     }
 
-    private _createWebsocket(userId:number, chatId:number, token:string, callback:Function):WebSocketService{
+    private _createWebsocket(userId:number, chatId:number, token:string, callback:(data:any, chatId:number)=>void):WebSocketService{
         let service = new WebSocketService();
         service.createWebsocket(userId, chatId, token, callback);      
         return service;

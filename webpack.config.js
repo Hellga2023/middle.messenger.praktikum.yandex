@@ -6,7 +6,6 @@ module.exports = {
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    //filename: 'project-name.bundle.js'
     filename: 'index.[hash].js',
     clean: true
   },
@@ -16,11 +15,19 @@ module.exports = {
       template: 'index.html'
     }),
   ],
+  devServer: {
+    historyApiFallback: true,
+    compress: true,
+    port: 4000,
+  },
   resolve: {
     extensions: ['.ts', '.js', '.json'],
     fallback: {
         fs: false
-    }    
+    },
+    alias: {
+      handlebars: 'handlebars/dist/handlebars.min.js',
+    }  
   },
   module: {
     rules: [
@@ -36,22 +43,22 @@ module.exports = {
         ],
         exclude:path.resolve(__dirname, "node_modules")//exclude: /(node_modules)/
       },
-        {
-            test: /\.(png|svg)/,
-            type: 'asset/resource',
-        },
-        {
-            test: /\.(woff(2)?|eot|ttf|otf)$/,
-            type: 'asset/inline',
-        },
-        {
-          test: /\.scss$/i,
-          use: [
-            "style-loader",
-            "css-loader",
-            "sass-loader",
-          ],
-        }
+      {
+        test: /\.(png|svg)/,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(woff(2)?|eot|ttf|otf)$/,
+        type: 'asset/inline',
+      },
+      {
+        test: /\.scss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      }
     ]
   }
 };  

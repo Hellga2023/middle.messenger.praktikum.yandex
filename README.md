@@ -72,6 +72,9 @@ webpack with the following packages:
     style-loader
     css-loader
     HtmlWebpackPlugin
+    wepback-dev-server
+
+ husky and npm-run-all for precommit
 
 ---
 

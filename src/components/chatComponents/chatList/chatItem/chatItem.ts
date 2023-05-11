@@ -1,7 +1,7 @@
 import chatItem from './chatItem.tmpl';
 import './chatItem.scss';
 import Block,{IProps} from '../../../block/block';
-import { DateService } from '../../../../utils/dateUtils';
+import DateService from '../../../../utils/dateUtils';
 import chatController from '../../../../controllers/chatController';
 import { ChatInfoModel } from '../../../../models/models';
 import { XssProtect } from '../../../../utils/xssProtect';
