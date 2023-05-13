@@ -6,3 +6,9 @@ RUN npm install
 COPY ./server.js server.js
 EXPOSE 3000
 CMD npm run start
+
+
+
+Пробовала апдейтать до последней версии semver-regex:
+
+Запускаю npm update semver-regex. npm -v semver-regex возвращает версию 9.5.0. Ошибка остается. 
