@@ -76,6 +76,16 @@ webpack with the following packages:
 
  husky and npm-run-all for precommit
 
+Docker container commands:
+
+build: docker build -t messenger .
+
+run: docker run -p 4000:3000 -d -v /home/helga/YandexPracticum/middle.messenger.praktikum.yandex/dist:/var/www/dist messenger
+
+run: docker run -p 4000:3000 -d messenger
+
+stop: docker stop {container_id}
+
 ---
 
 
