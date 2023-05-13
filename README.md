@@ -4,15 +4,17 @@ Description && technologies:
 
 This is a messenger app.
 
-I use Handlebars templator, node, express, parcel, git, netlify.
+I use Handlebars templator, node, express, git, docker, render.com.
 
 I named css classes using BEM.
 
-My netlify website: https://zingy-vacherin-b83255.netlify.app/
+#My netlify website: https://zingy-vacherin-b83255.netlify.app/
 
-Command to run locally: npm run start
+My render.com site: https://practicum-messenger.onrender.com/
 
-Command for netlify: npm run build
+Command to run locally: npm run dev
+
+Command for netlify: npm run start
 
 Command for stylelint check: npm run stylelint
 
@@ -79,8 +81,6 @@ webpack with the following packages:
 Docker container commands:
 
 build: docker build -t messenger .
-
-run: docker run -p 4000:3000 -d -v /home/helga/YandexPracticum/middle.messenger.praktikum.yandex/dist:/var/www/dist messenger
 
 run: docker run -p 4000:3000 -d messenger
 
