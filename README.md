@@ -14,7 +14,7 @@ My render.com site: https://practicum-messenger.onrender.com/
 
 Command to run locally: npm run dev
 
-Command for netlify: npm run start
+Command for deploy: npm run start
 
 Command for stylelint check: npm run stylelint
 
@@ -80,12 +80,17 @@ webpack with the following packages:
 
 Docker container commands:
 
-build: docker build -t messenger .
+    build: docker build -t messenger .
 
-run: docker run -p 4000:3000 -d messenger
+    run: docker run -p 4000:3000 -d messenger
 
-stop: docker stop {container_id}
+    stop: docker stop {container_id}
 
+Git:
+
+    push to remote branch: git push origin {branch_name}
+    
+    switch to branch: git checkout {branch_name}
 ---
 
 
