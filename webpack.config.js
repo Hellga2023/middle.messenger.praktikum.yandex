@@ -15,7 +15,9 @@ module.exports = {
       title: 'Output Management',
       template: 'index.html'
     }),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin({
+      filename: 'style.[hash].css'
+    })
   ],
   devServer: {
     historyApiFallback: true,
