@@ -8,13 +8,13 @@ I use Handlebars templator, node, express, git, docker, render.com.
 
 I named css classes using BEM.
 
-My netlify website: https://zingy-vacherin-b83255.netlify.app/
+#My netlify website: https://zingy-vacherin-b83255.netlify.app/
 
 My render.com site: https://practicum-messenger.onrender.com/
 
-Command to run locally: npm run start
+Command to run locally: npm run dev
 
-Command for netlify: npm run build
+Command for deploy: npm run start
 
 Command for stylelint check: npm run stylelint
 
@@ -85,7 +85,6 @@ Docker container commands:
     run: docker run -p 4000:3000 -d messenger
 
     stop: docker stop {container_id}
-
 
 Git:
 
