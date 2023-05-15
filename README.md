@@ -86,11 +86,20 @@ Docker container commands:
 
     stop: docker stop {container_id}
 
+Npm audit packages:
+
+    npm outdated
+    npm update
+    npm audit
+    npm audit fix
+
 Git:
 
     push to remote branch: git push origin {branch_name}
     
     switch to branch: git checkout {branch_name}
+
+    fetch from remote: git pull???
 ---
 
 
