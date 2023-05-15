@@ -92,6 +92,12 @@ Git:
 
     switch to branch: git checkout {branch_name}
 
+    delete remote branch: git push origin -d {branch_name}
+    
+    delete local branch: git branch -D {branch_name}
+
+    rename local branch: git branch -m {old_name} {new_name}
+
 ---
 
 
