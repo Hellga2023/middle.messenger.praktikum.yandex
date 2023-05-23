@@ -6,12 +6,9 @@ const selectedChat = `
                 <div>                
                 {{#switch state}}
                         {{#case 0}} 
-                                {{{createChat}}} 
-                        {{/case}}
+                                <p>Please select existing or create new chat</p>
+                        {{/case}}                        
                         {{#case 1}} 
-                                {{addUserToChatMessage}} 
-                        {{/case}}
-                        {{#case 2}} 
                                 {{{chatMessages}}}
                         {{/case}}
                 {{/switch}}

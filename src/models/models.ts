@@ -36,18 +36,15 @@ export interface UserModel {
   phone: string
 };
 
-export interface ChatWithSocketModel extends ChatInfoModel{
-  socket: WebSocketService,
-  token: string
-}
-
 export interface ChatInfoModel{
   id: number,
   title:string,
   avatar:string | null, // this is chat avatar!!!! no user
   unread_count:number,
   last_message: MessageModel | null,
-  created_by: number
+  created_by: number,
+  socket: WebSocketService|null,
+  token: string|null
 }
 
 export interface MessageModel{

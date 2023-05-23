@@ -4,12 +4,12 @@ import {v4 as makeUUID} from 'uuid';
 import { cloneDeep } from "../../utils/helpers";
 import isEqual from "../../utils/isEqual";
 
-export interface IProps extends Record<string,unknown> {
+export interface IProps extends Record<string,any> {
   class?:string;
   events?:any;
 }
 
-abstract class Block<IProps> {
+abstract class Block<T extends IProps> {
 
     static EVENTS = {
       INIT: "init",
@@ -21,15 +21,16 @@ abstract class Block<IProps> {
     private _element?:HTMLElement;
     private _meta? : {
       tagName: string, 
-      props: IProps //todo
+      props: IProps 
       };
-    private _id?:string; //todo check?    
+    private _id?:string;    
     private _eventBus: Function;
 
-    public children?: any;//todo
+    public children?: any;
     public props: IProps;
   
-    constructor(props:IProps, tagName:string = "div") {
+    constructor(props:T, tagName:string = "div") {
+
       const eventBus = new EventBus();
       this._meta = {
         tagName,
@@ -42,10 +43,8 @@ abstract class Block<IProps> {
       //const withInternalID = props.withInternalID; todo
   
       this._eventBus = () => eventBus;
-      
-  
-     this._registerEvents(eventBus);
-     eventBus.emit(Block.EVENTS.INIT);
+      this._registerEvents(eventBus);
+      eventBus.emit(Block.EVENTS.INIT);
     }
   
     private _registerEvents(eventBus:EventBus) {
@@ -67,8 +66,7 @@ abstract class Block<IProps> {
       }
       
       const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
-      fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
-      
+      fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);      
 
       if(hasChildren){
         this._replaceStubWithChildren(fragment);
@@ -77,7 +75,7 @@ abstract class Block<IProps> {
       return fragment.content;
   }
 
-  private _generateChildrenStubs(propsAndStubs){
+  private _generateChildrenStubs(propsAndStubs:any){
     Object.entries(this.children).forEach(([key, child]) => {        
       if(child instanceof Block){
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`
@@ -106,21 +104,21 @@ abstract class Block<IProps> {
     });
   }
   
-    private _createResources() : void {
+  private _createResources() : void {
       const { tagName } = this._meta!;
       this._element = this._createDocumentElement(tagName);           
-    }
+  }
 
-    private _init(){
+  private _init():void{
       this._createResources();  
       if(this.props.class){this._element!.classList.add(this.props.class);}
       this.init();
       this._eventBus().emit(Block.EVENTS.FLOW_RENDER);
-    }
+  }
   
     init() {}
   
-    private _componentDidMount() : void {
+  private _componentDidMount() : void {
       this.componentDidMount();      
       
       Object.values(this.children).forEach((child:any) => { //todo
@@ -128,7 +126,7 @@ abstract class Block<IProps> {
 
           child.dispatchComponentDidMount();}
       });
-    }
+  }
   
     componentDidMount() {  
       console.log("mounted");
@@ -140,14 +138,11 @@ abstract class Block<IProps> {
     }
 
     componentWillUnmount() {  
-      //todo check if all removed???
       this._removeEvents(); 
-      console.log("events removed");
       this._element?.remove();
-      console.log("element removed");
      }
   
-    private _componentDidUpdate(oldProps:any, newProps:any) {
+    private _componentDidUpdate(oldProps:any, newProps:any):void {
       const response = this.componentDidUpdate(oldProps, newProps);
       if (!response) {
         return;
@@ -155,7 +150,7 @@ abstract class Block<IProps> {
       this._render();
     }
   
-    componentDidUpdate(oldProps, newProps) {
+    componentDidUpdate(oldProps:any, newProps:any) {
       return !isEqual(oldProps, newProps);
     }
   
@@ -176,7 +171,7 @@ abstract class Block<IProps> {
     _addEvents() {
       const {events = {}} = this.props;  
       Object.keys(events).forEach(eventName => {
-        this._element!.addEventListener(eventName, events[eventName]);//.bind(this)
+        this._element!.addEventListener(eventName, events[eventName]);
       });
     }
 
@@ -191,7 +186,8 @@ abstract class Block<IProps> {
       return this._element;
     }
 
-    setProps = (nextProps:IProps) => {
+    setProps = (nextProps:Partial<IProps>) => {
+      //setProps = (nextProps:IProps) => {
       if (!nextProps) {
         return;
       }
@@ -202,14 +198,14 @@ abstract class Block<IProps> {
 
     _makePropsProxy(props:IProps){
       
-        const self = this;
+       // const self = this;
   
       return new Proxy(props, {
-        get(target, prop) {
+        get(target:any, prop:any) {
           const value = target[prop];
           return typeof value === "function" ? value.bind(target) : value;
         },
-        set(target, prop, value) {
+        set(target:any, prop:any, value:any) {
           //const oldTarget = cloneDeep(target);
           target[prop] = value;
           // Запускаем обновление компоненты

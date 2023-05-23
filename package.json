@@ -3,36 +3,61 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "dev": "parcel index.html",
-        "build": "parcel build index.html",
         "express": "node ./server.js",
-        "start": "npm run build && npm run express",
-        "stylelint": "stylelint \"**/*.scss\""
+        "webpack": "node ./node_modules/.bin/webpack",
+        "dev-server": "webpack serve",
+        "dev": "npm run webpack && npm run dev-server",
+        "start": "npm run webpack && npm run express",
+        "stylelint": "stylelint \"**/*.scss\"",
+        "eslintFix": "npx eslint --ext .ts --fix src/",
+        "eslint": "npx eslint --ext .ts src/",
+        "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
+        "precommit": "npm-run-all test stylelint eslint"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm-run-all test stylelint"
+        }
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@anikin/parcel-transformer-handlebars": "^1.0.9",
-        "@parcel/transformer-inline-string": "^2.8.3",
-        "@parcel/transformer-sass": "^2.8.3",
+        "@types/chai": "^4.3.5",
+        "@types/jsdom": "^21.1.1",
+        "@types/mocha": "^10.0.1",
         "@types/sanitize-html": "^2.9.0",
+        "@types/sinon": "^10.0.14",
+        "@types/uuid": "^9.0.1",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",
         "buffer": "^5.7.1",
+        "chai": "^4.3.7",
         "concurrently": "^7.6.0",
-        "engine-version": "^1.0.2",
+        "css-loader": "^6.7.3",
         "eslint": "^8.36.0",
         "eslint-config-airbnb": "^19.0.4",
         "express": "^4.18.2",
-        "parcel": "^2.8.3",
+        "handlebars": "^4.7.7",
+        "html-webpack-plugin": "^5.5.1",
+        "husky": "^8.0.3",
+        "jsdom": "^22.0.0",
+        "mini-css-extract-plugin": "^2.7.5",
+        "mocha": "^10.2.0",
+        "npm-run-all": "^4.1.5",
+        "sass-loader": "^13.2.2",
+        "sinon": "^15.0.4",
         "stylelint": "^15.3.0",
         "stylelint-config-standard": "^31.0.0",
-        "typescript": "^4.9.5"
+        "ts-loader": "^9.4.2",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.5",
+        "webpack": "^5.82.0",
+        "webpack-cli": "^5.1.0",
+        "webpack-dev-server": "^4.15.0"
     },
     "dependencies": {
         "express-rate-limit": "^6.7.0",
-        "handlebars": "^4.7.7",
         "sanitize-html": "^2.10.0",
         "uuid": "^9.0.0"
     }

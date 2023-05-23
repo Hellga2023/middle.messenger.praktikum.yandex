@@ -1,7 +1,6 @@
 import { store } from "../modules/store";
 import { UserModel, UserWithAvatarModel } from "../models/models";
 import UserAPI from "../api/userAPI";
-import defaultImg from '../../static/defaultAvatar.png';
 
 class UserController {
     private _api : UserAPI;
@@ -41,7 +40,7 @@ class UserController {
         let xhr = response as XMLHttpRequest;
                     let data = JSON.parse(xhr.responseText)
                     if(xhr.status===200){
-                        store.set("chat.addUserToChat.foundUsers",data);
+                        store.set("chat.chatOptions.addUserToChat.foundUsers",data);
                        
                     }else{
                         console.log(data.reason);
@@ -64,14 +63,6 @@ class UserController {
           store.set("profile.avatarSavingMessage", data.reason)
         }
       });
-    }
-    
-    public getUserAvatarUrl(path:string|null){
-      if(path){
-        return "https://ya-praktikum.tech/api/v2/resources" + path;
-      }else{
-        return defaultImg;
-      }      
     }
 }
 

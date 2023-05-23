@@ -1,15 +1,13 @@
 import { withStore } from "../../../../modules/store";
 import Block, { IProps } from "../../../block/block";
 import ImageButton from "../../../commonComponents/imageButton/imageButton";
-import OptionsModal from "../optionsModal/optionsModal";
 
-const template = `{{{showButton}}} {{{optionsModal}}}`;
+const template = `{{{button}}}`;
 
 interface IOptionsButtonProps extends IProps{
     chatId:number|null;
     /* children */
-    showButton?:ImageButton;
-    optionsModal?:OptionsModal;
+    button?:ImageButton;
 }
 
 class OptionsButtonComponent extends Block<IOptionsButtonProps>{
@@ -18,20 +16,16 @@ class OptionsButtonComponent extends Block<IOptionsButtonProps>{
     }
 
     public init(): void {
-        this.children.showButton = new ImageButton({
+        this.children.button = new ImageButton({
             class: "chat-content__user__button", //todo
             iconClass:"fa-solid fa-ellipsis-vertical", 
             events:{
                 click: ()=>{ 
-                    if(this.props.chatId){
-                        this.children.optionsModal.getContent().showModal(); 
-                    }else{
-                        console.log("no chat id");
-                    }                    
+                        //todo how to show it via service?
+                        const modal = document.getElementsByTagName('dialog')[0] as HTMLDialogElement;
+                        modal.showModal();                   
                 }
             }});   
-
-        this.children.optionsModal = new OptionsModal({});
     }
 
     public render():DocumentFragment{

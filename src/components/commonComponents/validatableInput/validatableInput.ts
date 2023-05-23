@@ -27,8 +27,8 @@ class ValidatableInput extends Block<IValidatableInputProps> {
         this.children.errorLabel = new Label({});
         this.children.input = new Input({ ...this.props.inputProps,
             events:{
-                blur: (event:Event) => { this.validate(); },
-                focus: (event:Event) => { this.validate(); }
+                blur: () => { this.validate(); },
+                focus: () => { this.validate(); }
         }});
     }
 
@@ -41,7 +41,7 @@ class ValidatableInput extends Block<IValidatableInputProps> {
         this.setError(Validation.validateInput(element.name, element.value)); 
     }
 
-    public validateInForm(data:object):boolean{
+    public validateInForm(data:Record<string,string>):boolean{
         let element = this.children.input.element as HTMLInputElement,
             result = Validation.validateInput(element.name, element.value);
 

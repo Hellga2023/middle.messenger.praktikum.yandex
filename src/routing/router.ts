@@ -80,9 +80,9 @@ class Router {
 
 export default new Router("#content");
 
-/* todo where it is used?? */
+/* todo where it is used?? Link component? */
 export function withRouter(Component: typeof Block<any>){
-  type Props = typeof Component extends typeof Block<infer P> ? P : any;
+  type Props = typeof Component extends typeof Block<infer P extends IProps> ? P : any;
 
   return class WithRouter extends Component {
       constructor(props: Props & PropsWithRouter) {

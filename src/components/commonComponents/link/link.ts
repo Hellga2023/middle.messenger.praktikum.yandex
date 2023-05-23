@@ -35,4 +35,6 @@ class Link extends Block<ILinkProps> {
 
 }
 
+//todo withRouter
+
 export default Link;

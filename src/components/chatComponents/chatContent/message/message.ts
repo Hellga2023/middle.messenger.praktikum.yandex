@@ -36,14 +36,11 @@ class Message extends Block<IMessageProps>{
         this.props.userClass = this.props.currentUserId == this.props.userId 
         ? "messages__message_my" : "messages__message_not-my";
         this.props.time = this.props.date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); //todo same as chatItem - move to utils
-        //todo set isRead sign
-        
     }
 
     public render(): DocumentFragment{        
         return this.compile(message);
     }
-
 }
 
 export default Message;

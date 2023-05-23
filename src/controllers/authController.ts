@@ -1,7 +1,7 @@
 import AuthAPI from "../api/authAPI";
 import {store} from "../modules/store";
 import router, { Routes } from "../routing/router";
-import { LoginFormModel, SignUpFormModel, UserWithAvatarModel } from "../models/models";
+import { LoginFormModel, SignUpFormModel } from "../models/models";
 
 class AuthController {
 
@@ -38,13 +38,13 @@ class AuthController {
     public async signup(data: SignUpFormModel) {
         try {
             store.set("signup.isLoading",true);
-            let result = await this._api.signup(data).then(response => {
-                const data = JSON.parse(response.responseText);
+            await this._api.signup(data).then(response => {
+                const data = JSON.parse((response as XMLHttpRequest).responseText);
                 if(data.reason){
                     store.set("signup.isLoading",false);
                     store.set('signup.validationError', data.reason);
                 }else{
-                    let userId = data.id;
+                    store.set('user', data);
                     store.set("signup.isLoading",false);
                     router.go(Routes.CHAT)
                 }   

@@ -1,5 +1,5 @@
 import chatController from "../../../../controllers/chatController";
-import userController from "../../../../controllers/userController";
+import resourceController from "../../../../controllers/resourceController";
 import { UserWithAvatarModel } from "../../../../models/models";
 import Block, { IProps } from "../../../block/block";
 
@@ -21,14 +21,13 @@ class UserToAdd extends Block<IUserToAddProps> {
     constructor(props:IUserToAddProps){
         props.login = props.user.login;
         props.name = props.user.first_name;
-        props.avatar = userController.getUserAvatarUrl(props.user.avatar);
+        props.avatar = resourceController.getAvatarUrl(props.user.avatar);
         super(props);
     }
 
     init(): void {
         this.props.events = {
             click: () =>{ 
-                //todo review this flow
                 chatController.addUserToChat(this.props.user);}
         };
     }

@@ -85,7 +85,7 @@ class SetAvatarComponent extends Block<ISetAvatarProps>{
     }
 }
 
-const withAvatarSave = withStore((state) => ({ ...state.chat.setAvatar }));
+const withAvatarSave = withStore((state) => ({ ...state.chat.chatOptions.setAvatar }));
 
 const SetAvatar = withAvatarSave(SetAvatarComponent);
 

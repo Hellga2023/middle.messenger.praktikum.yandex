@@ -5,7 +5,7 @@ import MessageList from "../messagesList/messagesList";
 
 export interface IChatMessagesProps extends IProps{
     messageInput?:MessageInput; //to type a message to chat     
-    messageList?:MessageList; // all messages
+    messageList?:typeof MessageList; // all messages
 }
 
 const template =`{{{messageList}}} {{{messageInput}}}`;

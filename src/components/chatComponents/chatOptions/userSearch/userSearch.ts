@@ -5,9 +5,10 @@ import Input from "../../../commonComponents/input/input";
 import UserToAdd from "../userToAdd/userToAdd";
 import userSearch from "./userSearch.tmpl";
 import "./userSearch.scss";
+import { UserWithAvatarModel } from "../../../../models/models";
 
 interface IUserSearchProps extends IProps{
-    users?:any[];
+    users?:UserWithAvatarModel[];
     usersFound?: boolean;
     userSearchInput?:Input;
 }
@@ -40,7 +41,7 @@ class UserSearch extends Block<IUserSearchProps> {
     public render(): DocumentFragment {
         if(this.props.usersFound){
             this.children.userItems = new Array<UserToAdd>();
-            this.props.users?.forEach((data)=>{
+            this.props.users?.forEach((data:UserWithAvatarModel)=>{
                 this.children.userItems.push(new UserToAdd({user: data}));
             });
         }
@@ -54,7 +55,7 @@ class UserSearch extends Block<IUserSearchProps> {
 
     private _filterUsersToAdd(){
         let state = store.getState().chat,
-            users = state.addUserToChat.foundUsers,
+            users = state.chatOptions.addUserToChat.foundUsers,
             chatUsers = state.chatContent.chatUsers;
         return users.filter(user => !chatUsers.find(u => u.id === user.id));
     }

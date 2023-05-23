@@ -8,7 +8,7 @@ export class BaseAPI {
         this.http = new HTTP(endpoint);
     }
 
-    /* do we need this??? */
+    /* do we need this??? 
 
     create() { throw new Error('Not implemented'); }
 
@@ -16,5 +16,5 @@ export class BaseAPI {
 
     update() { throw new Error('Not implemented'); }
 
-    delete() { throw new Error('Not implemented'); }
+    delete() { throw new Error('Not implemented'); }*/
 }

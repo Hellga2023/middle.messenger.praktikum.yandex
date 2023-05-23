@@ -4,11 +4,13 @@ Description && technologies:
 
 This is a messenger app.
 
-I use Handlebars templator, node, express, parcel, git, netlify.
+I use Handlebars templator, node, express, git, docker, render.com
 
 I named css classes using BEM.
 
-My netlify website: https://zingy-vacherin-b83255.netlify.app/
+# My netlify website: https://zingy-vacherin-b83255.netlify.app/
+
+My render.com site: https://practicum-messenger.onrender.com/
 
 Command to run locally: npm run start
 
@@ -57,6 +59,45 @@ sprint 3
 
 express-rate-limit
 sanitize-html
+
+sprint 4
+
+for testing purposes the following dependencies are added
+
+mocha
+chai
+sinon
+jsdom
+webpack with the following packages:
+    ts-loader
+    sass-loader
+    style-loader
+    css-loader
+    HtmlWebpackPlugin
+    wepback-dev-server
+
+ husky and npm-run-all for precommit
+
+Docker container commands:
+
+    build: docker build -t messenger .
+
+    run: docker run -p 4000:3000 -d messenger
+
+    stop: docker stop {container_id}
+
+Git:
+
+    push to remote branch: git push origin {branch_name}
+
+    switch to branch: git checkout {branch_name}
+
+    delete remote branch: git push origin -d {branch_name}
+    
+    delete local branch: git branch -D {branch_name}
+
+    rename local branch: git branch -m {old_name} {new_name}
+
 ---
 
 

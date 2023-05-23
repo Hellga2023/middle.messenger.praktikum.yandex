@@ -9,5 +9,8 @@ const chat = `  <div class="leftMenu">
                 </div>
                 <div class="chat-content">
                     {{{chatContent}}}
+                </div>
+                <div>
+                    {{{modalWindow}}}
                 </div>`;
 export default chat;

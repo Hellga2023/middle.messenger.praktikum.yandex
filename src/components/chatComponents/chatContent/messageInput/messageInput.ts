@@ -1,4 +1,4 @@
-import chatController from "../../../../controllers/chatController";
+import messageController from "../../../../controllers/messageController";
 import Block, { IProps } from "../../../block/block";
 import ImageButton from "../../../commonComponents/imageButton/imageButton";
 import Input from "../../../commonComponents/input/input";
@@ -34,7 +34,7 @@ class MessageInput extends Block<IMessageInputProps> {
                 keyup: (event:Event) => {
                     if((event as KeyboardEvent).key === 'Enter'){
                         const input = event.target as HTMLInputElement;                        
-                        chatController.sendMessage(input.value);
+                        messageController.sendMessage(input.value);
                         input.value = "";
                     }
                 }
@@ -49,7 +49,7 @@ class MessageInput extends Block<IMessageInputProps> {
                     let message = input.value;
                     if(message){
                         input.value = "";
-                        chatController.sendMessage(message);
+                        messageController.sendMessage(message);
                     }
                 }
             }

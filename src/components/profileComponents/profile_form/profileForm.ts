@@ -3,15 +3,15 @@ import Button from '../../commonComponents/button/button';
 import Link from '../../commonComponents/link/link';
 import ValidatableInput, { IValidatableInputProps } from '../../commonComponents/validatableInput/validatableInput';
 import Avatar from '../avatar/avatar';
-import avatarImg from '../../../../static/avatar.png';
 import Block, { IProps } from '../../block/block';
 import './profileForm.scss';
-import { store, StoreEvents, withStore } from '../../../modules/store';
+import { store, StoreEvents } from '../../../modules/store';
 import router, { Routes } from '../../../routing/router';
 import userController from '../../../controllers/userController';
 import AuthController from '../../../controllers/authController';
-import { UserModel } from '../../../models/models';
+import { UserModel, UserWithAvatarModel } from '../../../models/models';
 import { XssProtect } from '../../../utils/xssProtect';
+import resourceController from '../../../controllers/resourceController';
 
 interface IProfileFormProps extends IProps{ 
     //todo check if all of that we need
@@ -20,7 +20,7 @@ interface IProfileFormProps extends IProps{
     /* calculated props */
     footerClass?:string;
     username?: string;    
-    avatarImg?: any;
+    avatarImg?: string;
     id?: number;
     first_name?: string;
     second_name?: string;
@@ -32,14 +32,12 @@ interface IProfileFormProps extends IProps{
     avatarSavingMessage?:string;
     /* children */
     infos?: ValidatableInput[];
-    avatar?: Avatar;
+    avatar?: typeof Avatar;
 }
 
 class ProfileForm extends Block<IProfileFormProps> {
     constructor(data:IProfileFormProps) {
-
         data.class = "profile-container";    
-        data.avatarImg = avatarImg;
         data.footerClass = data.editMode? "" :"text_left";   //move where?
         super(data, "form");
 
@@ -127,7 +125,7 @@ class ProfileForm extends Block<IProfileFormProps> {
         try{
             console.log("in set user info");
             const state = store.getState().profile,
-                user = store.getState().user;
+                user = store.getState().user as UserWithAvatarModel;
                 if(user!=null){
 
                     this.setProps({
@@ -140,15 +138,15 @@ class ProfileForm extends Block<IProfileFormProps> {
                     })
                     this.children.userinfos.forEach((validatableInput:ValidatableInput) => { 
                         let input = validatableInput.children.input,
-                            name = input.props.name,
-                            val = XssProtect.sanitizeHtml(user![name]);
+                            name = input.props.name as keyof UserWithAvatarModel,
+                            val = XssProtect.sanitizeHtml(user[name] as string);
                         input.setProps({value: val, isDisabled: !state.editMode });                  
                     });
                     this.children.avatar.setProps({
                         isDisabled:!state.editMode
                     });
                     //todo check if default is shown?
-                    this.children.avatar.children.avatarImage.setProps({src: userController.getUserAvatarUrl(user.avatar)});                                        
+                    this.children.avatar.children.avatarImage.setProps({src: resourceController.getAvatarUrl(user.avatar)});                                        
                 }else{
                     console.log("user is null");
                 }                

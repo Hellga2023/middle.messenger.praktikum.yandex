@@ -29,8 +29,6 @@ class DeleteUserListComponent extends Block<IDeleteUserListProps>{
             this.children.usersToDelete.push(new UserToDelete({user:user, events: {
                 click: () =>{
                     chatController.deleteUserFromChat(user.id);
-                    //rerender deleted list or go to initial state if no users?
-                    //refresh chat content after deleting user
                 }
             }}));
         });
